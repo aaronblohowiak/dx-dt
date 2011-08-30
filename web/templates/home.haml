@@ -1,0 +1,16 @@
+.page-header
+  %h1><
+    Dx-Dt.com
+    %small>< Process Monitoring
+
+%b Server:#{serverId} > PID:#{pid}
+%ul
+  %li
+    Started at: #{start.toString()}.
+
+%pre
+  != this.renderLive("replace", "pidRow", process)
+
+!= this.renderLive("simpleFlot", "cpu", cpu)
+
+!= this.renderLive("simpleFlot", "mem", mem)

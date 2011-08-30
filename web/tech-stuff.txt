@@ -1,0 +1,28 @@
+gem 'aws', "~> 2.3.25"
+gem 'aws-sdb'
+gem 'simple_record'
+
+Web Server -> 
+  Manage connections
+  pub/sub for web notifications
+
+Data Collector -> 
+  Accepts data from Agents
+  convert raw agent uploads to real data
+  Take input and cleanse
+  verify it for data layer
+  Sends to data layer or may write to storage if data layer unavailable.
+
+Data Layer -> 
+  Retrieve and Modify Canonical State
+  aggregate and summarize data
+  publish updates
+
+Event Processing Layer ->
+  Subscribe to updates from DL
+  Perform analysis on event stream
+  Notify users / take actions when thresholds are reached.
+
+Agent -> 
+  Gather system stats
+  Forward to collector

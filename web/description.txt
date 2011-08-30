@@ -1,0 +1,184 @@
+Underlying Data model:
+  Entities (things that can be created & destroyed):
+    Id
+    Parent Entity Id
+    AttributeHash {key: value, ...}
+    h_m: TimeSeries
+    h_m: Epochs
+
+  TimeSeries (graphable):
+    Id
+    Parent Entity Id
+    AttributeHash {key: value, ...}
+    Data [[(int)milisecondsSinceEpoch, (double)numericValue], ...]
+
+  Epochs (very,very sparse logs):
+    Id
+    Parent Entity Id
+    AttributeHash {key: value, ...}
+    Data [[(int)milisecondsSinceEpoch, (str)label], ...]
+
+Conceptual model:
+  Environment: Dev, demo, staging, production -- an isolated group of servers
+  Server: A Physical machine, vps or vm -- a running instance of an OS
+  Process: The stuff you've run
+
+  Environment time-series(pageviews, etc)
+  Environment attributes(name)
+  Environment epochs(deploys)
+
+    Server time-series (load, mem%)
+    Server attributes (ip addr, hostname)
+    Server epochs(installs, deploys)
+
+      Process time-series(cpu%, mem%, RSS, VIRT)
+      Process Attributes(started, command, user)
+      Process epochs(time/string pairs)
+
+The API:
+
+  All successful creations will redirect to the display of the created item.
+  All URLs have an elided base of: https://my-account.dx-dt.com/v1
+  All requests require a specific attribute, which may be present as a cookie, query param or POST param (X-TOKEN).
+  You may fake an HTTP method by setting a specific header, or post param (X-METHOD).
+
+Each method:url route is described with the mandatory and [optional] parameters and their types.
+
+To create a token, 
+
+POST: /tokens
+  {
+    mandatory:[],
+    optional:[{
+      name: with_create,
+      type: boolean,
+      default: false,
+      description: "Can this token be used to create other tokens?"
+    },{
+      name: with_list,
+      type: boolean,
+      default: false,
+      description: "Can this token be used to list other tokens?"
+    },{
+      name: expiration,
+      type: datetime,
+      default: null,
+      description: "when should this token stop working?"
+    },{
+      name: note,
+      type: text,
+      default: null,
+      description: "we'll store arbitrary text with a token for your convenience."
+    }]
+  }
+
+To Update a Token:
+PUT: v1/tokens/:id
+
+Other Routes:
+GET: v1/tokens
+GET: v1/tokens/:id
+
+Normal Entities:
+  Here are the normal entity url schemas:  
+    POST: environments
+     GET: environments
+     GET: environments/:id
+     PUT: environments/:id
+    POST: environments/:id/servers
+     GET: environments/:id/servers
+     GET: environments/:id/servers/:id
+     PUT: environments/:id/servers/:id
+    POST: environments/:id/servers/:id/processes
+     GET: environments/:id/servers/:id/processes
+     GET: environments/:id/servers/:id/processes/:id
+     PUT: environments/:id/servers/:id/processes/:id
+  
+  When creating or updating a normal entity, these are the params:
+  
+  {
+    mandatory:[],
+    optional:[{
+        name: label,
+        type: short_string,
+        description: "A short title."
+      },{
+        name: note,
+        type: text,
+        default: null,
+        description: "we'll store arbitrary text with a token for your convenience."
+      },{
+        name: attributes,
+        type: json,
+        default: {},
+        description: "A free-form JSON object of properties about the entity."
+    }]
+  }
+
+
+Epochs (deploys, big events):
+  Here are the epoch URL schemas:
+     PUT: environments/:id/epochs
+     GET: environments/:id/epochs
+     GET: environments/:id/servers/:id/epochs
+     PUT: environments/:id/servers/:id/epochs
+     GET: environments/:id/servers/:id/processes/:id/epochs
+     PUT: environments/:id/servers/:id/processes/:id/epochs
+
+  When adding an epoch, these are the params:
+    {
+      mandatory: [{
+          name: label,
+          type: short_string,
+          description: "What happened?" 
+        }],
+        optional: [{
+          name: when,
+          type: datetime,
+          default: now,
+          description: "When the big event happened"
+        },{
+          name: note,
+          type: text,
+          default: null,
+          description: "we'll store arbitrary text with a token for your convenience."
+      }]
+    }
+
+Time Series (%cpu, ram used, etc.)
+  Here are the time-series URL schemas:
+    GET: environments/:id/servers/:id/loadavg
+    PUT: environments/:id/servers/:id/loadavg
+    GET: environments/:id/servers/:id/processes/:id/cpu
+    PUT: environments/:id/servers/:id/processes/:id/mem
+    GET: environments/:id/servers/:id/processes/:id/rss
+    PUT: environments/:id/servers/:id/processes/:id/virt
+
+  All time-series are updated in similar fashion:
+  
+  PUT {
+    mandatory: [{
+      name: value
+      type: float
+      description "what is the value?"
+    }],
+    optional:[{
+      name: when,
+      type: datetime,
+      default: now,
+      description: "What time is this value associated with?"
+    }]
+  }
+
+
+Other ideas:
+  value-added system monitoring
+    % ram free alert
+      - what about disk caches?
+  
+  Processes RES vs VIRT
+    - Mostly swapped out?
+
+  Ideas:
+    lsof && netstat -> automatically determine which ports different processes are running on.
+

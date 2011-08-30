@@ -1,0 +1,42 @@
+!!!
+%html
+  %head
+    %link(rel="stylesheet" href="/app.css" media="all")
+    %script{src: "/socket.io/socket.io.js"}
+    %script{src: "/transitive.js"}
+    %script{src: "/templates.js"}
+    :script
+      Transitive = require("./transitive");
+      Transitive.Views.templates = require("./templates.js");
+      jQuery = $;
+      if(window.console){}else{
+        console = {};
+        console.log = function(){}
+      }
+    %script{src: "/jquery.flot.js"}
+    != "<!--[if lt IE 9]>"
+    != '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>'
+    != "<![endif]-->"
+
+    %title
+     Dx-Dt.com Change over time
+  %body
+    %div( class="topbar")
+      %div( class="fill")
+        %div( class="container")
+          %h3
+            %a(href="#") Dx-Dt
+          %ul
+            %li(class="active")
+              %a( href="#masthead") Example Process (this server)
+            %li
+              %a(href="/server") Example server (this host)
+            %li
+              %a(href="/about")About
+    %div(style="margin-top:40px")
+    .container
+      != content
+    :script
+      !{etc}
+      Transitive.boot();
+
