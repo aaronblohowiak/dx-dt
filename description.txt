@@ -116,16 +116,16 @@ Normal Entities:
   }
 
 
-Epochs (deploys, big events):
+comments (deploys, big events):
   Here are the epoch URL schemas:
-     PUT: environments/:id/epochs
-     GET: environments/:id/epochs
-     GET: environments/:id/servers/:id/epochs
-     PUT: environments/:id/servers/:id/epochs
-     GET: environments/:id/servers/:id/processes/:id/epochs
-     PUT: environments/:id/servers/:id/processes/:id/epochs
+     PUT: environments/:id/comments
+     GET: environments/:id/comments
+     GET: environments/:id/servers/:id/comments
+     PUT: environments/:id/servers/:id/comments
+     GET: environments/:id/servers/:id/processes/:id/comments
+     PUT: environments/:id/servers/:id/processes/:id/comments
 
-  When adding an epoch, these are the params:
+  When adding a coment, these are the params:
     {
       mandatory: [{
           name: label,
