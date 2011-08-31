@@ -95,19 +95,19 @@ setInterval(function(){
   Transitive.App.getFullProcessInfo(process.pid, function(error, stdout, stderr){
     Transitive.pushIt.publish(process.pid.toString(), {id: process.pid, stats: stdout});
   });
-}, 250);
+}, 1000);
 
 setInterval(function(){
   Transitive.App.getCPUforProcess(process.pid, function(error, percent){
     Transitive.pushIt.publish(process.pid.toString()+"%cpu", [(new Date()).getTime(), percent]);
   });
-}, 250);
+}, 1000);
 
 setInterval(function(){
   Transitive.App.getMemforProcess(process.pid, function(error, percent){
     Transitive.pushIt.publish(process.pid.toString()+"%mem", [(new Date()).getTime(), percent]);
   });
-}, 250);
+}, 1000);
 
 
 
