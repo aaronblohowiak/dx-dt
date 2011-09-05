@@ -182,3 +182,7 @@ Other ideas:
   Ideas:
     lsof && netstat -> automatically determine which ports different processes are running on.
 
+
+
+Visualization
+  Tukey's 

@@ -1,6 +1,25 @@
-var exec = require('child_process').exec;
+var exec = require('child_process').exec,
+    client = require("redis").createClient();
+
+
+function zrangeWithScoresToArrayOfTuples(ary){
+  var retAry = [];
+  for (var i = 0; i < ary.length - 1; i=i+2) {
+    retAry.push([parseInt(ary[i+1], 10), parseFloat(ary[i], 10)]);
+  };
+  return retAry;
+}
 
 module.exports = function(routes, Transitive){
+  routes.get("/sample-data-ping", function(req, res){
+    client.zrange("sample-data-ping", -5000, -1, "WITHSCORES", function(err, data){
+      var timeSeries = zrangeWithScoresToArrayOfTuples(data);
+      timeSeries.id = "sample-data-ping";
+      console.log(timeSeries);
+      res.end(Transitive.Views.renderPage("sample-data-ping", { timeSeries: timeSeries }));
+    });
+  });
+
   routes.get("/", function(req, res){
     res.writeHead(200, { 
       'Content-Type': 'text/html', 
@@ -17,14 +36,11 @@ module.exports = function(routes, Transitive){
 
     var startTime;
     function blah(error, start){
-      console.log("in blah")
       startTime = start;
       Transitive.App.getUniqueServerIdentifier(withId);
     }
 
     function withId(error, id, stderr){
-      console.log("in withId")
-
       exec('ps -Aef | grep '+process.pid+' | grep -v grep', function (error, stdout, stderr) {
         res.end(Transitive.Views.renderPage("home", {
           process: {id: process.pid.toString(), stats: stdout},
@@ -39,3 +55,4 @@ module.exports = function(routes, Transitive){
 
   });
 };
+

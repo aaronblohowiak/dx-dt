@@ -41,17 +41,16 @@ if command -v vm_stat &>/dev/null;
 fi
 
 
-# Generic Run a command and save stdout and stderr to files
 
-function runAndRecordWithTime {
-  # command directory basename
-  /usr/bin/time -p bash -c "$1 1>$2/$3.stdout.txt 2>$2/$3.stderr.txt" 2> $2/$3.time.txt;
-}
+# Generic Run a command and save stdout and stderr to files
 
 function runAndRecord {
   # command directory basename
-  #  optionally include the time to run the command (expensive.)
-  $1 > "$2/$3.stdout.txt" 2> "$2/$3.stderr.txt";
+
+  #optionall, do /usr/bin/time -p bash -c "$1 1>$3.stdout.txt 2>$3.stderr.txt" 2> $3.time.txt
+
+  /usr/bin/time -p bash -c "$1 1>$3.stdout.txt 2>$3.stderr.txt" 2> $3.time.txt
+  #$1 > "$2/$3.stdout.txt" 2> "$2/$3.stderr.txt"
 }
 
 function log {
@@ -99,7 +98,7 @@ getInfoPercent mem
 log $vmcommand "$sys_dir"
 log uptime "$sys_dir"
 log date "$sys_dir"
-runAndRecordWithTime "df -k" "$sys_dir" df
+runAndRecord "df -k" "$sys_dir" df
 runAndRecord "lsof -iTCP -sTCP:LISTEN -P" "$sys_dir" lsofi
 
 ###############################################################
@@ -110,19 +109,15 @@ set -e
 
 #Network info
 log "hostname" "$sys_dir"
-runAndRecord "ifconfig -a" "$sys_dir" ifconfig
-net_configuration=`cat $sys_dir/ifconfig.stdout.txt`
+net_configuration=`ifconfig -a`
 echo "$net_configuration" > $sys_dir/ifconfig.txt
 
-if test $MACHINE_ID
-then machine_id=$MACHINE_ID
-else #generate machine id from everything that looks like a MAC addresses present in network info
-  machine_id=`echo "$net_configuration" |  grep ..:..:..:..:..:.. | $hshcommand | grep  '\w*' -o`
-fi
-
-echo "$machine_id" > $infodir/machineid;
+#generate machine id from everything that looks like a MAC addresses present in network info
+machine_id=`echo "$net_configuration" |  grep ..:..:..:..:..:.. | $hshcommand | grep  '\w*' -o`
+echo "$machine_id" > $infodir/machineid
 
 outputfilename="$infodir.tgz"
 tar -czf "$outputfilename" $infodir/
 rm -rf $infodir/
+
 
