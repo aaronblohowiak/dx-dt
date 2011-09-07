@@ -87,8 +87,12 @@ set +e
 
 
 getInfo lstart #Full start time
+getInfo ucomm # simple name
+
 getInfo args # full command name with args (unless ps is in "safe mode")
-getInfo vsz # virtual size in Kbytes
+
+getInfo rss # resident size in Kbytes
+getInfo vsz # resident size in Kbytes
 getInfo utime # user CPU time
 getInfo time # user + system CPU time
 
@@ -98,9 +102,10 @@ getInfoPercent mem
 #System-wide performance
 log $vmcommand "$sys_dir"
 log uptime "$sys_dir"
-log date "$sys_dir"
 runAndRecordWithTime "df -k" "$sys_dir" df
-runAndRecord "lsof -iTCP -sTCP:LISTEN -P" "$sys_dir" lsofi
+
+runAndRecord "date +%s" "$sys_dir" date
+runAndRecord "lsof -iTCP -sTCP:LISTEN -P -Fpn" "$sys_dir" lsoftcp
 
 ###############################################################
 # Begin critical section; exit if any line returns anything bad

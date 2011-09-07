@@ -44,7 +44,7 @@ The API:
 
 Each method:url route is described with the mandatory and [optional] parameters and their types.
 
-To create a token, 
+To create a token:
 
 POST: /tokens
   {
@@ -105,7 +105,7 @@ Normal Entities:
       },{
         name: note,
         type: text,
-        default: null,
+        default: null,<D-∆>
         description: "we'll store arbitrary text with a token for your convenience."
       },{
         name: attributes,
@@ -185,4 +185,12 @@ Other ideas:
 
 
 Visualization
-  Tukey's 
+  show avg, high, low,  (maybe std deviations + outliers?)
+
+Ideas:
+  Event-driven, such that "process that was LISTEN'ing to a port is no
+longer" is available.
+  Automatic TCP connection test of processes that appear to LISTEN on a
+port.
+  Automatic recognition of the ports that services are running on, and
+then adding in simple healthchecks.

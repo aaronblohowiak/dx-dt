@@ -1,5 +1,3 @@
-require('nko')('0StX6398+ZWwNnaQ');
-
 var exec = require('child_process').exec;
 
 var Transitive = new (require("transitive"))();
