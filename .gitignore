@@ -3,3 +3,4 @@ web/public/generated
 web/logs
 agent/stats*
 dump.rdb
+bulkendpoint/endpoint/node_modules

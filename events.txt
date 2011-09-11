@@ -27,13 +27,16 @@ List of all processes that have been seen on a machine by args/ucomm (search box
 
 Bulk Data received
   - file saved / uploaded
-  - tar-xzf to local disk
-  - convert to big-ass json doc
-  - for each thing collected, zadd it appropriately
-  - diff the process list from current
-    - update current process list
-    - emit process changes
-      - machine/blah/processes : {kind:remove, data:id}
+  - process thing placed on work queue
+  - worker processes tarball
+    - tar-xzf to local disk
+    - convert to big-ass json doc
+    - put on work queue to update datums(?)
+  - worker processes json doc
+    - for each thing collected, zadd it appropriately
+    - update all attribute hashes gathered
+    - diff the process list from current
+      - update current process list
+      - emit process changes
+        - machine/blah/processes : {kind:remove, data:id}
       - 
-  - 
-  
