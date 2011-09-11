@@ -1,7 +1,5 @@
 fs = require("fs"), sys = require("sys");
 
-
-  
 function parseAll(){
   var results = {};
   results.processes = {};
@@ -17,17 +15,18 @@ function parseAll(){
   ps.args = readAndParsePs("processes/args.stdout.txt", trim);
   ps.ucomm = readAndParsePs("processes/ucomm.stdout.txt", trim);
 
-  ps.cpu = readAndParsePs("processes/cpu.stdout.txt", float);
-  ps.vsz = readAndParsePs("processes/vsz.stdout.txt", float);
   ps.rss = readAndParsePs("processes/rss.stdout.txt", float);
-  ps.mem = readAndParsePs("processes/mem.stdout.txt", float);
+  ps.vsz = readAndParsePs("processes/vsz.stdout.txt", float);
 
   //grrrr, need to capture some output with days of cpu usage in order to trust the processing
   ps.utime = readAndParsePs("processes/utime.stdout.txt", noop);
   ps.time = readAndParsePs("processes/time.stdout.txt", noop);
 
-  results.ports = readAndParseLsof("sys/lsoftcp.stdout.txt");
+  ps.mem = readAndParsePs("processes/mem.stdout.txt", float);
+  ps.cpu = readAndParsePs("processes/cpu.stdout.txt", float);
+
   results.filesystems = readAndParseDf("sys/df.stdout.txt");
+  results.ports = readAndParseLsof("sys/lsoftcp.stdout.txt");
 
   results.machine = {
     id: machineid,
@@ -140,21 +139,6 @@ function readAndParsePs(filename, fn){
   var src = fs.readFileSync(filename, "utf-8");
   return parsePs(src, fn);
 }
-
-/*
-lstart = fs.readFileSync("processes/lstart.stdout.txt", "utf-8");
-starthsh = parsePs(lstart, function(e){ return (new Date(e))});
-
-args = fs.readFileSync("processes/args.stdout.txt", "utf-8");
-argshsh = parsePs(lstart, function(e){ return e; });
-
-cpu = fs.readFileSync("processes/cpu.stdout.txt", "utf-8");
-cpuhsh = parsePs(cpu, function(e){return parseFloat(e, 10); });
-mem = fs.readFileSync("processes/mem.stdout.txt", "utf-8");
-cpuhsh = parsePs(cpu, function(e){return parseFloat(e, 10); });
-*/
-
-//console.log(sys.inspect(hsh));
 
 module.exports.readAndParseLsof = readAndParseLsof;
 module.exports.readAndParseDf = readAndParseDf;
