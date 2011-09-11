@@ -85,14 +85,14 @@ Normal Entities:
      GET: environments
      GET: environments/:id
      PUT: environments/:id
-    POST: environments/:id/servers
-     GET: environments/:id/servers
-     GET: environments/:id/servers/:id
-     PUT: environments/:id/servers/:id
-    POST: environments/:id/servers/:id/processes
-     GET: environments/:id/servers/:id/processes
-     GET: environments/:id/servers/:id/processes/:id
-     PUT: environments/:id/servers/:id/processes/:id
+    POST: servers
+     GET: servers
+     GET: servers/:id
+     PUT: servers/:id
+    POST: servers/:id/processes
+     GET: servers/:id/processes
+     GET: servers/:id/processes/:id
+     PUT: servers/:id/processes/:id
   
   When creating or updating a normal entity, these are the params:
   
@@ -120,10 +120,10 @@ comments (deploys, big events):
   Here are the epoch URL schemas:
      PUT: environments/:id/comments
      GET: environments/:id/comments
-     GET: environments/:id/servers/:id/comments
-     PUT: environments/:id/servers/:id/comments
-     GET: environments/:id/servers/:id/processes/:id/comments
-     PUT: environments/:id/servers/:id/processes/:id/comments
+     GET: servers/:id/comments
+     PUT: servers/:id/comments
+     GET: servers/:id/processes/:id/comments
+     PUT: servers/:id/processes/:id/comments
 
   When adding a coment, these are the params:
     {
@@ -147,12 +147,12 @@ comments (deploys, big events):
 
 Time Series (%cpu, ram used, etc.)
   Here are the time-series URL schemas:
-    GET: environments/:id/servers/:id/loadavg
-    PUT: environments/:id/servers/:id/loadavg
-    GET: environments/:id/servers/:id/processes/:id/cpu
-    PUT: environments/:id/servers/:id/processes/:id/mem
-    GET: environments/:id/servers/:id/processes/:id/rss
-    PUT: environments/:id/servers/:id/processes/:id/virt
+    GET: servers/:id/loadavg
+    PUT: servers/:id/loadavg
+    GET: servers/:id/processes/:id/cpu
+    PUT: servers/:id/processes/:id/mem
+    GET: servers/:id/processes/:id/rss
+    PUT: servers/:id/processes/:id/virt
 
   All time-series are updated in similar fashion:
   
