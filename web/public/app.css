@@ -2006,3 +2006,9 @@ h6 {
 .simpleFlot .lastupdated {
   margin-left: 2em;
 }
+.sidebar {
+  border-right: 1px solid #d6eaff;
+}
+.sidebar .listing {
+  margin-left: 20px;
+}
