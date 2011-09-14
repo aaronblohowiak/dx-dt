@@ -16,10 +16,67 @@ h3, h4,h5,h6{
 }
 
 
-.sidebar{
+.leftnav{
+  a {
+    display: block;
+  }
+
   border-right: 1px solid lighten(@linkColor, 50);
+  margin-right: -1px;
+  .listing{
+    margin-left: @gridGutterWidth * 2;
+  }
+  
+  > .nav-category {
+    margin-bottom: 24px;
+    
+    > h3 {    
+      .ico {
+        width: @gridGutterWidth * 2;
+        float: left;
+        font-size:24px;
+      } 
+    
+      > a:link, > a {
+        color:  @grayDark;
+      }
+    
+      > a:hover {
+        color: @linkColor;
+      }
+    }
+  }
 }
 
-.sidebar .listing{
-  margin-left: @gridGutterWidth;
+.listing.active{
+  > a:link, > a{
+    font-weight: bold;
+    color: @grayDark;
+  }
+}
+
+.listing {
+  > a:link, > a{
+    color: @gray;
+  }
+  
+  > small.pid{
+    color: @grayLight;
+  }
+}
+
+.listing > a:hover{
+  color: @linkColor;
+}
+
+
+.sep {
+  margin-left: @gridGutterWidth/2;
+  margin-right: @gridGutterWidth/2;
+  margin-top: 10px;
+  height: 20px;
+  width:1px;
+  border-left:1px solid lighten(@grayDark, 10);
+  position:relative;
+  float:left;
 }

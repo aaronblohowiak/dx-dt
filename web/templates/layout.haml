@@ -1,4 +1,5 @@
 !!!
+!= '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">'
 %html
   %head
     %link(rel="stylesheet" href="/app.css" media="all")
@@ -20,20 +21,41 @@
     != "<![endif]-->"
 
     %title
-     Dx-Dt.com Change over time
+     dX-dT.com Change over time
   %body
     %div( class="topbar")
       %div( class="fill")
         %div( class="container")
           %h3
-            %a(href="#") Dx-Dt
+            %a(href="#" style="font-family:Monaco;font-weight:bold") dX-dT
           %ul
-            %li(class="active")
-              %a( href="#masthead") Example Process (this server)
             %li
-              %a(href="/server") Example server (this host)
+              %a(href="/") Home
+          .sep
+          %ul
             %li
-              %a(href="/about")About
+              %a(href="#masthead") Dev
+            %li
+              %a
+                > 
+            %li
+              %a(href="/server") Web Server 1
+            %li
+              %a
+                >
+            %li
+              %a(href="/about") Processes
+          %ul.secondary-nav
+            %li
+              %form
+                %input(placeholder="Search ")
+            %li.dropdown(style="margin-left:50px")
+              %a.dropdown-toggle(href="#toggle") Account
+              %ul.dropdown-menu
+                %li
+                  %a(href="#") secondary-link
+                  
+              
     %div(style="margin-top:40px")
     .container
       != content

@@ -1253,7 +1253,7 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   opacity: 1;
 }
 .topbar form input {
-  background-color: #444;
+  background-color: #eee;
   background-color: rgba(255, 255, 255, 0.3);
   font-family: "Geneva", "Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: normal;
@@ -1262,7 +1262,7 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   width: 220px;
   padding: 4px 9px;
   color: #fff;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.5);
   border: 1px solid #111;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1299,7 +1299,7 @@ table .headerSortUp.purple, table .headerSortDown.purple {
 .topbar ul {
   display: block;
   float: left;
-  margin: 0 10px 0 0;
+  margin: 0 0px 0 0;
   position: relative;
 }
 .topbar ul.secondary-nav {
@@ -2006,9 +2006,50 @@ h6 {
 .simpleFlot .lastupdated {
   margin-left: 2em;
 }
-.sidebar {
+.leftnav {
   border-right: 1px solid #d6eaff;
+  margin-right: -1px;
 }
-.sidebar .listing {
-  margin-left: 20px;
+.leftnav a {
+  display: block;
+}
+.leftnav .listing {
+  margin-left: 40px;
+}
+.leftnav > .nav-category {
+  margin-bottom: 24px;
+}
+.leftnav > .nav-category > h3 .ico {
+  width: 40px;
+  float: left;
+  font-size: 24px;
+}
+.leftnav > .nav-category > h3 > a:link, .leftnav > .nav-category > h3 > a {
+  color: #404040;
+}
+.leftnav > .nav-category > h3 > a:hover {
+  color: #0069d6;
+}
+.listing.active > a:link, .listing.active > a {
+  font-weight: bold;
+  color: #404040;
+}
+.listing > a:link, .listing > a {
+  color: #808080;
+}
+.listing > small.pid {
+  color: #bfbfbf;
+}
+.listing > a:hover {
+  color: #0069d6;
+}
+.sep {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  height: 20px;
+  width: 1px;
+  border-left: 1px solid #595959;
+  position: relative;
+  float: left;
 }

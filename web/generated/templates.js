@@ -1,15 +1,7 @@
 module.exports={  "account": function anonymous(locals) {
 with(locals || {}) {
   try {
-   var _$output="<div class=\"container-fluid\"><div class=\"sidebar\"><h3>Environments</h3><div class=\"listing\">> <a href=\"/\">Dev</a> </div><h3>Servers</h3><div class=\"listing\">> <a href=\"/\">e3983jfjn98n</a> </div><h3>Processes</h3><table>" + 
-"";for(pid in status.processes.args){; _$output = _$output  +
-" <tr><td style=\"text-align:right\">" + 
-this.escape(pid) + 
-"</td><td> <b>" + 
-this.escape(status.processes.ucomm[pid]) + 
-"</b> </td></tr> " +
-"";}; _$output = _$output  + 
-"</table></div><div class=\"content\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
+   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Environments</a></h3><div class=\"listing active\"> <a href=\"/\">Dev</a> </div><div class=\"listing\"> <a href=\"/\">Staging</a> </div><div class=\"listing\"> <a href=\"/\">Production</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Servers</a></h3><div class=\"listing active\"> <a href=\"/\">Web Server 1</a> </div><div class=\"listing\"> <a href=\"/\">Web Server 2</a> </div><div class=\"listing\"> <a href=\"/\">Redis Server 1</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing\"> <a href=\"/\">Overview</a> </div><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Open Ports</a> </div></div></div><div class=\"span12\"><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span11 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
 "";columns = "lstart ucomm mem cpu rss vsz utime time".split(" "); _$output = _$output  +
 "";for(idx in columns){; _$output = _$output  +
 "<th>" + 
@@ -30,7 +22,7 @@ this.escape((status.processes[name] && status.processes[name][pid])) +
 "";}; _$output = _$output  + 
 "</tr>" +
 "";}; _$output = _$output  + 
-"</tbody></table></div></div>";
+"</tbody></table></div></div></div></div>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }
@@ -67,9 +59,11 @@ this.renderLive("simpleFlot", "mem", mem);
 ,  "layout": function anonymous(locals) {
 with(locals || {}) {
   try {
-   var _$output="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html><head><link rel=\"stylesheet\" href=\"/app.css\" media=\"all\" /><script src=\"/socket.io/socket.io.js\"></script><script src=\"/transitive.js\"></script><script src=\"/templates.js\"></script>\n<script type=\"text/javascript\">\n//<![CDATA[\nTransitive = require(\"./transitive\");\nTransitive.Views.templates = require(\"./templates.js\");\njQuery = $;\nif(window.console){}else{\n  console = {};\n  console.log = function(){}\n}\n//]]>\n</script>\n<script src=\"/jquery.flot.js\"></script><script src=\"/jquery.flot.selection.js\"></script><!--[if lt IE 9]>" +
+   var _$output="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+'<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">' +
+"<html><head><link rel=\"stylesheet\" href=\"/app.css\" media=\"all\" /><script src=\"/socket.io/socket.io.js\"></script><script src=\"/transitive.js\"></script><script src=\"/templates.js\"></script>\n<script type=\"text/javascript\">\n//<![CDATA[\nTransitive = require(\"./transitive\");\nTransitive.Views.templates = require(\"./templates.js\");\njQuery = $;\nif(window.console){}else{\n  console = {};\n  console.log = function(){}\n}\n//]]>\n</script>\n<script src=\"/jquery.flot.js\"></script><script src=\"/jquery.flot.selection.js\"></script><!--[if lt IE 9]>" +
 '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>' +
-"<![endif]--><title></title> Dx-Dt.com Change over time</head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"#\">Dx-Dt</a></h3><ul><li class=\"active\"><a href=\"#masthead\">Example Process (this server)</a></li><li><a href=\"/server\">Example server (this host)</a></li><li><a href=\"/about\">About</a></li></ul></div></div></div><div style=\"margin-top:40px\"></div><div class=\"container\">" + 
+"<![endif]--><title></title> dX-dT.com Change over time</head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"#\" style=\"font-family:Monaco;font-weight:bold\">dX-dT</a></h3><ul><li><a href=\"/\">Home</a></li></ul><div class=\"sep\"></div><ul><li><a href=\"#masthead\">Dev</a></li><li><a>> </a></li><li><a href=\"/server\">Web Server 1</a></li><li><a>></a></li><li><a href=\"/about\">Processes</a></li></ul><ul class=\"secondary-nav\"><li><form><input placeholder=\"Search \" /></form></li><li style=\"margin-left:50px\" class=\"dropdown\"><a href=\"#toggle\" class=\"dropdown-toggle\">Account</a><ul class=\"dropdown-menu\"><li><a href=\"#\">secondary-link</a></li></ul></li></ul></div></div></div><div style=\"margin-top:40px\"></div><div class=\"container\">" + 
 content + 
 "</div>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
 etc +
