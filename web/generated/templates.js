@@ -1,4 +1,34 @@
-module.exports={  "account": function anonymous(locals) {
+module.exports={  "account-old": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Environments</a></h3><div class=\"listing active\"> <a href=\"/\">Dev</a> </div><div class=\"listing\"> <a href=\"/\">Staging</a> </div><div class=\"listing\"> <a href=\"/\">Production</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Servers</a></h3><div class=\"listing active\"> <a href=\"/\">Web Server 1</a> </div><div class=\"listing\"> <a href=\"/\">Web Server 2</a> </div><div class=\"listing\"> <a href=\"/\">Redis Server 1</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing\"> <a href=\"/\">Overview</a> </div><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Open Ports</a> </div></div></div><div class=\"span12\"><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span11 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
+"";columns = "lstart ucomm mem cpu rss vsz utime time".split(" "); _$output = _$output  +
+"";for(idx in columns){; _$output = _$output  +
+"<th>" + 
+this.escape(columns[idx].toUpperCase()) + 
+"</th>" +
+"";}; _$output = _$output  + 
+"</tr></thead><tbody>" + 
+"";for(pid in status.processes.lstart){
+status.processes.lstart[pid] = new Date(Date.parse(status.processes.lstart[pid])).toDateString(); _$output = _$output  +
+"<tr><td>" + 
+this.escape(pid) + 
+"</td>" +
+"";for(idx in columns){; _$output = _$output  +
+"<td>" + 
+"";name = columns[idx]; _$output = _$output  +
+this.escape((status.processes[name] && status.processes[name][pid])) + 
+"</td>" +
+"";}; _$output = _$output  + 
+"</tr>" +
+"";}; _$output = _$output  + 
+"</tbody></table></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "account": function anonymous(locals) {
 with(locals || {}) {
   try {
    var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Environments</a></h3><div class=\"listing active\"> <a href=\"/\">Dev</a> </div><div class=\"listing\"> <a href=\"/\">Staging</a> </div><div class=\"listing\"> <a href=\"/\">Production</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Servers</a></h3><div class=\"listing active\"> <a href=\"/\">Web Server 1</a> </div><div class=\"listing\"> <a href=\"/\">Web Server 2</a> </div><div class=\"listing\"> <a href=\"/\">Redis Server 1</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing\"> <a href=\"/\">Overview</a> </div><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Open Ports</a> </div></div></div><div class=\"span12\"><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span11 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
@@ -63,7 +93,7 @@ with(locals || {}) {
 '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">' +
 "<html><head><link rel=\"stylesheet\" href=\"/app.css\" media=\"all\" /><script src=\"/socket.io/socket.io.js\"></script><script src=\"/transitive.js\"></script><script src=\"/templates.js\"></script>\n<script type=\"text/javascript\">\n//<![CDATA[\nTransitive = require(\"./transitive\");\nTransitive.Views.templates = require(\"./templates.js\");\njQuery = $;\nif(window.console){}else{\n  console = {};\n  console.log = function(){}\n}\n//]]>\n</script>\n<script src=\"/jquery.flot.js\"></script><script src=\"/jquery.flot.selection.js\"></script><!--[if lt IE 9]>" +
 '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>' +
-"<![endif]--><title></title> dX-dT.com Change over time</head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"#\" style=\"font-family:Monaco;font-weight:bold\">dX-dT</a></h3><ul><li><a href=\"/\">Home</a></li></ul><div class=\"sep\"></div><ul><li><a href=\"#masthead\">Dev</a></li><li><a>> </a></li><li><a href=\"/server\">Web Server 1</a></li><li><a>></a></li><li><a href=\"/about\">Processes</a></li></ul><ul class=\"secondary-nav\"><li><form><input placeholder=\"Search \" /></form></li><li style=\"margin-left:50px\" class=\"dropdown\"><a href=\"#toggle\" class=\"dropdown-toggle\">Account</a><ul class=\"dropdown-menu\"><li><a href=\"#\">secondary-link</a></li></ul></li></ul></div></div></div><div style=\"margin-top:40px\"></div><div class=\"container\">" + 
+"<![endif]--><title></title> dX-dT.com Change over time</head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"#\" style=\"font-family:Monaco;font-weight:bold\">dx-dt</a></h3><ul><li><a href=\"/\">Home</a></li></ul><div class=\"sep\"></div><ul><li><a href=\"#masthead\">Staging</a></li><li><a>> </a></li><li><a href=\"/server\">Web Server 1</a></li><li><a>></a></li><li><a href=\"/about\">Processes</a></li></ul><ul class=\"secondary-nav\"><li><form><input placeholder=\"Search \" /></form></li><li style=\"margin-left:50px\" class=\"dropdown\"><a href=\"#toggle\" class=\"dropdown-toggle\">Account</a><ul class=\"dropdown-menu\"><li><a href=\"#\">secondary-link</a></li></ul></li></ul></div></div></div><div style=\"margin-top:40px\"></div><div class=\"container\">" + 
 content + 
 "</div>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
 etc +
@@ -115,10 +145,49 @@ with(locals || {}) {
   }
 }
 }
+,  "process": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">mysql</a></h3><div class=\"listing\"> <a href=\"/\">Current</a> </div><div class=\"listing\"> <a href=\"/\">History</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div></div><div class=\"span12\"><div class=\"page-header\"><h1>mysql <small>PID: 42141 MEM%: 10.4 CPU%: 35.0</small> </h1></div><div class=\"row\"><div class=\"span6\"><h3>Memory</h3><div style=\"width:340px;height:200px;background-color:#666;\" class=\"graph\"></div></div><div class=\"span6\"><h3>CPU</h3><div style=\"width:340px;height:200px;background-color:#666;\" class=\"graph\"></div></div></div><div class=\"row\"><div class=\"span12\"><h2>Starting details</h2></div><div class=\"span4\"><h3>Started</h3></div><div class=\"span8\"><h3>Args</h3></div></div><div class=\"row\"><div class=\"span4\"><h3>Ports</h3></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
 ,  "sample-data-ping": function anonymous(locals) {
 with(locals || {}) {
   try {
    var _$output=this.renderLive("zoomableFlot", "ping", timeSeries);;
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "server": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">mysql</a></h3><div class=\"listing\"> <a href=\"/\">Current</a> </div><div class=\"listing\"> <a href=\"/\">History</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div></div><div class=\"span12\"><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span11 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
+"";columns = "lstart ucomm mem cpu rss vsz utime time".split(" "); _$output = _$output  +
+"";for(idx in columns){; _$output = _$output  +
+"<th>" + 
+this.escape(columns[idx].toUpperCase()) + 
+"</th>" +
+"";}; _$output = _$output  + 
+"</tr></thead><tbody>" + 
+"";for(pid in status.processes.lstart){
+status.processes.lstart[pid] = new Date(Date.parse(status.processes.lstart[pid])).toDateString(); _$output = _$output  +
+"<tr><td>" + 
+this.escape(pid) + 
+"</td>" +
+"";for(idx in columns){; _$output = _$output  +
+"<td>" + 
+"";name = columns[idx]; _$output = _$output  +
+this.escape((status.processes[name] && status.processes[name][pid])) + 
+"</td>" +
+"";}; _$output = _$output  + 
+"</tr>" +
+"";}; _$output = _$output  + 
+"</tbody></table></div></div></div></div>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }

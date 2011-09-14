@@ -1,0 +1,63 @@
+.row
+  .span4.leftnav
+    .nav-category
+      %h3 
+        .ico ♛
+        %a(href="/") Staging
+      .listing.active
+        %a(href="/")> Servers
+      .listing
+        %a(href="/")> Urls
+      .listing
+        %a(href="/")> Comments
+    .nav-category
+      %h3
+        .ico ♞
+        %a(href="/") Web Server 1 
+      .listing.active
+        %a(href="/")> Processes
+      .listing
+        %a(href="/")> CPU
+      .listing
+        %a(href="/")> Memory
+      .listing
+        %a(href="/")> Disk
+      .listing
+        %a(href="/")> Network
+      .listing
+        %a(href="/")> Comments
+    .nav-category
+      %h3
+        .ico ♟
+        %a(href="/") mysql
+      .listing
+        %a(href="/")> Current
+      .listing
+        %a(href="/")> History
+      .listing
+        %a(href="/")> Comments
+  .span12
+    .page-header
+      %h1
+        mysql
+        %small> PID: 42141 MEM%: 10.4 CPU%: 35.0
+    
+    .row
+      .span6
+        %h3 Memory
+        .graph(style="width:340px;height:200px;background-color:#666;")
+      .span6
+        %h3 CPU
+        .graph(style="width:340px;height:200px;background-color:#666;")
+    .row
+      .span12
+        %h2 Starting details
+      .span4
+        %h3 Started
+      .span8
+        %h3 Args
+
+    .row
+      .span4
+        %h3 Ports
+      

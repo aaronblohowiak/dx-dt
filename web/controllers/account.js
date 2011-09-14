@@ -26,4 +26,12 @@ module.exports = function(routes, Transitive){
   routes.get("/account", function(req, res){
     res.end(Transitive.Views.renderPage("account", {status:status}));
   });
+  
+  routes.get("/server", function(req, res){
+    res.end(Transitive.Views.renderPage("server", {status:status}));
+  });
+  
+  routes.get("/process", function(req, res){
+    res.end(Transitive.Views.renderPage("process", {status:status}));
+  });
 };
