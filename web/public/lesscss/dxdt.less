@@ -30,7 +30,7 @@ h3, h4,h5,h6{
   > .nav-category {
     margin-bottom: 24px;
     
-    > h3 {    
+    > h3 {
       .ico {
         width: @gridGutterWidth * 2;
         float: left;
@@ -80,3 +80,52 @@ h3, h4,h5,h6{
   position:relative;
   float:left;
 }
+
+.topbar{
+  > h3{
+   font-family: "Arial Black", sans-serif; font-weight:800; font-stretch:normal;
+  }
+  
+  ul li a.skinny {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@accentColor: #ea5e15;
+
+.page-header > h1{
+  color: @accentColor;
+}
+
+.nav-category > h3{
+  color: @accentColor;
+}
+
+input.stealth {
+  border: none;
+  color: inherit;
+}
+
+input.search {
+  background:#fff url('/magnify.gif') no-repeat 5px center;
+  padding-left: 30px;
+  width: 180px;
+}
+
+.graph-options > ul li {
+  line-height: 200%;
+}
+
+table.tcp-ports{
+  td.host{
+    padding-right: 0;
+    text-align: right;
+  }
+  td.port{
+    padding-left: 0;
+    text-align: left;
+  }
+}
+
+

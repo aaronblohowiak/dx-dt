@@ -27,29 +27,23 @@
       %div( class="fill")
         %div( class="container")
           %h3
-            %a(href="#" style="font-family:Monaco;font-weight:bold") dx-dt
+            %a(href="#" style="letter-spacing:3px;")
+              dx-dt
           %ul
             %li
               %a(href="/") Home
-          .sep
-          %ul
-            %li
-              %a(href="#masthead") Staging
-            %li
-              %a
-                > 
-            %li
-              %a(href="/server") Web Server 1
-            %li
-              %a
-                >
-            %li
-              %a(href="/about") Processes
+            :if this.crumbs
+              :each idx in this.crumbs
+                %li
+                  %a.skinny
+                    >
+                %li
+                  %a(href="#masthead")= idx
           %ul.secondary-nav
             %li
               %form
-                %input(placeholder="Search ")
-            %li.dropdown(style="margin-left:50px")
+                %input.search
+            %li.dropdown(style="margin-left:10px")
               %a.dropdown-toggle(href="#toggle") Account
               %ul.dropdown-menu
                 %li

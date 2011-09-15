@@ -1,3 +1,6 @@
+-
+  this.crumbs = ["Staging", "Web Server 1", "Processes"]
+
 .row
   .span4.leftnav
     .nav-category
@@ -9,7 +12,7 @@
       .listing
         %a(href="/")> Urls
       .listing
-        %a(href="/")> Comments
+        %a(href="/")> Notes
     .nav-category
       %h3
         .ico ♞
@@ -25,39 +28,126 @@
       .listing
         %a(href="/")> Network
       .listing
-        %a(href="/")> Comments
+        %a(href="/")> Notes
     .nav-category
       %h3
         .ico ♟
-        %a(href="/") mysql
+        %a(href="/") node
+      .listing.active
+        %a(href="/")> Statistics
       .listing
-        %a(href="/")> Current
+        %a(href="/")> Alerts
       .listing
-        %a(href="/")> History
-      .listing
-        %a(href="/")> Comments
+        %a(href="/")> Notes
   .span12
-    .page-header
+    .page-header(style="margin-bottom:3px;")
       %h1
-        mysql
-        %small> PID: 42141 MEM%: 10.4 CPU%: 35.0
-    
-    .row
-      .span6
-        %h3 Memory
-        .graph(style="width:340px;height:200px;background-color:#666;")
-      .span6
-        %h3 CPU
-        .graph(style="width:340px;height:200px;background-color:#666;")
+        node
+        %small.strong> PID: 42141 &nbsp; Started: Mon Sep 12 7:58 PM UTC
+    .code(style="margin-bottom:17px")
+      %input.stealth(style="width: 100%;" value="node /usr/local/bin/restartr -c lessc -a public/lesscss/bootstrap.less -a public/app.css public/lesscss/bootstrap.less public/lesscss/dxdt.less public/lesscss/forms.less public/lesscss/patterns.less public/lesscss/preboot.less public/lesscss/reset.less public/lesscss/scaffolding.less public/lesscss/tables.less public/lesscss/type.less")>
     .row
       .span12
-        %h2 Starting details
-      .span4
-        %h3 Started
-      .span8
-        %h3 Args
-
+        %ul.tabs
+          %li.active
+            %a graph
+          %li
+            %a(href="/")< add to dashboard
+          %li
+            %a(href="/")< compare timeframes
+        .graph(style="width:100%;height:300px;background-color:#666;color:white")
+          zoom view
+        .graph(style="width:100%;height:75px;background-color:#666;margin-top:20px;color:white")
+          overview
+      .graph-options.span4
+        %h3
+          Stats
+        %ul.unstyled
+          %li 
+            %input(type="checkbox" checked=true)>
+            Mem%
+          %li 
+            %input(type="checkbox" checked=true)>
+            CPU%
+          %li 
+            %input(type="checkbox")>
+            time
+          %li 
+            %input(type="checkbox")>
+            utime
+          %li 
+            %input(type="checkbox")>
+            rss
+          %li 
+            %input(type="checkbox")>
+            vsz
+      .graph-options.span4
+        %h3 Annotate
+        %ul.unstyled
+          %li
+            %input(type="checkbox" checked=true)>
+            Process Notes
+          %li
+            %input(type="checkbox" checked=true)>
+            Staging Notes
+          %li
+            %input(type="checkbox" checked=true)>
+            Web Server 1 Notes
+      .graph-options.span4
+        %h3 Additional Stats
+        %input.search(type="text" placeholder="server or environment stats")
     .row
-      .span4
-        %h3 Ports
-      
+      .span6
+        %h3 Open TCP Ports
+        %table.tcp-ports
+          %tr
+            %td.host *
+            %td.port= ":80"
+            %td
+              %a(href="/")< add check
+          %tr
+            %td.host *
+            %td.port= ":443"
+            %td
+              %a(href="/")< add check
+          %tr
+            %td.host localhost
+            %td.port= ":3000"
+            %td
+          %tr
+            %td.host *
+            %td.port= ":8080"
+            %td
+              %a(href="/")< add check
+      .span6
+        %h3 Notes
+        %input(type="text")<
+        %input.btn.success(type="button" value="Create")><
+        %ul.unstyled
+          %li
+            %small< Wed Sep 14
+            Opened local port for migration
+          %li
+            %small< Mon Sep 12
+            Modified fsync frequency
+    .row
+      .span12
+        %h2 Events
+        .row
+          .span4
+            %h3 Wed Sep 14
+          .span8
+            .alert-message
+              9:22 AM UTC Began listening to port 3000
+        %hr
+        .row
+          .span4
+            %h3 Mon Sep 12
+          .span8
+            .alert-message.success
+              8:05 PM UTC CPU stayed below 80% for 2 Minutes
+            .alert-message.error
+              7:58 PM UTC CPU Exceeded 90%  for 2 Minutes
+            .alert-message
+              2:22 PM UTC Process Started
+

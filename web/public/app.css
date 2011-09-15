@@ -649,7 +649,7 @@ hr {
   border: 0;
   border-bottom: 1px solid #eee;
 }
-strong {
+strong, .strong {
   font-style: inherit;
   font-weight: bold;
   line-height: inherit;
@@ -1253,16 +1253,13 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   opacity: 1;
 }
 .topbar form input {
-  background-color: #eee;
-  background-color: rgba(255, 255, 255, 0.3);
   font-family: "Geneva", "Tahoma", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: normal;
   font-weight: 13px;
   line-height: 1;
   width: 220px;
   padding: 4px 9px;
-  color: #fff;
-  color: rgba(255, 255, 255, 0.5);
+  padding-left: 30px;
   border: 1px solid #111;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1274,24 +1271,13 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   -moz-transition: none;
   transition: none;
 }
-.topbar form input:-moz-placeholder {
-  color: #e6e6e6;
-}
-.topbar form input::-webkit-input-placeholder {
-  color: #e6e6e6;
-}
-.topbar form input:hover {
-  background-color: #bfbfbf;
-  background-color: rgba(255, 255, 255, 0.5);
-  color: #fff;
-}
 .topbar form input:focus, .topbar form input.focused {
   outline: none;
-  background-color: #fff;
   color: #404040;
   text-shadow: 0 1px 0 #fff;
   border: 0;
   padding: 5px 10px;
+  padding-left: 30px;
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
@@ -2052,4 +2038,39 @@ h6 {
   border-left: 1px solid #595959;
   position: relative;
   float: left;
+}
+.topbar > h3 {
+  font-family: "Arial Black", sans-serif;
+  font-weight: 800;
+  font-stretch: normal;
+}
+.topbar ul li a.skinny {
+  padding-right: 0;
+  padding-left: 0;
+}
+.page-header > h1 {
+  color: #ea5e15;
+}
+.nav-category > h3 {
+  color: #ea5e15;
+}
+input.stealth {
+  border: none;
+  color: inherit;
+}
+input.search {
+  background: #ffffff url('/magnify.gif') no-repeat 5px center;
+  padding-left: 30px;
+  width: 180px;
+}
+.graph-options > ul li {
+  line-height: 200%;
+}
+table.tcp-ports td.host {
+  padding-right: 0;
+  text-align: right;
+}
+table.tcp-ports td.port {
+  padding-left: 0;
+  text-align: left;
 }
