@@ -1,12 +1,13 @@
 {
   "name": "project-name",
   "version": "0.0.0",
-  "dependencies":{
-    "transitive":"0.0.0pre23",
-    "whiskey":"0.3.3",
-    "haml":"0.4.2",
-    "underscore":"1.1.6",
-    "markdown":"0.2.1",
-    "nko":"0.1.1"
+  "dependencies": {
+    "transitive": "0.0.0pre28",
+    "whiskey": "0.3.3",
+    "haml": "0.4.2",
+    "underscore": "1.1.6",
+    "markdown": "0.2.1",
+    "nko": "0.1.1",
+    "mime": "~1.2.2"
   }
 }

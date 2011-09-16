@@ -36,6 +36,8 @@
       .listing.active
         %a(href="/")> Statistics
       .listing
+        %a(href="/")> Ports (4)
+      .listing
         %a(href="/")> Alerts
       .listing
         %a(href="/")> Notes
@@ -48,13 +50,6 @@
       %input.stealth(style="width: 100%;" value="node /usr/local/bin/restartr -c lessc -a public/lesscss/bootstrap.less -a public/app.css public/lesscss/bootstrap.less public/lesscss/dxdt.less public/lesscss/forms.less public/lesscss/patterns.less public/lesscss/preboot.less public/lesscss/reset.less public/lesscss/scaffolding.less public/lesscss/tables.less public/lesscss/type.less")>
     .row
       .span12
-        %ul.tabs
-          %li.active
-            %a graph
-          %li
-            %a(href="/")< add to dashboard
-          %li
-            %a(href="/")< compare timeframes
         .graph(style="width:100%;height:300px;background-color:#666;color:white")
           zoom view
         .graph(style="width:100%;height:75px;background-color:#666;margin-top:20px;color:white")
@@ -96,40 +91,6 @@
       .graph-options.span4
         %h3 Additional Stats
         %input.search(type="text" placeholder="server or environment stats")
-    .row
-      .span6
-        %h3 Open TCP Ports
-        %table.tcp-ports
-          %tr
-            %td.host *
-            %td.port= ":80"
-            %td
-              %a(href="/")< add check
-          %tr
-            %td.host *
-            %td.port= ":443"
-            %td
-              %a(href="/")< add check
-          %tr
-            %td.host localhost
-            %td.port= ":3000"
-            %td
-          %tr
-            %td.host *
-            %td.port= ":8080"
-            %td
-              %a(href="/")< add check
-      .span6
-        %h3 Notes
-        %input(type="text")<
-        %input.btn.success(type="button" value="Create")><
-        %ul.unstyled
-          %li
-            %small< Wed Sep 14
-            Opened local port for migration
-          %li
-            %small< Mon Sep 12
-            Modified fsync frequency
     .row
       .span12
         %h2 Events

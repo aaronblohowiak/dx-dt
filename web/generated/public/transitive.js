@@ -73,7 +73,6 @@ if (typeof process === 'undefined') process = {
 // -- dantman Daniel Friesen Copyright(C) 2010 XXX No License Specified
 // -- fschaefer Florian Schäfer Copyright (C) 2010 MIT License
 // -- Irakli Gozalishvili Copyright (C) 2010 MIT License
-// -- kitcambridge Kit Cambridge Copyright (C) 2011 MIT License
 
 /*!
     Copyright (c) 2009, 280 North Inc. http://280north.com/
@@ -82,7 +81,7 @@ if (typeof process === 'undefined') process = {
 
 (function (definition) {
     // RequireJS
-    if (typeof define == "function") {
+    if (typeof define === "function") {
         define(function () {
             definition();
         });
@@ -125,18 +124,18 @@ if (typeof process === 'undefined') process = {
 // http://www.ecma-international.org/publications/files/drafts/tc39-2009-025.pdf
 
 if (!Function.prototype.bind) {
+    var slice = Array.prototype.slice;
     Function.prototype.bind = function bind(that) { // .length is 1
         // 1. Let Target be the this value.
         var target = this;
         // 2. If IsCallable(Target) is false, throw a TypeError exception.
         // XXX this gets pretty close, for all intents and purposes, letting
         // some duck-types slide
-        if (typeof target.apply != "function" || typeof target.call != "function")
+        if (typeof target.apply !== "function" || typeof target.call !== "function")
             return new TypeError();
         // 3. Let A be a new (possibly empty) internal list of all of the
         //   argument values provided after thisArg (arg1, arg2 etc), in order.
-        // XXX slicedArgs will stand in for "A" if used
-        var args = slice.call(arguments, 1); // for normal call
+        var args = slice.call(arguments);
         // 4. Let F be a new native ECMAScript object.
         // 9. Set the [[Prototype]] internal property of F to the standard
         //   built-in Function prototype object as specified in 15.3.3.1.
@@ -148,7 +147,7 @@ if (!Function.prototype.bind) {
         //   15.3.4.5.3.
         // 13. The [[Scope]] internal property of F is unused and need not
         //   exist.
-        var bound = function () {
+        function bound() {
 
             if (this instanceof bound) {
                 // 15.3.4.5.2 [[Construct]]
@@ -166,12 +165,7 @@ if (!Function.prototype.bind) {
                 //   values as the list ExtraArgs in the same order.
 
                 var self = Object.create(target.prototype);
-                var result = target.apply(
-                    self,
-                    args.concat(slice.call(arguments))
-                );
-                if (result !== null && Object(result) === result)
-                    return result;
+                target.apply(self, args.concat(slice.call(arguments)));
                 return self;
 
             } else {
@@ -194,17 +188,23 @@ if (!Function.prototype.bind) {
                 //   as the arguments.
 
                 // equiv: target.call(this, ...boundArgs, ...args)
-                return target.apply(
-                    that,
+                return target.call.apply(
+                    target,
                     args.concat(slice.call(arguments))
                 );
 
             }
 
-        };
-
-        // XXX bound.length is never writable, so don't even try
-        //
+        }
+        bound.length = (
+            // 14. If the [[Class]] internal property of Target is "Function", then
+            typeof target === "function" ?
+            // a. Let L be the length property of Target minus the length of A.
+            // b. Set the length own property of F to either 0 or L, whichever is larger.
+            Math.max(target.length - args.length, 0) :
+            // 15. Else set the length own property of F to 0.
+            0
+        );
         // 16. The length own property of F is given attributes as specified in
         //   15.3.5.1.
         // TODO
@@ -234,8 +234,6 @@ if (!Function.prototype.bind) {
 var call = Function.prototype.call;
 var prototypeOfArray = Array.prototype;
 var prototypeOfObject = Object.prototype;
-var slice = prototypeOfArray.slice;
-var toString = prototypeOfObject.toString;
 var owns = call.bind(prototypeOfObject.hasOwnProperty);
 
 var defineGetter, defineSetter, lookupGetter, lookupSetter, supportsAccessors;
@@ -247,6 +245,7 @@ if ((supportsAccessors = owns(prototypeOfObject, '__defineGetter__'))) {
     lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
 }
 
+
 //
 // Array
 // =====
@@ -255,31 +254,18 @@ if ((supportsAccessors = owns(prototypeOfObject, '__defineGetter__'))) {
 // ES5 15.4.3.2
 if (!Array.isArray) {
     Array.isArray = function isArray(obj) {
-        return Object.prototype.toString.call(obj) == "[object Array]";
+        return Object.prototype.toString.call(obj) === "[object Array]";
     };
 }
 
 // ES5 15.4.4.18
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach
 if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function forEach(fun /*, thisp*/) {
-        var self = Object(this),
-            thisp = arguments[1],
-            i = 0,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (!fun || !fun.call) {
-            throw new TypeError();
-        }
-
-        while (i < length) {
-            if (i in self) {
-                // Invoke the callback function with call, passing arguments:
-                // context, property value, property key, thisArg object context
-                fun.call(thisp, self[i], i, self);
+    Array.prototype.forEach =  function forEach(block, thisObject) {
+        var len = +this.length;
+        for (var i = 0; i < len; i++) {
+            if (i in this) {
+                block.call(thisObject, this[i], i, this);
             }
-            i++;
         }
     };
 }
@@ -288,69 +274,51 @@ if (!Array.prototype.forEach) {
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
 if (!Array.prototype.map) {
     Array.prototype.map = function map(fun /*, thisp*/) {
-        var self = Object(this);
-        var length = self.length >>> 0;
-        if (typeof fun != "function")
-            throw new TypeError();
-        var result = new Array(length);
+        var len = +this.length;
+        if (typeof fun !== "function")
+          throw new TypeError();
+
+        var res = new Array(len);
         var thisp = arguments[1];
-        for (var i = 0; i < length; i++) {
-            if (i in self)
-                result[i] = fun.call(thisp, self[i], i, self);
+        for (var i = 0; i < len; i++) {
+            if (i in this)
+                res[i] = fun.call(thisp, this[i], i, this);
         }
-        return result;
+
+        return res;
     };
 }
 
 // ES5 15.4.4.20
 if (!Array.prototype.filter) {
-    Array.prototype.filter = function filter(fun /*, thisp */) {
-        var self = Object(this);
-        var length = self.length >>> 0;
-        if (typeof fun != "function")
-            throw new TypeError();
-        var result = [];
+    Array.prototype.filter = function filter(block /*, thisp */) {
+        var values = [];
         var thisp = arguments[1];
-        for (var i = 0; i < length; i++)
-            if (i in self && fun.call(thisp, self[i], i, self))
-                result.push(self[i]);
-        return result;
+        for (var i = 0; i < this.length; i++)
+            if (block.call(thisp, this[i]))
+                values.push(this[i]);
+        return values;
     };
 }
 
 // ES5 15.4.4.16
 if (!Array.prototype.every) {
-    Array.prototype.every = function every(fun /*, thisp */) {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        if (typeof fun !== "function")
-            throw new TypeError();
-        var self = Object(this);
-        var length = self.length >>> 0;
+    Array.prototype.every = function every(block /*, thisp */) {
         var thisp = arguments[1];
-        for (var i = 0; i < length; i++) {
-            if (i in self && !fun.call(thisp, self[i], i, self))
+        for (var i = 0; i < this.length; i++)
+            if (!block.call(thisp, this[i]))
                 return false;
-        }
         return true;
     };
 }
 
 // ES5 15.4.4.17
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
 if (!Array.prototype.some) {
-    Array.prototype.some = function some(fun /*, thisp */) {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        if (typeof fun !== "function")
-            throw new TypeError();
-        var self = Object(this);
-        var length = self.length >>> 0;
+    Array.prototype.some = function some(block /*, thisp */) {
         var thisp = arguments[1];
-        for (var i = 0; i < length; i++) {
-            if (i in self && fun.call(thisp, self[i], i, self))
+        for (var i = 0; i < this.length; i++)
+            if (block.call(thisp, this[i]))
                 return true;
-        }
         return false;
     };
 }
@@ -359,8 +327,7 @@ if (!Array.prototype.some) {
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
 if (!Array.prototype.reduce) {
     Array.prototype.reduce = function reduce(fun /*, initial*/) {
-        var self = Object(this);
-        var length = self.length >>> 0;
+        var len = +this.length;
         // Whether to include (... || fun instanceof RegExp)
         // in the following expression to trap cases where
         // the provided function was actually a regular
@@ -375,58 +342,58 @@ if (!Array.prototype.reduce) {
         // old revisions of other engines).  In Trident,
         // regular expressions are a typeof "object", so the
         // following guard alone is sufficient.
-        if (Object.prototype.toString.call(fun) != "[object Function]")
+        if (typeof fun !== "function")
             throw new TypeError();
 
         // no value to return if no initial value and an empty array
-        if (!length && arguments.length == 1)
+        if (len === 0 && arguments.length === 1)
             throw new TypeError();
 
         var i = 0;
-        var result;
         if (arguments.length >= 2) {
-            result = arguments[1];
+            var rv = arguments[1];
         } else {
             do {
-                if (i in self) {
-                    result = self[i++];
+                if (i in this) {
+                    rv = this[i++];
                     break;
                 }
 
                 // if array contains no values, no initial value to return
-                if (++i >= length)
+                if (++i >= len)
                     throw new TypeError();
             } while (true);
         }
 
-        for (; i < length; i++) {
-            if (i in self)
-                result = fun.call(null, result, self[i], i, self);
+        for (; i < len; i++) {
+            if (i in this)
+                rv = fun.call(null, rv, this[i], i, this);
         }
 
-        return result;
+        return rv;
     };
 }
+
 
 // ES5 15.4.4.22
 // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
 if (!Array.prototype.reduceRight) {
     Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
-        var self = Object(this);
-        var length = self.length >>> 0;
-        if (Object.prototype.toString.call(fun) != "[object Function]")
-            throw new TypeError();
-        // no value to return if no initial value, empty array
-        if (!length && arguments.length == 1)
+        var len = +this.length;
+        if (typeof fun !== "function")
             throw new TypeError();
 
-        var result, i = length - 1;
+        // no value to return if no initial value, empty array
+        if (len === 0 && arguments.length === 1)
+            throw new TypeError();
+
+        var rv, i = len - 1;
         if (arguments.length >= 2) {
-            result = arguments[1];
+            rv = arguments[1];
         } else {
             do {
-                if (i in self) {
-                    result = self[i--];
+                if (i in this) {
+                    rv = this[i--];
                     break;
                 }
 
@@ -436,55 +403,50 @@ if (!Array.prototype.reduceRight) {
             } while (true);
         }
 
-        do {
+        for (; i >= 0; i--) {
             if (i in this)
-                result = fun.call(null, result, self[i], i, self);
-        } while (i--);
+                rv = fun.call(null, rv, this[i], i, this);
+        }
 
-        return result;
+        return rv;
     };
 }
 
 // ES5 15.4.4.14
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
 if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        var self = Object(this);
-        var length = self.length >>> 0;
+    Array.prototype.indexOf = function indexOf(value /*, fromIndex */ ) {
+        var length = this.length;
         if (!length)
             return -1;
-        var i = 0;
-        if (arguments.length > 1)
-            i = toInteger(arguments[1]);
-        // handle negative indicies
-        i = i >= 0 ? i : length - Math.abs(i);
+        var i = arguments[1] || 0;
+        if (i >= length)
+            return -1;
+        if (i < 0)
+            i += length;
         for (; i < length; i++) {
-            if (i in self && self[i] === sought) {
+            if (!(i in this))
+                continue;
+            if (value === this[i])
                 return i;
-            }
         }
         return -1;
-    }
+    };
 }
 
 // ES5 15.4.4.15
 if (!Array.prototype.lastIndexOf) {
-    Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        var self = Object(this);
-        var length = self.length >>> 0;
+    Array.prototype.lastIndexOf = function lastIndexOf(value /*, fromIndex */) {
+        var length = this.length;
         if (!length)
             return -1;
-        var i = length - 1;
-        if (arguments.length > 1)
-            i = toInteger(arguments[1]);
-        // handle negative indicies
-        i = i >= 0 ? i : length - Math.abs(i);
+        var i = arguments[1] || length;
+        if (i < 0)
+            i += length;
+        i = Math.min(i, length - 1);
         for (; i >= 0; i--) {
-            if (i in self && sought === self[i])
+            if (!(i in this))
+                continue;
+            if (value === this[i])
                 return i;
         }
         return -1;
@@ -512,7 +474,7 @@ if (!Object.getOwnPropertyDescriptor) {
     var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a " +
                          "non-object: ";
     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
-        if ((typeof object != "object" && typeof object != "function") || object === null)
+        if ((typeof object !== "object" && typeof object !== "function") || object === null)
             throw new TypeError(ERR_NON_OBJECT + object);
         // If object does not owns property return undefined immediately.
         if (!owns(object, property))
@@ -572,7 +534,7 @@ if (!Object.create) {
         if (prototype === null) {
             object = { "__proto__": null };
         } else {
-            if (typeof prototype != "object")
+            if (typeof prototype !== "object")
                 throw new TypeError("typeof prototype["+(typeof prototype)+"] != 'object'");
             var Type = function () {};
             Type.prototype = prototype;
@@ -583,36 +545,24 @@ if (!Object.create) {
             // objects created using `Object.create`
             object.__proto__ = prototype;
         }
-        if (typeof properties != "undefined")
+        if (typeof properties !== "undefined")
             Object.defineProperties(object, properties);
         return object;
     };
 }
 
 // ES5 15.2.3.6
-var oldDefineProperty = Object.defineProperty;
-var defineProperty = !!oldDefineProperty;
-if (defineProperty) {
-    // detect IE 8's DOM-only implementation of defineProperty;
-    var subject = {};
-    Object.defineProperty(subject, "", {});
-    defineProperty = "" in subject;
-}
-if (!defineProperty) {
+if (!Object.defineProperty) {
     var ERR_NON_OBJECT_DESCRIPTOR = "Property description must be an object: ";
     var ERR_NON_OBJECT_TARGET = "Object.defineProperty called on non-object: "
     var ERR_ACCESSORS_NOT_SUPPORTED = "getters & setters can not be defined " +
                                       "on this javascript engine";
 
     Object.defineProperty = function defineProperty(object, property, descriptor) {
-        if (typeof object != "object" && typeof object != "function")
+        if (typeof object !== "object" && typeof object !== "function")
             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
-        if (typeof descriptor != "object" || descriptor === null)
+        if (typeof object !== "object" || object === null)
             throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
-        // make a valiant attempt to use the real defineProperty
-        // for I8's DOM elements.
-        if (oldDefineProperty && object.nodeType)
-            return oldDefineProperty(object, property, descriptor);
 
         // If it's a data property.
         if (owns(descriptor, "value")) {
@@ -645,7 +595,7 @@ if (!defineProperty) {
                 delete object[property];
                 object[property] = descriptor.value;
                 // Setting original `__proto__` back now.
-                object.__proto__ = prototype;
+                object.prototype;
             } else {
                 object[property] = descriptor.value;
             }
@@ -700,7 +650,7 @@ try {
 } catch (exception) {
     Object.freeze = (function freeze(freezeObject) {
         return function freeze(object) {
-            if (typeof object == "function") {
+            if (typeof object === "function") {
                 return object;
             } else {
                 return freezeObject(object);
@@ -762,7 +712,7 @@ if (!Object.keys) {
     Object.keys = function keys(object) {
 
         if (
-            typeof object != "object" && typeof object != "function"
+            typeof object !== "object" && typeof object !== "function"
             || object === null
         )
             throw new TypeError("Object.keys called on a non-object");
@@ -794,28 +744,18 @@ if (!Object.keys) {
 //
 
 // ES5 15.9.5.43
-// Format a Date object as a string according to a simplified subset of the ISO 8601
-// standard as defined in 15.9.1.15.
+// Format a Date object as a string according to a subset of the ISO-8601 standard.
+// Useful in Atom, among other things.
 if (!Date.prototype.toISOString) {
     Date.prototype.toISOString = function toISOString() {
-        var result, length, value;
-        if (!isFinite(this))
-            throw new RangeError;
-
-        // the date time string format is specified in 15.9.1.15.
-        result = [this.getUTCFullYear(), this.getUTCMonth() + 1, this.getUTCDate(),
-            this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
-
-        length = result.length;
-        while (length--) {
-            value = result[length];
-            // pad months, days, hours, minutes, and seconds to have two digits.
-            if (value < 10)
-                result[length] = '0' + value;
-        }
-        // pad milliseconds to have three digits.
-        return result.slice(0, 3).join('-') + 'T' + result.slice(3).join(':') + '.' +
-            ('000' + this.getUTCMilliseconds()).slice(-3) + 'Z';
+        return (
+            this.getUTCFullYear() + "-" +
+            (this.getUTCMonth() + 1) + "-" +
+            this.getUTCDate() + "T" +
+            this.getUTCHours() + ":" +
+            this.getUTCMinutes() + ":" +
+            this.getUTCSeconds() + "Z"
+        );
     }
 }
 
@@ -841,13 +781,11 @@ if (!Date.prototype.toJSON) {
         // 4. Let toISO be the result of calling the [[Get]] internal method of
         // O with argument "toISOString".
         // 5. If IsCallable(toISO) is false, throw a TypeError exception.
-        // XXX this gets pretty close, for all intents and purposes, letting
-        // some duck-types slide
-        if (typeof this.toISOString.call != "function")
+        if (typeof this.toISOString !== "function")
             throw new TypeError();
         // 6. Return the result of calling the [[Call]] internal method of
         // toISO with O as the this value and an empty argument list.
-        return this.toISOString.call(this);
+        return this.toISOString();
 
         // NOTE 1 The argument is ignored.
 
@@ -865,7 +803,7 @@ if (!Date.prototype.toJSON) {
 // Date.parse
 // based on work shared by Daniel Friesen (dantman)
 // http://gist.github.com/303249
-if (isNaN(Date.parse("2011-06-15T21:40:05+06:00"))) {
+if (isNaN(Date.parse("T00:00"))) {
     // XXX global assignment won't work in embeddings that use
     // an alternate object for the context.
     Date = (function(NativeDate) {
@@ -874,7 +812,7 @@ if (isNaN(Date.parse("2011-06-15T21:40:05+06:00"))) {
         var Date = function(Y, M, D, h, m, s, ms) {
             var length = arguments.length;
             if (this instanceof NativeDate) {
-                var date = length == 1 && String(Y) === Y ? // isString(Y)
+                var date = length === 1 && String(Y) === Y ? // isString(Y)
                     // We explicitly pass it through parse:
                     new NativeDate(Date.parse(Y)) :
                     // We have to manually make calls depending on argument
@@ -894,27 +832,33 @@ if (isNaN(Date.parse("2011-06-15T21:40:05+06:00"))) {
             return NativeDate.apply(this, arguments);
         };
 
-        // 15.9.1.15 Date Time String Format. This pattern does not implement
-        // extended years ((15.9.1.15.1), as `Date.UTC` cannot parse them.
+        // 15.9.1.15 Date Time String Format
         var isoDateExpression = new RegExp("^" +
-            "(\d{4})" + // four-digit year capture
-            "(?:-(\d{2})" + // optional month capture
-            "(?:-(\d{2})" + // optional day capture
-            "(?:" + // capture hours:minutes:seconds.milliseconds
-                "T(\d{2})" + // hours capture
-                ":(\d{2})" + // minutes capture
-                "(?:" + // optional :seconds.milliseconds
-                    ":(\d{2})" + // seconds capture
-                    "(?:\.(\d{3}))?" + // milliseconds capture
-                ")?" +
-            "(?:" + // capture UTC offset component
-                "Z|" + // UTC capture
-                "(?:" + // offset specifier +/-hours:minutes
-                    "([-+])" + // sign capture
-                    "(\d{2})" + // hours offset capture
-                    ":(\d{2})" + // minutes offest capture
+            "(?:" + // optional year-month-day
+                "(" + // year capture
+                    "(?:[+-]\\d\\d)?" + // 15.9.1.15.1 Extended years
+                    "\\d\\d\\d\\d" + // four-digit year
                 ")" +
-            ")?)?)?)?" +
+                "(?:-" + // optional month-day
+                    "(\\d\\d)" + // month capture
+                    "(?:-" + // optional day
+                        "(\\d\\d)" + // day capture
+                    ")?" +
+                ")?" +
+            ")?" +
+            "(?:T" + // hour:minute:second.subsecond
+                "(\\d\\d)" + // hour capture
+                ":(\\d\\d)" + // minute capture
+                "(?::" + // optional :second.subsecond
+                    "(\\d\\d)" + // second capture
+                    "(?:\\.(\\d\\d\\d))?" + // milisecond capture
+                ")?" +
+            ")?" +
+            "(?:" + // time zone
+                "Z|" + // UTC capture
+                "([+-])(\\d\\d):(\\d\\d)" + // timezone offset
+                // capture sign, hour, minute
+            ")?" +
         "$");
 
         // Copy any custom methods a 3rd party library may have added
@@ -927,39 +871,42 @@ if (isNaN(Date.parse("2011-06-15T21:40:05+06:00"))) {
         Date.prototype = NativeDate.prototype;
         Date.prototype.constructor = Date;
 
-        // Upgrade Date.parse to handle simplified ISO 8601 strings
+        // Upgrade Date.parse to handle the ISO dates we use
+        // TODO review specification to ascertain whether it is
+        // necessary to implement partial ISO date strings.
         Date.parse = function parse(string) {
             var match = isoDateExpression.exec(string);
             if (match) {
                 match.shift(); // kill match[0], the full match
-                // parse months, days, hours, minutes, seconds, and milliseconds
-                for (var i = 1; i < 7; i++) {
-                    // provide default values if necessary
+                // recognize times without dates before normalizing the
+                // numeric values, for later use
+                var timeOnly = match[0] === undefined;
+                // parse numerics
+                for (var i = 0; i < 10; i++) {
+                    // skip + or - for the timezone offset
+                    if (i === 7)
+                        continue;
+                    // Note: parseInt would read 0-prefix numbers as
+                    // octal.  Number constructor or unary + work better
+                    // here:
                     match[i] = +(match[i] || (i < 3 ? 1 : 0));
                     // match[1] is the month. Months are 0-11 in JavaScript
-                    // `Date` objects, but 1-12 in ISO notation, so we
+                    // Date objects, but 1-12 in ISO notation, so we
                     // decrement.
-                    if (i == 1)
+                    if (i === 1)
                         match[i]--;
                 }
+                // if no year-month-date is provided, return a milisecond
+                // quantity instead of a UTC date number value.
+                if (timeOnly)
+                    return ((match[3] * 60 + match[4]) * 60 + match[5]) * 1000 + match[6];
 
-                // parse the UTC offset component
-                var minutesOffset = +match.pop(), hourOffset = +match.pop(), sign = match.pop();
+                // account for an explicit time zone offset if provided
+                var offset = (match[8] * 60 + match[9]) * 60 * 1000;
+                if (match[6] === "-")
+                    offset = -offset;
 
-                // compute the explicit time zone offset if specified
-                var offset = 0;
-                if (sign) {
-                    // detect invalid offsets and return early
-                    if (hourOffset > 23 || minuteOffset > 59)
-                        return NaN;
-
-                    // express the provided time zone offset in minutes. The offset is
-                    // negative for time zones west of UTC; positive otherwise.
-                    offset = (hourOffset * 60 + minuteOffset) * 6e4 * (sign == "+" ? -1 : 1);
-                }
-
-                // compute a new UTC date value, accounting for the optional offset
-                return NativeDate.UTC.apply(this, match) + offset;
+                return NativeDate.UTC.apply(this, match.slice(0, 7)) + offset;
             }
             return NativeDate.parse.apply(this, arguments);
         };
@@ -976,30 +923,12 @@ if (isNaN(Date.parse("2011-06-15T21:40:05+06:00"))) {
 // ES5 15.5.4.20
 if (!String.prototype.trim) {
     // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-    // http://perfectionkills.com/whitespace-deviations/
-    var s = "[\x09\x0A\-\x0D\x20\xA0\u1680\u180E\u2000-\u200A\u202F" +
-        "\u205F\u3000\u2028\u2029\uFEFF]"
-    var trimBeginRegexp = new RegExp("^" + s + s + "*");
-    var trimEndRegexp = new RegExp(s + s + "*$");
+    var trimBeginRegexp = /^\s\s*/;
+    var trimEndRegexp = /\s\s*$/;
     String.prototype.trim = function trim() {
-        return String(this).replace(trimBeginRegexp, "").replace(trimEndRegexp, "");
+        return String(this).replace(trimBeginRegexp, '').replace(trimEndRegexp, '');
     };
 }
-
-//
-// Util
-// ======
-//
-
-// http://jsperf.com/to-integer
-var toInteger = function (n) {
-    n = +n;
-    if (n !== n) // isNaN
-        n = -1;
-    else if (n !== 0 && n !== (1/0) && n !== -(1/0))
-        n = (n > 0 || -1) * Math.floor(Math.abs(n));
-    return n;
-};
 
 });
 _browserifyRequire.modules["events"] = function () {
@@ -1797,6 +1726,1606 @@ module.exports = RenderContext = function (templates){
     _browserifyRequire.modules[a] = _browserifyRequire.modules["./render_context"];
 });
 
+_browserifyRequire.modules["./sockjs.min"] = function () {
+    var module = { exports : {} };
+    var exports = module.exports;
+    var __dirname = ".";
+    var __filename = "./sockjs.min.js";
+    
+    var require = function (path) {
+        return _browserifyRequire.fromFile("./sockjs.min", path);
+    };
+    
+    (function () {
+        //     [*] Including lib/index.js
+// Public object
+SockJS = (function(){
+              var _document = document;
+              var _window = window;
+
+//         [*] Including lib/reventtarget.js
+var REventTarget = function() {};
+REventTarget.prototype.addEventListener = function (eventType, listener) {
+    if(!this._listeners) {
+         this._listeners = {};
+    }
+    if(!(eventType in this._listeners)) {
+        this._listeners[eventType] = [];
+    }
+    this._listeners[eventType].push(listener);
+    return true;
+};
+REventTarget.prototype.removeEventListener = function (eventType, listener) {
+    if(!(this._listeners && (eventType in this._listeners))) {
+        return false;
+    }
+    var arr = this._listeners[eventType];
+    var idx = utils.arrIndexOf(arr, listener);
+    if (idx !== -1) {
+        if(arr.length > 1) {
+            this._listeners[eventType] = arr.slice(0, idx).concat( arr.slice(idx+1) );
+        } else {
+            delete this._listeners[eventType];
+        }
+        return true;
+    }
+    return false;
+};
+REventTarget.prototype.dispatchEvent = function (event) {
+    var t = event.type;
+    var args = Array.prototype.slice.call(arguments, 0);
+    if (this['on'+t]) {
+        this['on'+t].apply(this, args);
+    }
+    if (this._listeners && t in this._listeners) {
+        for(var i=0; i < this._listeners[t].length; i++) {
+            this._listeners[t][i].apply(this, args);
+        }
+    }
+};
+//         [*] End of lib/reventtarget.js
+
+
+//         [*] Including lib/simpleevent.js
+var SimpleEvent = function(type, obj) {
+    this.type = type;
+    if (typeof obj !== 'undefined') {
+        for(var k in obj) {
+            if (!obj.hasOwnProperty(k)) continue;
+            this[k] = obj[k];
+        }
+    }
+};
+
+SimpleEvent.prototype.toString = function() {
+    var r = [];
+    for(var k in this) {
+        if (!this.hasOwnProperty(k)) continue;
+        var v = this[k];
+        if (typeof v === 'function') v = '[function]';
+        r.push(k + '=' + v);
+    }
+    return 'SimpleEvent(' + r.join(', ') + ')';
+};
+//         [*] End of lib/simpleevent.js
+
+
+//         [*] Including lib/utils.js
+var utils = {};
+var random_string_chars = ['a','b','c','d','e','f','g','h','i','j',
+                           'k','l','m','n','o','p','q','r','s','t',
+                           'u','v','w','x','y','z',
+                           '0','1','2','3','4','5','6','7','8','9','_'];
+utils.random_string = function(letters, max) {
+    max = max || random_string_chars.length;
+    var i, ret = [];
+    for(i=0; i < letters; i++) {
+        ret.push( random_string_chars[Math.floor(Math.random() * max)] );
+    }
+    return ret.join('');
+};
+utils.random_number = function(max) {
+    return Math.floor(Math.random() * max);
+};
+utils.random_number_string = function(max) {
+    var s = ''+utils.random_number(max);
+    var t = (''+(max - 1)).length;
+    while (s.length < t) {s = '0' + s;}
+    return s;
+};
+
+utils.attachMessage = function(listener) {
+    utils.attachEvent('message', listener);
+};
+utils.attachEvent = function(event, listener) {
+    if (typeof _window.addEventListener !== 'undefined') {
+        _window.addEventListener(event, listener, false);
+    } else {
+        // IE quirks.
+        // According to: http://stevesouders.com/misc/test-postmessage.php
+        // the message gets delivered only to 'document', not 'window'.
+	_document.attachEvent("on" + event, listener);
+        // I get 'window' for ie8.
+	_window.attachEvent("on" + event, listener);
+    }
+};
+
+utils.detachMessage = function(listener) {
+    utils.detachEvent('message', listener);
+};
+utils.detachEvent = function(event, listener) {
+    if (typeof _window.addEventListener !== 'undefined') {
+        _window.removeEventListener(event, listener, false);
+    } else {
+        _document.detachEvent("on" + event, listener);
+	_window.detachEvent("on" + event, listener);
+    }
+};
+
+
+// Assuming that url looks like: http://asdasd:111/asd
+utils.getOrigin = function(url) {
+    url += '/';
+    var parts = url.split('/').slice(0, 3);
+    return parts.join('/');
+};
+
+utils.objectExtend = function(dst, src) {
+    for(var k in src) {
+        if (src.hasOwnProperty(k)) {
+            dst[k] = src[k];
+        }
+    }
+    return dst;
+};
+
+// Try to clear some headers, in order to save bandwidth. For
+// reference see:
+//   http://blog.mibbit.com/?p=143
+//   http://code.google.com/p/browsersec/wiki/Part2#Same-origin_policy_for_XMLHttpRequest
+var xhrDefaultHeaders = {
+    "User-Agent": '',
+    "Accept": '',
+    "Accept-Language": '',
+    "Content-Type": "T"
+};
+
+if (navigator &&
+    (navigator.userAgent.indexOf('Chrome')!= -1 ||
+     navigator.userAgent.indexOf('Safari') != -1)) {
+    delete xhrDefaultHeaders['User-Agent'];
+}
+
+// References:
+//   http://ajaxian.com/archives/100-line-ajax-wrapper
+//   http://msdn.microsoft.com/en-us/library/cc288060(v=VS.85).aspx
+utils.createXDR = function(method, url, payload, callback) {
+    var mock_xhr = {status: null, responseText:'', readyState:1};
+    var xdr = new XDomainRequest();
+    // IE caches even POSTs
+    url += ((url.indexOf('?') === -1) ? '?' : '&') + 't='+utils.random_string(8);
+    var cleanup = function() {
+        if (xdr) {
+            onerror = xdr.onerror = xdr.ontimeout = xdr.onprogress =
+                xdr.onload = null;
+            try {
+                xdr.abort();
+            } catch (x) {}
+            xdr = callback = null;
+        }
+    };
+    var onerror = xdr.ontimeout = xdr.onerror = function() {
+        mock_xhr.status = 500;
+        mock_xhr.readyState = 4;
+        callback(mock_xhr);
+        cleanup();
+    };
+    xdr.onload = function() {
+        mock_xhr.status = 200;
+        mock_xhr.readyState = 4;
+        mock_xhr.responseText = xdr.responseText;
+        callback(mock_xhr);
+        cleanup();
+    };
+    xdr.onprogress = function() {
+        mock_xhr.status = 200;
+        mock_xhr.readyState = 3;
+        mock_xhr.responseText = xdr.responseText;
+        callback(mock_xhr);
+    };
+    try {
+        // Fails with AccessDenied if port number is bogus
+        xdr.open(method, url);
+        xdr.send(payload);
+    } catch (x) {
+        onerror();
+    }
+    return function (abort_reason) {
+        if (callback) {
+            callback(mock_xhr, null, abort_reason);
+            cleanup();
+        }
+    };
+};
+
+utils.createXHR = function(method, url, payload, callback) {
+    var xhr;
+    if (_window.ActiveXObject) {
+        // IE caches POSTs
+        url += ((url.indexOf('?') === -1) ? '?' : '&') + 't='+(+new Date);
+        try {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        } catch(x) {}
+    }
+    if (!xhr) {
+        xhr = new XMLHttpRequest();
+    }
+    xhr.open(method, url, true);
+
+    for (var k in xhrDefaultHeaders) {
+        try {
+            xhr.setRequestHeader(k, xhrDefaultHeaders[k]);
+        } catch(x) {
+            delete xhrDefaultHeaders[k];
+        }
+    }
+    if ('withCredentials' in xhr) {
+        // Set cookies on CORS, please.
+        xhr.withCredentials = "true";
+    }
+
+    var cleanup = function() {
+        // IE needs this field to be a function
+        if (xhr) {
+            try{
+                xhr.onreadystatechange = null;
+            } catch (x) {
+                xhr.onreadystatechange = function(){};
+            }
+            // Explorer tends to keep connection open, even after the
+            // tab gets closed: http://bugs.jquery.com/ticket/5280
+            try {
+                xhr.abort();
+            } catch(e) {};
+            utils.detachEvent('unload', cleanup);
+        }
+        callback = xhr = null;
+    };
+
+    xhr.onreadystatechange = function (e) {
+        if (xhr && callback) {
+            callback(xhr, e);
+            if (xhr && xhr.readyState === 4) {
+                cleanup();
+            }
+        }
+    };
+    xhr.send(payload);
+    utils.attachEvent('unload', cleanup);
+    return function (abort_reason) {
+        if (callback) {
+            callback(xhr, null, abort_reason);
+            cleanup();
+        }
+    };
+};
+
+var WPrefix = '_jp';
+
+utils.polluteGlobalNamespace = function() {
+    if (!(WPrefix in _window)) {
+        _window[WPrefix] = {};
+    }
+};
+
+utils.createIframe = function (iframe_url, error_callback) {
+    var iframe = _document.createElement('iframe');
+    var tref;
+    var unattach = function() {
+        clearTimeout(tref);
+        // Explorer had problems with that.
+        try {iframe.onload = null;} catch (x) {}
+        iframe.onerror = null;
+    };
+    var cleanup = function() {
+        if (iframe) {
+            unattach();
+            iframe.parentNode.removeChild(iframe);
+            iframe.src = "about:blank";
+            iframe = null;
+            utils.detachEvent('unload', cleanup);
+        }
+    };
+    var onerror = function(r) {
+        if (iframe) {
+            cleanup();
+            error_callback(r);
+        }
+    };
+    iframe.src = iframe_url;
+    iframe.style.display = 'none';
+    iframe.style.position = 'absolute';
+    iframe.onerror = function(){onerror('onerror');};
+    iframe.onload = function() {
+        // `onload` is triggered before scripts on the iframe are
+        // executed. Give it few seconds to actually load stuff.
+        clearTimeout(tref);
+        tref = setTimeout(function(){onerror('onload timeout');}, 2000);
+    };
+    _document.body.appendChild(iframe);
+    tref = setTimeout(function(){onerror('timeout');}, 5000);
+    utils.attachEvent('unload', cleanup);
+    return {
+        iframe: iframe,
+        cleanup: cleanup,
+        loaded: unattach
+    };
+};
+
+utils.createHtmlfile = function (iframe_url, error_callback) {
+    var doc = new ActiveXObject('htmlfile');
+    var tref;
+    var iframe;
+    var unattach = function() {
+        clearTimeout(tref);
+    };
+    var cleanup = function() {
+        if (doc) {
+            unattach();
+            utils.detachEvent('unload', cleanup);
+            try {
+                iframe.src = "about:blank";
+            } catch (x) {}
+            iframe.parentNode.removeChild(iframe);
+            iframe = doc = null;
+            CollectGarbage();
+        }
+    };
+    var onerror = function(r)  {
+        if (doc) {
+            cleanup();
+            error_callback(r);
+        }
+    };
+
+    doc.open();
+    doc.write('<html><script>' +
+              'document.domain="' + document.domain + '";' +
+              '</script></html>');
+    doc.close();
+    doc.parentWindow[WPrefix] = _window[WPrefix];
+    var c = doc.createElement('div');
+    doc.body.appendChild(c);
+    iframe = doc.createElement('iframe');
+    c.appendChild(iframe);
+    iframe.src = iframe_url;
+    tref = setTimeout(function(){onerror('timeout');}, 5000);
+    utils.attachEvent('unload', cleanup);
+    return {
+        iframe: iframe,
+        cleanup: cleanup,
+        loaded: unattach
+    };
+};
+
+utils.closeFrame = function (status, reason) {
+    return 'c'+JSON.stringify([status, reason]);
+};
+
+utils.userSetStatus = function (status) {
+    return status === 1000 || (status >= 3000 && status <= 4999);
+};
+
+utils.log = function() {
+    if (_window.console && console.log && console.log.apply) {
+        console.log.apply(console, arguments);
+    }
+};
+
+utils.bind = function(fun, that) {
+    if (fun.bind) {
+        return fun.bind(that);
+    } else {
+        return function() {
+            return fun.apply(that, arguments);
+        };
+    }
+};
+
+utils.amendUrl = function(url) {
+    var dl = _document.location;
+    //  '//abc' --> 'http://abc'
+    if (url.indexOf('//') === 0) {
+        url = dl.protocol + url;
+    }
+    // '/abc' --> 'http://localhost:80/abc'
+    if (url.indexOf('/') === 0) {
+        url = dl.protocol + '//' + dl.host + url;
+    }
+    return url;
+};
+
+// IE doesn't support [].indexOf.
+utils.arrIndexOf = function(arr, obj){
+	for(var i=0; i < arr.length; i++){
+		if(arr[i] === obj){
+			return i;
+		}
+	}
+    return -1;
+};
+
+utils.delay = function(t, fun) {
+    if(typeof t === 'function') {
+        fun = t;
+        t = 0;
+    }
+    setTimeout(fun, t);
+};
+//         [*] End of lib/utils.js
+
+
+//         [*] Including lib/sockjs.js
+var SockJS = function(url, protocols, options) {
+    var that = this;
+    that._options = {devel: false, debug: false, chunking: undefined};
+    if (options) {
+        utils.objectExtend(that._options, options);
+    }
+    that._base_url = utils.amendUrl(url);
+    that._server = that._options.server || utils.random_number_string(1000);
+    that._connid = utils.random_string(8);
+    that._trans_url = that._base_url + '/' + that._server + '/' + that._connid;
+    that._protocols = ['websocket',
+                       'xhr-streaming',
+                       'iframe-eventsource',
+                       'iframe-htmlfile',
+                       'xhr-polling',
+                       'iframe-xhr-polling',
+                       'jsonp-polling'];
+    switch(typeof protocols) {
+    case 'undefined': break;
+    case 'string': that._protocols = [protocols]; break;
+    default: that._protocols = protocols; break;
+    }
+    that.protocol = null;
+    that.readyState = SockJS.CONNECTING;
+    that._didClose();
+};
+// Inheritance
+SockJS.prototype = new REventTarget();
+
+SockJS.version = "0.0.4";
+
+SockJS.CONNECTING = 0;
+SockJS.OPEN = 1;
+SockJS.CLOSING = 2;
+SockJS.CLOSED = 3;
+
+SockJS.prototype._debug = function() {
+    if (this._options.debug)
+        utils.log.apply(utils, arguments);
+};
+
+SockJS.prototype._dispatchOpen = function() {
+    var that = this;
+    if (that.readyState === SockJS.CONNECTING) {
+        if (that._transport_tref) {
+            clearTimeout(that._transport_tref);
+            that._transport_tref = null;
+        }
+        that.readyState = SockJS.OPEN;
+        that.dispatchEvent(new SimpleEvent("open"));
+    } else {
+        // The server might have been restarted, and lost track of our
+        // connection.
+        that._didClose(1006, "Server lost session");
+    }
+};
+
+SockJS.prototype._dispatchMessage = function(data) {
+    var that = this;
+    if (that.readyState !== SockJS.OPEN)
+            return;
+    that.dispatchEvent(new SimpleEvent("message", {data: data}));
+};
+
+
+SockJS.prototype._didClose = function(status, reason) {
+    var that = this;
+    if (that.readyState !== SockJS.CONNECTING &&
+        that.readyState !== SockJS.OPEN &&
+        that.readyState !== SockJS.CLOSING)
+            throw new Error('INVALID_STATE_ERR');
+    if (that._transport)
+        that._transport.doCleanup();
+    that._transport = null;
+    if (that._transport_tref) {
+        clearTimeout(that._transport_tref);
+        that._transport_tref = null;
+    }
+    var close_event = new SimpleEvent("close", {status: status, reason: reason});
+
+    if (!utils.userSetStatus(status) && that.readyState === SockJS.CONNECTING) {
+        if (that._try_next_protocol(close_event)) {
+            that._transport_tref = setTimeout(
+                function() {
+                    if (that.readyState === SockJS.CONNECTING) {
+                        // I can't understand how it is possible to run
+                        // this timer, when the state is CLOSED, but
+                        // apparently in IE everythin is possible.
+                        that._didClose(2007,
+                                       "Transport timeouted");
+                    }
+                }, 5001);
+            return;
+        }
+        close_event = new SimpleEvent("close", {status: 2000,
+                                                reason: "All transports failed",
+                                                last_event: close_event});
+    }
+    that.readyState = SockJS.CLOSED;
+
+    setTimeout(function() {
+                   that.dispatchEvent(close_event);
+               }, 0);
+};
+
+SockJS.prototype._didMessage = function(data) {
+    var that = this;
+    var type = data.slice(0, 1);
+    switch(type) {
+    case 'o':
+        that._dispatchOpen();
+        break;
+    case 'a':
+        var payload = JSON.parse(data.slice(1) || '[]');
+        for(var i=0; i < payload.length; i++){
+            that._dispatchMessage(payload[i]);
+        }
+        break;
+    case 'm':
+        var payload = JSON.parse(data.slice(1) || 'null');
+        that._dispatchMessage(payload);
+        break;
+    case 'c':
+        var payload = JSON.parse(data.slice(1) || '[]');
+        that._didClose(payload[0], payload[1]);
+        break;
+    case 'h':// heartbeat, ignore
+        break;
+    }
+};
+
+SockJS.prototype._try_next_protocol = function(close_event) {
+    var that = this;
+    if (that.protocol) {
+        that._debug('Closed transport:', that.protocol, ''+close_event);
+        that.protocol = null;
+    }
+
+    while(1) {
+        var protocol = that.protocol = that._protocols.shift();
+        if (!protocol) {
+            return false;
+        }
+        // Some protocols require chunking, we may need to run the
+        // test beforehand.
+        if (SockJS[protocol] &&
+              SockJS[protocol].need_chunking === true &&
+              that._options.chunking === undefined) {
+            that._protocols.unshift(protocol);
+            that.protocol = 'chunking-test';
+            // Assert false, in case test timeouts.
+            that._options.chunking = false;
+            chunkingTest(that._base_url, function(chunking) {
+                             that._options.chunking = chunking;
+                             that._try_next_protocol();
+                         }, that._options);
+            return true;
+        }
+
+        if (!SockJS[protocol] ||
+              (SockJS[protocol].need_chunking === true &&
+                   that._options.chunking !== true) ||
+              !SockJS[protocol].enabled(that._options)) {
+            that._debug('Skipping transport:', protocol);
+        } else {
+            that._debug('Opening transport:', protocol);
+            that._transport = new SockJS[protocol](that, that._trans_url,
+                                                        that._base_url);
+            return true;
+        }
+    }
+};
+
+SockJS.prototype.close = function(status, reason) {
+    var that = this;
+    if (status && !utils.userSetStatus(status))
+        throw new Error("INVALID_ACCESS_ERR");
+    if(that.readyState !== SockJS.CONNECTING &&
+       that.readyState !== SockJS.OPEN) {
+        return false;
+    }
+    that.readyState = SockJS.CLOSING;
+    that._didClose(status || 1000, reason || "Normal closure");
+    return true;
+};
+
+SockJS.prototype.send = function(data) {
+    var that = this;
+    if (that.readyState === SockJS.CONNECTING)
+        throw new Error('INVALID_STATE_ERR');
+    if (that.readyState === SockJS.OPEN) {
+        that._transport.doSend(JSON.stringify(data));
+    }
+    return true;
+};
+//         [*] End of lib/sockjs.js
+
+
+//         [*] Including lib/trans-websocket.js
+var WebSocketTransport = SockJS.websocket = function(ri, trans_url) {
+    var that = this;
+    var url = trans_url + '/websocket';
+    if (url.slice(0, 5) === 'https') {
+        url = 'wss' + url.slice(5);
+    } else {
+        url = 'ws' + url.slice(4);
+    }
+    that.ri = ri;
+    that.url = url;
+    var Constructor = window.WebSocket || window.MozWebSocket;
+    that.ws = new Constructor(that.url);
+    that.ws.onmessage = function(e) {
+        that.ri._didMessage(e.data);
+    };
+    that.ws.onclose = function() {
+        that.ri._didMessage(utils.closeFrame(1006, "WebSocket connection broken"));
+    };
+};
+
+WebSocketTransport.prototype.doSend = function(data) {
+    this.ws.send(data);
+};
+
+WebSocketTransport.prototype.doCleanup = function() {
+    var that = this;
+    var ws = that.ws;
+    if (ws) {
+        ws.onmessage = ws.onclose = null;
+        ws.close();
+        that.ri = that.ws = null;
+    }
+};
+
+WebSocketTransport.enabled = function() {
+    return !!(window.WebSocket || window.MozWebSocket);
+};
+//         [*] End of lib/trans-websocket.js
+
+
+//         [*] Including lib/trans-jsonp-sender.js
+var BufferedSender = function() {};
+BufferedSender.prototype.send_constructor = function(sender) {
+    var that = this;
+    that.send_buffer = [];
+    that.sender = sender;
+};
+BufferedSender.prototype.doSend = function(message) {
+    var that = this;
+    that.send_buffer.push(message);
+    if (typeof that.send_stop === 'undefined') {
+        that.send_schedule();
+    }
+};
+
+BufferedSender.prototype.send_schedule = function() {
+    var that = this;
+    if (that.send_buffer.length > 0) {
+        var payload = '[' + that.send_buffer.join(',') + ']';
+        that.send_stop = that.sender(that.trans_url,
+                                     payload,
+                                     function() {
+                                         that.send_stop = undefined;
+                                         that.send_schedule();
+                                     });
+        that.send_buffer = [];
+    }
+};
+
+BufferedSender.prototype.send_destructor = function() {
+    var that = this;
+    if (that._send_stop) {
+        that._send_stop();
+    }
+    that._send_stop = null;
+};
+
+var jsonPGenericSender = function(url, payload, callback) {
+    var that = this;
+    if (!('_send_form' in that)) {
+        var form = that._send_form = _document.createElement('form');
+        var area = that._send_area = _document.createElement('textarea');
+        area.name = 'd';
+        form.style.display = 'none';
+        form.style.position = 'absolute';
+        form.method = 'POST';
+        form.enctype = 'application/x-www-form-urlencoded';
+        form.acceptCharset = "UTF-8";
+        form.appendChild(area);
+        _document.body.appendChild(form);
+    }
+    var form = that._send_form;
+    var area = that._send_area;
+    var id = 'a' + utils.random_string(8);
+    form.target = id;
+    form.action = url + '/jsonp_send?i=' + id;
+
+    var iframe;
+    try {
+        // ie6 dynamic iframes with target="" support (thanks Chris Lambacher)
+        iframe = _document.createElement('<iframe name="'+ id +'">');
+    } catch(x) {
+        iframe = _document.createElement('iframe');
+        iframe.name = id;
+    }
+    iframe.id = id;
+    form.appendChild(iframe);
+    iframe.style.display = 'none';
+
+    area.value = payload;
+    form.submit();
+
+    var completed = function(e) {
+        if (!iframe.onerror) return;
+        iframe.onreadystatechange = iframe.onerror = iframe.onload = null;
+        // Opera mini doesn't like if we GC iframe
+        // immediately, thus this timeout.
+        setTimeout(function() {
+                       iframe.parentNode.removeChild(iframe);
+                       iframe = null;
+                   }, 500);
+        area.value = null;
+        callback();
+    };
+    iframe.onerror = iframe.onload = completed;
+    iframe.onreadystatechange = function(e) {
+        if (iframe.readyState == 'complete') completed();
+    };
+    return completed;
+};
+
+var ajaxSender = function(url, payload, callback) {
+    var orsc = function (xhr, e, abort_reason) {
+        if(xhr.readyState === 4 || abort_reason) {
+            callback(xhr.status, abort_reason);
+        }
+    };
+    return utils.createXHR('POST', url + '/xhr_send', payload, orsc);
+};
+
+var xdrSender = function(url, payload, callback) {
+    var orsc = function (xhr, e, abort_reason) {
+        if(xhr.readyState === 4 || abort_reason) {
+            callback(xhr.status, abort_reason);
+        }
+    };
+    var fun = window.XDomainRequest ? utils.createXDR : utils.createXHR;
+    return fun('POST', url + '/xhr_send', payload, orsc);
+};
+//         [*] End of lib/trans-jsonp-sender.js
+
+
+//         [*] Including lib/trans-jsonp-receiver.js
+// Parts derived from Socket.io:
+//    https://github.com/LearnBoost/socket.io/blob/0.6.17/lib/socket.io/transports/jsonp-polling.js
+// and jQuery-JSONP:
+//    https://code.google.com/p/jquery-jsonp/source/browse/trunk/core/jquery.jsonp.js
+var jsonPGenericReceiver = function(url, callback) {
+    var tref;
+    var script = _document.createElement('script');
+    var script2;  // Opera synchronous load trick.
+    var close_script = function(frame) {
+        if (script2) {
+            script2.parentNode.removeChild(script2);
+            script2 = null;
+        }
+        if (script) {
+            clearTimeout(tref);
+            script.parentNode.removeChild(script);
+            script.onreadystatechange = script.onerror =
+                script.onload = script.onclick = null;
+            script = null;
+            callback(frame);
+            callback = null;
+        }
+    };
+
+    script.id = 'a' + utils.random_string(8);
+    script.src = url;
+    script.type = 'text/javascript';
+    script.charset = 'UTF-8';
+    script.onerror = function() {
+        close_script(utils.closeFrame(1006, "JSONP script loaded abnormally (onerror)"));
+    };
+    script.onload = function(e) {
+        close_script(utils.closeFrame(1006, "JSONP script loaded abnormally (onload)"));
+    };
+
+    script.onreadystatechange = function(e) {
+        if (/loaded|closed/.test(script.readyState)) {
+            if (script && script.htmlFor && script.onclick) {
+                try {
+                    // In IE, actually execute the script.
+                    script.onclick();
+                } catch (x) {}
+            }
+            if (script) {
+                close_script(utils.closeFrame(1006, "JSONP script loaded abnormally (onreadystatechange)"));
+            }
+        }
+    };
+    // IE: event/htmlFor/onclick trick.
+    // One can't rely on proper order for onreadystatechange. In order to
+    // make sure, set a 'htmlFor' and 'event' properties, so that
+    // script code will be installed as 'onclick' handler for the
+    // script object. Later, onreadystatechange, manually execute this
+    // code. FF and Chrome doesn't work with 'event' and 'htmlFor'
+    // set. For reference see:
+    //   http://jaubourg.net/2010/07/loading-script-as-onclick-handler-of.html
+    // Also, read on that about script ordering:
+    //   http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
+    if (typeof script.async === 'undefined') {
+        // According to mozilla docs, in recent browsers script.async defaults
+        // to 'true', so we may use it to detect a good browser:
+        // https://developer.mozilla.org/en/HTML/Element/script
+        if (typeof _document.attachEvent === 'object') {
+            // ie
+            try {
+                script.htmlFor = script.id;
+                script.event = "onclick";
+            } catch (x) {}
+            script.async = true;
+        } else if (typeof _document.attachEvent === 'function') {
+            // Opera, second sync script hack
+            script2 = _document.createElement('script');
+            script2.text = "try{var a = document.getElementById('"+script.id+"'); if(a)a.onerror();}catch(x){};";
+            script.async = script2.async = false;
+        }
+    } else {
+        script.async = true;
+    }
+
+    // Fallback mostly for Konqueror - stupid timer, 35 seconds shall be plenty.
+    tref = setTimeout(function() {
+                          close_script(utils.closeFrame(1006, "JSONP script loaded abnormally (timeout)"));
+                      }, 35000);
+
+    var head = _document.getElementsByTagName('head')[0];
+    head.insertBefore(script, head.firstChild);
+    if (script2) {
+        head.insertBefore(script2, head.firstChild);
+    }
+    return close_script;
+};
+//         [*] End of lib/trans-jsonp-receiver.js
+
+
+//         [*] Including lib/trans-jsonp-polling.js
+// The simplest and most robust transport, using the well-know cross
+// domain hack - JSONP. This transport is quite inefficient - one
+// mssage could use up to one http request. But at least it works almost
+// everywhere.
+// Known limitations:
+//   o you will get a spinning cursor
+//   o for Konqueror a dumb timer is needed to detect errors
+
+
+var JsonPTransport = SockJS['jsonp-polling'] = function(ri, trans_url) {
+    utils.polluteGlobalNamespace();
+    var that = this;
+    that.ri = ri;
+    that.trans_url = trans_url;
+    that.send_constructor(jsonPGenericSender);
+    that._schedule_recv();
+};
+
+// Inheritnace
+JsonPTransport.prototype = new BufferedSender();
+
+JsonPTransport.prototype._schedule_recv = function() {
+    var that = this;
+    var callback = function(data) {
+        that._recv_stop = null;
+        if (data) {
+            // no data - heartbeat;
+            if (!that._is_closing) {
+                that.ri._didMessage(data);
+            }
+        }
+        // The message can be a close message, and change is_closing state.
+        if (!that._is_closing) {
+            that._schedule_recv();
+        }
+    };
+    that._recv_stop = jsonPReceiverWrapper(that.trans_url + '/jsonp',
+                                           jsonPGenericReceiver, callback);
+};
+
+JsonPTransport.enabled = function() {
+    return true;
+};
+
+JsonPTransport.prototype.doCleanup = function() {
+    var that = this;
+    that._is_closing = true;
+    if (that._recv_stop) {
+        that._recv_stop();
+    }
+    that.ri = that._recv_stop = null;
+    that.send_destructor();
+};
+
+
+// Abstract away code that handles global namespace pollution.
+var jsonPReceiverWrapper = function(url, constructReceiver, user_callback) {
+    var id = 'a' + utils.random_string(6);
+    var url_id = url + '?c=' + escape(WPrefix + '.' + id);
+    // Callback will be called exactly once.
+    var callback = function(frame) {
+        delete _window[WPrefix][id];
+        user_callback(frame);
+    };
+
+    var close_script = constructReceiver(url_id, callback);
+    _window[WPrefix][id] = close_script;
+    var stop = function() {
+        if (_window[WPrefix][id]) {
+            _window[WPrefix][id](utils.closeFrame(1000, "JSONP user aborted read"));
+        }
+    };
+    return stop;
+};
+//         [*] End of lib/trans-jsonp-polling.js
+
+
+//         [*] Including lib/trans-xhr-streaming.js
+var XhrStreamingTransport = SockJS['xhr-streaming'] = function (ri, trans_url) {
+    var that = this;
+    that.ri = ri;
+    that.trans_url = trans_url;
+    that.send_constructor(xdrSender);
+    that.poll = new Polling(ri, XhrReceiver,
+                            trans_url + '/xhr_streaming',
+                            {cors: true});
+};
+
+// Inheritnace
+XhrStreamingTransport.prototype = new BufferedSender();
+
+XhrStreamingTransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.poll) {
+        that.poll.abort();
+        that.poll = null;
+    }
+};
+
+// According to:
+//   http://stackoverflow.com/questions/1641507/detect-browser-support-for-cross-domain-xmlhttprequests
+//   http://hacks.mozilla.org/2009/07/cross-site-xmlhttprequest-with-cors/
+XhrStreamingTransport.enabled = function(options) {
+    if (options.cookie !== true && window.XDomainRequest) return true;
+    if (window.XMLHttpRequest &&
+        'withCredentials' in new XMLHttpRequest()) return true;
+    return false;
+};
+
+XhrStreamingTransport.need_chunking = true;
+//         [*] End of lib/trans-xhr-streaming.js
+
+
+//         [*] Including lib/trans-xhr-polling.js
+var XhrPollingTransport = SockJS['xhr-polling'] = function (ri, trans_url) {
+    var that = this;
+    that.ri = ri;
+    that.trans_url = trans_url;
+    that.send_constructor(xdrSender);
+    that.poll = new Polling(ri, XhrReceiver, trans_url + '/xhr', {cors: true});
+};
+
+// Inheritnace
+XhrPollingTransport.prototype = new BufferedSender();
+
+XhrPollingTransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.poll) {
+        that.poll.abort();
+        that.poll = null;
+    }
+};
+
+XhrPollingTransport.enabled = XhrStreamingTransport.enabled;
+//         [*] End of lib/trans-xhr-polling.js
+
+
+//         [*] Including lib/trans-iframe.js
+// Few cool transports do work only for same-origin. In order to make
+// them working cross-domain we shall use iframe, served form the
+// remote domain. New browsers, have capabilities to communicate with
+// cross domain iframe, using postMessage(). In IE it was implemented
+// from IE 8+, but of course, IE got some details wrong:
+//    http://msdn.microsoft.com/en-us/library/cc197015(v=VS.85).aspx
+//    http://stevesouders.com/misc/test-postmessage.php
+
+var IframeTransport = function() {};
+
+IframeTransport.prototype.i_constructor = function(ri, trans_url, base_url) {
+    var that = this;
+    that.ri = ri;
+    that.origin = utils.getOrigin(base_url);
+    that.base_url = base_url;
+    that.trans_url = trans_url;
+
+    var iframe_url = base_url + '/iframe.html';
+    if (that.ri._options.devel) {
+        iframe_url += '?t=' + (+new Date);
+    }
+    that.window_id = utils.random_string(8);
+    iframe_url += '#' + that.window_id;
+
+    that.iframeObj = utils.createIframe(iframe_url, function(r) {
+                                            that.ri._didClose(1006, "Unable to load an iframe (" + r + ")");
+                                        });
+
+    that.onmessage_cb = utils.bind(that.onmessage, that);
+    utils.attachMessage(that.onmessage_cb);
+};
+
+IframeTransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.iframeObj) {
+        utils.detachMessage(that.onmessage_cb);
+        try {
+            // When the iframe is not loaded, IE raises an exception
+            // on 'contentWindow'.
+            if (that.iframeObj.iframe.contentWindow) {
+                that.postMessage('c');
+            }
+        } catch (x) {}
+        that.iframeObj.cleanup();
+        that.iframeObj = null;
+        that.onmessage_cb = that.iframeObj = null;
+    }
+};
+
+IframeTransport.prototype.onmessage = function(e) {
+    var that = this;
+    if (e.origin !== that.origin) return;
+    var window_id = e.data.slice(0, 8);
+    var type = e.data.slice(8, 9);
+    var data = e.data.slice(9);
+
+    if (window_id !== that.window_id) return;
+
+    switch(type) {
+    case 's':
+        that.iframeObj.loaded();
+        that.postMessage('s', JSON.stringify([SockJS.version, that.protocol, that.trans_url, that.base_url]));
+        break;
+    case 't':
+        that.ri._didMessage(data);
+        break;
+    }
+};
+
+IframeTransport.prototype.postMessage = function(type, data) {
+    var that = this;
+    that.iframeObj.iframe.contentWindow.postMessage(that.window_id + type + (data || ''), that.origin);
+};
+
+IframeTransport.prototype.doSend = function (message) {
+    this.postMessage('m', message);
+};
+
+IframeTransport.enabled = function() {
+    // postMessage misbehaves in konqueror 4.6.5 - the messages are delivered with
+    // huge delay, or not at all.
+    var konqueror = navigator && navigator.userAgent && navigator.userAgent.indexOf('Konqueror') !== -1;
+    return ((typeof _window.postMessage === 'function' ||
+            typeof _window.postMessage === 'object') && (!konqueror));
+};
+//         [*] End of lib/trans-iframe.js
+
+
+//         [*] Including lib/trans-iframe-within.js
+var curr_window_id;
+
+var postMessage = function (type, data) {
+    if(parent !== _window) {
+        parent.postMessage(curr_window_id + type + (data || ''), '*');
+    } else {
+        utils.log("Can't postMessage, no parent window.", type, data);
+    }
+};
+
+var FacadeJS = function() {};
+FacadeJS.prototype._didClose = function (status, reason) {
+    postMessage('t', utils.closeFrame(status, reason));
+};
+FacadeJS.prototype._didMessage = function (frame) {
+    postMessage('t', frame);
+};
+FacadeJS.prototype._doSend = function (data) {
+    this._transport.doSend(data);
+};
+FacadeJS.prototype._doCleanup = function () {
+    this._transport.doCleanup();
+};
+
+SockJS.bootstrap_iframe = function() {
+    var facade;
+    curr_window_id = _document.location.hash.slice(1);
+    var onMessage = function(e) {
+        if(e.source !== parent) return;
+        var window_id = e.data.slice(0, 8);
+        var type = e.data.slice(8, 9);
+        var data = e.data.slice(9);
+        if (window_id !== curr_window_id) return;
+        switch(type) {
+        case 's':
+            var p = JSON.parse(data);
+            var version = p[0];
+            var protocol = p[1];
+            var trans_url = p[2];
+            var base_url = p[3];
+            if (version !== SockJS.version) {
+                utils.log("Incompatibile SockJS! Main site uses:" +
+                          " \"" + version + "\", the iframe:" +
+                          " \"" + SockJS.version + "\".");
+            }
+            facade = new FacadeJS();
+            facade._transport = new FacadeJS[protocol](facade, trans_url, base_url);
+            break;
+        case 'm':
+            facade._doSend(data);
+            break;
+        case 'c':
+            facade._doCleanup();
+            facade = null;
+            break;
+        }
+    };
+
+    // alert('test ticker');
+    // facade = new FacadeJS();
+    // facade._transport = new FacadeJS['w-iframe-xhr-polling'](facade, 'http://mmajkowski.eng.vmware.com:9999/ticker/12/basd');
+
+    utils.attachMessage(onMessage);
+
+    // Start
+    postMessage('s');
+};
+//         [*] End of lib/trans-iframe-within.js
+
+
+//         [*] Including lib/chunking-test.js
+var doChunkingTest = function(base_url, callback, cors) {
+    var recv = new XhrReceiver(base_url + '/chunking_test', {cors: cors});
+    var result = 0;
+    recv.onmessage = function(e) {
+        // Now a cool hack: we can stop receiving after we got at least
+        // one chunk, contains some data, but not everyting.
+        var l = e.responsetext.split('h\n').length;
+        if(e.readystate === 3 && l > 0 && l < 6 ) {
+            result = l;
+            recv.abort();
+        }
+    };
+    recv.onclose = function(e) {
+        recv = recv.onmessage = recv.onclose = null;
+        utils.log('Chunking test: ' + (result ? 'passed' : 'failed')
+                  + ' (' + result + ' chunk received)');
+        callback(!!result);
+    };
+};
+
+var ChunkingTestIframe = FacadeJS['w-iframe-chunking-test'] = function (ri, trans_url, base_url) {
+    doChunkingTest(base_url, function(r) {
+                       ri._didMessage('m'+r);
+                       ri._didClose();
+                   }, false);
+};
+ChunkingTestIframe.prototype.doCleanup = function() {};
+
+var chunkingTestUncached = SockJS.chunkingTest = function(base_url, callback, options) {
+    base_url = utils.amendUrl(base_url);
+    // 1. CORS
+    if (_window.XDomainRequest ||
+         (_window.XMLHttpRequest && 'withCredentials' in new XMLHttpRequest())) {
+        doChunkingTest(base_url, callback, true);
+        return;
+    }
+    // 2. Iframe
+    if (IframeTransport.enabled()) {
+        var ifr = new IframeTransport();
+        ifr.protocol = 'w-iframe-chunking-test';
+        var fun = function(r) {
+            if (ifr) {
+                callback(r === 'mtrue');
+                ifr.doCleanup();
+                ifr = null;
+            }
+        };
+        var mock_ri = {
+            _options: options || {},
+            _didClose: fun,
+            _didMessage: fun
+        };
+        ifr.i_constructor(mock_ri, '', base_url);
+        return;
+    }
+    // 3. Fall back to polling (IE 7)
+    setTimeout(function() {
+                   callback(false);
+               }, 0);
+    return;
+};
+
+// Although chunking test is run against a particular 'base_url', it's
+// safe to assume that if chunking works for client, it will work for
+// any SockJS server. That means we can cache the result of
+// chunkingTest, at least until user switches network. Let's assume a
+// value of 10 seconds.
+var chunkingTest = function() {
+    var value;
+    var t0 = 0;
+    return function (base_url, callback) {
+        var t1 = (new Date()).getTime();
+        if (t1 - t0 > 10000) {
+            chunkingTestUncached(base_url, function (v) {
+                                     value = v;
+                                     t0 = (new Date()).getTime();
+                                     callback(value);
+                                 });
+        } else {
+            setTimeout(function() {
+                           callback(value);
+                       }, 0);
+        }
+    };
+}();
+//         [*] End of lib/chunking-test.js
+
+
+//         [*] Including lib/trans-iframe-eventsource.js
+var EventSourceIframeTransport = SockJS['iframe-eventsource'] = function () {
+    var that = this;
+    that.protocol = 'w-iframe-eventsource';
+    that.i_constructor.apply(that, arguments);
+};
+
+// Inheritance.
+EventSourceIframeTransport.prototype = new IframeTransport();
+
+EventSourceIframeTransport.enabled = function () {
+    return ('EventSource' in window) && IframeTransport.enabled();
+};
+
+EventSourceIframeTransport.need_chunking = true;
+
+
+var EventSourceTransport = FacadeJS['w-iframe-eventsource'] = function (ri, trans_url) {
+    var that = this;
+    that.ri = ri;
+    that.trans_url = trans_url;
+    that.send_constructor(ajaxSender);
+    that.poll = new Polling(ri, EventSourceReceiver, trans_url + '/eventsource');
+};
+
+// Inheritnace
+EventSourceTransport.prototype = new BufferedSender();
+
+EventSourceTransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.poll) {
+        that.poll.abort();
+        that.poll = null;
+    }
+};
+//         [*] End of lib/trans-iframe-eventsource.js
+
+
+//         [*] Including lib/trans-iframe-xhr-polling.js
+var XhrPollingIframeTransport = SockJS['iframe-xhr-polling'] = function () {
+    var that = this;
+    that.protocol = 'w-iframe-xhr-polling';
+    that.i_constructor.apply(that, arguments);
+};
+
+// Inheritance.
+XhrPollingIframeTransport.prototype = new IframeTransport();
+
+XhrPollingIframeTransport.enabled = function () {
+    return window.XMLHttpRequest && IframeTransport.enabled();
+};
+
+
+var XhrPollingITransport = FacadeJS['w-iframe-xhr-polling'] = function (ri, trans_url) {
+    var that = this;
+    that.trans_url = trans_url;
+    that.send_constructor(ajaxSender);
+    that.poll = new Polling(ri, XhrReceiver, trans_url + '/xhr', {cors: false});
+};
+
+
+// Inheritnace
+XhrPollingITransport.prototype = new BufferedSender();
+
+XhrPollingITransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.poll) {
+        that.poll.abort();
+        that.poll = null;
+    }
+};
+//         [*] End of lib/trans-iframe-xhr-polling.js
+
+
+//         [*] Including lib/trans-iframe-htmlfile.js
+// This transport generally works in any browser, but will cause a
+// spinning cursor to appear in any browser other than IE.
+// We may test this transport in all browsers - why not, but in
+// production it should be only run in IE.
+
+var HtmlFileIframeTransport = SockJS['iframe-htmlfile'] = function () {
+    var that = this;
+    that.protocol = 'w-iframe-htmlfile';
+    that.i_constructor.apply(that, arguments);
+};
+
+// Inheritance.
+HtmlFileIframeTransport.prototype = new IframeTransport();
+
+HtmlFileIframeTransport.enabled = function (options) {
+    // Development or IE  _and_  iframe postWindow working.
+    var ie = isIeHtmlfileCapable();
+    return (options.cookie !== false && IframeTransport.enabled());
+};
+
+HtmlFileIframeTransport.need_chunking = true;
+
+
+var HtmlFileTransport = FacadeJS['w-iframe-htmlfile'] = function (ri, trans_url) {
+    var that = this;
+    that.trans_url = trans_url;
+    that.send_constructor(ajaxSender);
+    that.poll = new Polling(ri, HtmlfileReceiver, trans_url + '/htmlfile');
+};
+
+// Inheritnace
+HtmlFileTransport.prototype = new BufferedSender();
+
+HtmlFileTransport.prototype.doCleanup = function() {
+    var that = this;
+    if (that.poll) {
+        that.poll.abort();
+        that.poll = null;
+    }
+};
+//         [*] End of lib/trans-iframe-htmlfile.js
+
+
+//         [*] Including lib/trans-polling.js
+
+var Polling = function(ri, Receiver, recv_url, opts) {
+    var that = this;
+    that.ri = ri;
+    that.Receiver = Receiver;
+    that.recv_url = recv_url;
+    that.opts = opts;
+    that._scheduleRecv();
+};
+
+Polling.prototype._scheduleRecv = function() {
+    var that = this;
+    var poll = that.poll = new that.Receiver(that.recv_url, that.opts);
+    var msg_counter = 0;
+    poll.onmessage = function(e) {
+        msg_counter += 1;
+        that.ri._didMessage(e.data);
+    };
+    poll.onclose = function(e) {
+        that.poll = poll = poll.onmessage = poll.onclose = null;
+        if (!that.poll_is_closing) {
+            if (e.reason === 'permanent') {
+                that.ri._didClose(1006, 'Polling error (' + e.reason + ')');
+            } else {
+                that._scheduleRecv();
+            }
+        }
+    };
+};
+
+Polling.prototype.abort = function() {
+    var that = this;
+    that.poll_is_closing = true;
+    if (that.poll) {
+        that.poll.abort();
+    }
+};
+//         [*] End of lib/trans-polling.js
+
+
+//         [*] Including lib/trans-receiver-eventsource.js
+
+var EventSourceReceiver = function(url) {
+    var that = this;
+    var es = new EventSource(url);
+    es.onmessage = function(e) {
+        that.dispatchEvent(new SimpleEvent('message',
+                                           {'data': unescape(e.data)}));
+    };
+    that.es_close = es.onerror = function(e, abort_reason) {
+        // ES on reconnection has readyState = 0 or 1.
+        // on network error it's CLOSED = 2
+        var reason = abort_reason ? 'user' :
+            (es.readyState !== 2 ? 'network' : 'permanent');
+        that.es_close = es.onmessage = es.onerror = null;
+        // EventSource reconnects automatically.
+        es.close();
+        es = null;
+        // Safari and chrome < 15 crash if we close window before
+        // waiting for ES cleanup. See:
+        //   https://code.google.com/p/chromium/issues/detail?id=89155
+        utils.delay(200, function() {
+                        that.dispatchEvent(new SimpleEvent('close', {reason: reason}));
+                    });
+    };
+};
+
+EventSourceReceiver.prototype = new REventTarget();
+
+EventSourceReceiver.prototype.abort = function() {
+    var that = this;
+    if (that.es_close) {
+        that.es_close({}, true);
+    }
+};
+//         [*] End of lib/trans-receiver-eventsource.js
+
+
+//         [*] Including lib/trans-receiver-htmlfile.js
+var _is_ie_htmlfile_capable;
+var isIeHtmlfileCapable = function() {
+    if (_is_ie_htmlfile_capable === undefined) {
+        if ('ActiveXObject' in window) {
+            try {
+                _is_ie_htmlfile_capable = !!new ActiveXObject('htmlfile');
+            } catch (x) {}
+        } else {
+            _is_ie_htmlfile_capable = false;
+        }
+    }
+    return _is_ie_htmlfile_capable;
+};
+
+
+var HtmlfileReceiver = function(url) {
+    var that = this;
+    utils.polluteGlobalNamespace();
+
+    that.id = 'a' + utils.random_string(6, 26);
+    url += ((url.indexOf('?') === -1) ? '?' : '&') +
+        'c=' + escape(WPrefix + '.' + that.id);
+
+    var constructor = isIeHtmlfileCapable() ?
+        utils.createHtmlfile : utils.createIframe;
+
+    var iframeObj;
+    _window[WPrefix][that.id] = {
+        start: function () {
+            iframeObj.loaded();
+        },
+        message: function (data) {
+            that.dispatchEvent(new SimpleEvent('message', {'data': data}));
+        },
+        stop: function () {
+            that.iframe_close({}, 'network');
+        }
+    };
+    that.iframe_close = function(e, abort_reason) {
+        iframeObj.cleanup();
+        that.iframe_close = iframeObj = null;
+        delete _window[WPrefix][that.id];
+        that.dispatchEvent(new SimpleEvent('close', {reason: abort_reason}));
+    };
+    iframeObj = constructor(url, function(e) {
+                                that.iframe_close({}, 'permanent');
+                            });
+};
+
+HtmlfileReceiver.prototype = new REventTarget();
+
+HtmlfileReceiver.prototype.abort = function() {
+    var that = this;
+    if (that.iframe_close) {
+        that.iframe_close({}, 'user');
+    }
+};
+//         [*] End of lib/trans-receiver-htmlfile.js
+
+
+//         [*] Including lib/trans-receiver-xhr.js
+
+var XhrReceiver = function(url, opts) {
+    var that = this;
+    var buf_pos = 0;
+    var orsc = function (xhr, e, abort_reason) {
+        if (xhr.readyState === 3 || xhr.readyState === 4) {
+            // IE doesn't like peeking into responseText or status on
+            // XHR and readystate=3
+            try {
+                var responseText = xhr.responseText;
+                var status = xhr.status;
+            } catch (x) {}
+            if (responseText && status === 200) {
+                var msgs = [];
+                while (1) {
+                    var buf = responseText.slice(buf_pos);
+                    var p = buf.indexOf('\n');
+                    if (p === -1) break;
+                    buf_pos += p+1;
+                    var msg = buf.slice(0, p);
+                    that.dispatchEvent(
+                        new SimpleEvent('message', {
+                                            data: msg,
+                                            readystate: xhr.readyState,
+                                            responsetext: responseText
+                                        }));
+                }
+            }
+        }
+        if (xhr.readyState === 4 || abort_reason) {
+            var reason = abort_reason ? 'user' :
+                (xhr.status === 200 ? 'network' : 'permanent');
+            that.xhr_close = null;
+            that.dispatchEvent(new SimpleEvent('close', {reason: reason}));
+        }
+    };
+    var createXhr = (opts.cors && _window.XDomainRequest) ?
+                                    utils.createXDR : utils.createXHR;
+    that.xhr_close = createXhr('POST', url, null, orsc);
+};
+
+XhrReceiver.prototype = new REventTarget();
+
+XhrReceiver.prototype.abort = function() {
+    var that = this;
+    if (that.xhr_close) {
+        that.xhr_close(true);
+    }
+};
+//         [*] End of lib/trans-receiver-xhr.js
+
+                  return SockJS;
+          })();
+if ('_sockjs_onload' in window) setTimeout(_sockjs_onload, 1);
+//     [*] End of lib/index.js
+
+// [*] End of lib/all.js
+;
+    }).call(module.exports);
+    
+    _browserifyRequire.modules["./sockjs.min"]._cached = module.exports;
+    return module.exports;
+};
+
+[].forEach(function (a) {
+    _browserifyRequire.modules[a] = _browserifyRequire.modules["./sockjs.min"];
+});
+
 _browserifyRequire.modules["./transitive"] = function () {
     var module = { exports : {} };
     var exports = module.exports;
@@ -1809,6 +3338,7 @@ _browserifyRequire.modules["./transitive"] = function () {
     
     (function () {
         require("./jquery"); //currently, pollutes global scope!
+require("./sockjs.min.js"); //currently, pollutes global scope!
 
 var EventEmitter = require('events').EventEmitter;
 var PushIt = require("./push-it.js").PushIt;
@@ -1958,25 +3488,27 @@ _browserifyRequire.modules["./push-it.js"] = function () {
       if(options.socket){
         socket = options.socket;
       }else{
-        if(!options.hostname){
-          alert("You must pass a hostname to initialize Push-It.");
+        if(!options.endpoint){
+          options.endpoint = window.location.protocol+"//"+window.location.hostname+":"+window.location.port.toString()+"/pi/";
         }
-        socket = new io.Socket(options.hostname);
+        var socket = new SockJS(options.endpoint);
       }
 
       this.socket = socket;
-      socket.connect();
       
-      this.sendMessage(joinRequest)
+      var self=this;
+      socket.onopen = function(){
+        self.sendMessage(joinRequest);
+      }
       
       this.onConnect = function(){
         for (var i = options.channels.length - 1; i >= 0; i--){
-          console.log("subscribing")
           self.subscribe(options.channels[i]);
         };
       }
       
-      socket.addEvent('message', function(message){
+      socket.onmessage =function(message){
+        message = message.data;
         var chan = message.channel;
         switch(chan){
           case '/meta/connect':
@@ -1991,7 +3523,7 @@ _browserifyRequire.modules["./push-it.js"] = function () {
           default:
             self.onMessageReceived(message);
         }
-      });
+      }
 		},
 
 		onMessageReceived: function(message) {

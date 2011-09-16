@@ -4,6 +4,11 @@ var Transitive = new (require("transitive"))();
 
 var options = {};
 
+var mime = require("mime");
+
+mime.extensions["js"]="text/javascript";
+
+
 if(process.env["NODE_ENV" == "production"]){
   options.port = 80;
 }
@@ -20,8 +25,6 @@ Transitive.App = {};
 Transitive.App.getUniqueServerIdentifier = function(cb){
   var sh_command = "bash -c 'if command -v md5 &>/dev/null; then ifconfig -a | grep ..:..:..:..:..:.. | md5; else ifconfig -a | grep ..:..:..:..:..:.. | md5sum; fi;'";
   exec(sh_command, function (error, stdout, stderr) {
-      console.log("out: "+stdout.toString());
-      console.log("err: "+stderr.toString());
       var out = stdout.split(" ")[0];
       cb(error, out, stderr);
   });
@@ -42,9 +45,6 @@ Transitive.App.getStartForProcess = function(pid, cb){
         match = ary[i].match(/^\s*(\d*)\s+(.*)/);
         if(match){
           var start = match[2];
-          console.log(ary[i]);
-          console.log(JSON.stringify(match));
-          console.log("start="+start)
           start = new Date(start);
           cb(error, start);
           return;
