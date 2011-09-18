@@ -21,7 +21,7 @@
 
     %title
      dX-dT.com Change over time
-  %body
+  %body.marketing
     %div( class="topbar")
       %div( class="fill")
         %div( class="container")
@@ -29,10 +29,15 @@
             %a(href="#" style="letter-spacing:3px;")
               %img(src="/logotype-small.png" width="52px" height="22px")
           %ul
-            :if this.crumbs
-              :each idx in this.crumbs
-                %li
-                  %a(href=idx[0])= idx[1]
+            %li
+              %a(href="/features") Features
+            %li
+              %a(href="/plans") Price
+            %li
+              %a(href="/support") Support
+            %li
+              %a(href="/Documentation") Documentation
+
           %ul.secondary-nav
             %li
               %form
@@ -40,9 +45,14 @@
                 %input.password(placeholder="Password" type="password")
                 %a.login(href="#toggle") Log In
             %li
-                  
-    .clear(style="margin-top:22px")
-      != content
+    != content
+    %center
+      %br
+      %br
+      &copy; 2011 Xitive, LLC
+      %br
+      %br
+    .clear
     :script
       !{etc}
       Transitive.boot();

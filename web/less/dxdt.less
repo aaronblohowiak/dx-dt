@@ -137,17 +137,61 @@ table.tcp-ports{
 }
 
 .app{
-  border-top: 1px solid white;
+  border-top: 1px solid #FFF;
   //#gradient > .vertical(#242, #252);
-  background-color:@accentColor;
+  background-color: @accentColor;
   height:10px;
   margin-top:22px;
 }
 
+
+@darkestGreen: #232;
+@darkGreen: #383;
+
+@merlotDark: #411;
+@merlotLight: #944;
+
+@hotGreen: #53D64B;
+@hotGreenDark: darken(@hotGreen, 20%);
+
+@brownStart: #BD4932;
+
+@copper: spin(@blue,-170);
+
+@homeGradientStart: @darkGreen;
+@homeGradientStop: saturate(darken(@homeGradientStart, 30%), 30%);
+
+html {
+  margin: 0;
+  height: 100%;
+}
+
+.marketing, html{
+  background-color: #fafafa;
+  height: 100%;
+  margin: 0;
+  .topbar{
+    border-bottom:1px solid white;
+    .box-shadow(0 2px 20px rgba(0,0,0,0.9));
+  }
+}
+
 .home{
+  > .body {
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    padding: 0 20px;
+    overflow:hidden;
+  }
+  
+  p {
+    color: @grayDark;
+  }
+  
   .top{
-    border-top: 1px solid white;
-    #gradient > .vertical(#232, #272);
+    margin-top:22px;
+    border-top:1px solid #fff;
+    #gradient > .vertical(@homeGradientStart, @homeGradientStop);
     height: 180px;
     padding-top: 20px;
     text-align:center;
@@ -175,25 +219,21 @@ table.tcp-ports{
     font-weight: normal;
   }
   
-  .main {
-    h1 {
-      border-bottom: 1px solid #eee;
-    }
-    
-    h1, h2 {
+  .main {    
+    h2 {
       margin-bottom: 10px;
     }
   }
 }
 
 .container.main{
-  margin-top:@gridGutterWidth;
 }
 
 .grayblock {
   background-color:#f0f0f0;
-  .border-radius();
+  width:940px;
   padding:@gridGutterWidth;
   color:@grayDark;
+  border-bottom:1px solid #e5e5e5;
 }
 
