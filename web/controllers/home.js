@@ -10,7 +10,7 @@ function zrangeWithScoresToArrayOfTuples(ary){
   for (var i = 0; i < ary.length - 1; i=i+2) {
     retAry.push([parseInt(ary[i+1], 10), parseFloat(ary[i], 10)]);
     //retAry.push([ary[i+1], ary[i]]);
-  };
+  }
   return retAry;
 }
 
@@ -27,6 +27,15 @@ module.exports = function(routes, Transitive){
     });
   });
 
+  routes.get("/", function(req, res){
+    res.writeHead(200, { 
+      'Content-Type': 'text/html'
+    });
+    
+    res.end(Transitive.Views.renderPage("landing",{},"marketing"));
+  });
+  
+  
   routes.get("/index.html", function(req, res){
     res.writeHead(200, { 
       'Content-Type': 'text/html', 

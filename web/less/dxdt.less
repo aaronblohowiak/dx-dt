@@ -1,10 +1,9 @@
-.fuck{
-  color:#ff00ff;
-}
-
 body {
   font-family: "Helvetica Neue Light", "HelveticaNeue-Light", Arial, Helvetica, sans-serif;
  /* font-weight:100;*/
+}
+
+h1, h2{
 }
 
 h3, h4,h5,h6{
@@ -92,15 +91,9 @@ h3, h4,h5,h6{
   }
 }
 
-@accentColor: #ea5e15;
+@accentColor: desaturate(darken(#ea5e15, 18), 20%);
+@accent2Color: #252;
 
-.page-header > h1{
-  color: @accentColor;
-}
-
-.nav-category > h3{
-  color: @accentColor;
-}
 
 input.stealth {
   border: none;
@@ -128,4 +121,79 @@ table.tcp-ports{
   }
 }
 
+.topbar{
+  //.box-shadow(0px 3px 10px rgba(200, 200, 200, 0.5);
+  form {
+    .username, input.password{
+      .columns(2);
+      margin-left:10px;
+    }
+    
+    a.login{
+      .btn;
+      margin-left:10px;
+    }
+  }
+}
+
+.app{
+  border-top: 1px solid white;
+  //#gradient > .vertical(#242, #252);
+  background-color:@accentColor;
+  height:10px;
+  margin-top:22px;
+}
+
+.home{
+  .top{
+    border-top: 1px solid white;
+    #gradient > .vertical(#232, #272);
+    height: 180px;
+    padding-top: 20px;
+    text-align:center;
+    
+    h1 {
+      color: white;
+      text-shadow: 0 -1px 0px rgba(0,0,0,.9);
+      font-weight:normal;
+      letter-spacing:1px;
+    }
+  }
+
+  h1.everything{
+    margin-top:10px;
+    font-weight:normal;
+    line-height:150%;
+    .virtual{
+      font-weight:normal;
+    }
+  }
+  
+
+  h2, h3, h4 {
+    color: @grayDark;
+    font-weight: normal;
+  }
+  
+  .main {
+    h1 {
+      border-bottom: 1px solid #eee;
+    }
+    
+    h1, h2 {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.container.main{
+  margin-top:@gridGutterWidth;
+}
+
+.grayblock {
+  background-color:#f0f0f0;
+  .border-radius();
+  padding:@gridGutterWidth;
+  color:@grayDark;
+}
 

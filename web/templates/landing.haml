@@ -1,0 +1,93 @@
+-
+  this.crumbs = [["", "Features"], ["", "Pricing"], ["", "Documentation"], ["", "Contact"]]
+
+.home
+  .span16.top
+    .container
+      .row
+        .span8
+          / %h1.everything 
+          /   Monitor, Alert, Graph, Resolve:
+          /   %br
+          /   Every Process. &nbsp;Every Port.
+          /   %br
+          /   Every
+          /   %span.virtual> ( Virtual )
+          /   Machine.
+          %h1.everything 
+
+            %br
+            Monitor Every Process,
+            %br
+             Port &amp;
+             %span.virtual> ( Virtual )
+            Machine
+           
+
+        .span8
+          %img(src="/bigdxdtwhite.png" width="338px" height="141px")
+  .app(style="margin-top:0;background-color:#333;height:1px;border:0")
+  .container.main
+    .row(style="margin-bottom:20px; text-align:right")
+      .grayblock
+        .row
+          .span12        
+            %h2 Start monitoring your processes <b>before</b> there's a problem.
+          .span3(style="text-align:center")
+              %a.btn.primary(href="/plans")
+                %big
+                  %b
+                    30-day free trial »
+              %br
+              It takes a minute to set up.
+
+
+    .row
+      .span8
+        %h1 Monitor
+          %small> Everything. Automatically.
+        .row
+          .span8
+            %h2 Every Process
+            %blockquote
+              What is pegging the CPU?
+              %br
+              %br
+              Got a memory leak?
+              %br
+              %br
+              When did this process start?
+            %p 
+              %a(href="/process-monitoring")> Process Monitoring
+              is like graphing the ouptut of `top` from multiple machines.
+            %p Are monit, upstart, god or OOM killing your Process?
+              %br
+              %a(href="/search-terminated-processes")> Search terminated processes
+              to figure out why.
+        .row(style="margin-top:30px")
+          .span4
+            %div(style="padding:0 0px")
+              %h2 Every Port
+              %blockquote
+                What ports are open?
+                %br
+                %br
+                What process is listening on :80?
+                %br
+                %br
+                What host is this bound to?
+              %a(href="/port-monitoring")> Port Monitoring
+              has the answers.
+              %br
+              %h5 every port. no configuration.
+          .span4
+            %h2 Every Machine
+            %ul
+              %li Disk Space
+              %li Load Average
+              %li Free RAM
+        
+      .span8
+        %h1 Resolve
+          %small> 10x faster
+        != this.render("example")

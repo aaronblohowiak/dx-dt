@@ -1,6 +1,9 @@
 {
   "name": "project-name",
   "version": "0.0.0",
+  "devDependencies": {
+    "restartr": ""
+  },
   "dependencies": {
     "transitive": "0.0.0pre28",
     "whiskey": "0.3.3",
@@ -8,6 +11,7 @@
     "underscore": "1.1.6",
     "markdown": "0.2.1",
     "nko": "0.1.1",
-    "mime": "~1.2.2"
+    "mime": "~1.2.2",
+    "restartr": "~0.1.10"
   }
 }

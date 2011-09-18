@@ -26,30 +26,22 @@
       %div( class="fill")
         %div( class="container")
           %h3
-            %a.logo(href="/")
-              %img(src="/logotype-small.png" alt="dx-dt")
+            %a(href="#" style="letter-spacing:3px;")
+              %img(src="/logotype-small.png" width="52px" height="22px")
           %ul
-            %li
-              %a(href="/") Home
             :if this.crumbs
               :each idx in this.crumbs
                 %li
-                  %a.skinny
-                    >
-                %li
-                  %a(href="#masthead")= idx
+                  %a(href=idx[0])= idx[1]
           %ul.secondary-nav
             %li
               %form
-                %input.search
-            %li.dropdown(style="margin-left:10px")
-              %a.dropdown-toggle(href="#toggle") Account
-              %ul.dropdown-menu
-                %li
-                  %a(href="#") secondary-link
+                %input.username(placeholder="Username")
+                %input.password(placeholder="Password" type="password")
+                %a.login(href="#toggle") Log In
+            %li
                   
-    .app
-    .container.main
+    .clear(style="margin-top:22px")
       != content
     :script
       !{etc}
