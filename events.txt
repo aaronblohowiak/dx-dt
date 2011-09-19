@@ -31,7 +31,7 @@ Bulk Data received
   - worker processes tarball
     - tar-xzf to local disk
     - convert to big-ass json doc
-    - put on work queue to update datums(?)
+    - put on work queue to update datums!
   - worker processes json doc
     - for each thing collected, zadd it appropriately
     - update all attribute hashes gathered
@@ -39,4 +39,30 @@ Bulk Data received
       - update current process list
       - emit process changes
         - machine/blah/processes : {kind:remove, data:id}
-      - 
+
+Work Queue
+  /queues [set] - list of queue ids, for qpid to check up on
+
+  /jobs/id [hsh] - job details
+
+  /queues/id [hsh] - queue details (acceptable processing time, maybe some stats.)
+
+  /queues/id/pending [list] list of job ids that have not been processed
+  /queues/id/processing [list] list of jobs being processed
+
+  worker RPOPLPUSH /queues/id/pending /queues/id/processing, with returned id, set the STARTED_AT column *immediately*
+  when the worker finishes, they set /jobs/id:COMPLETED_AT column, LREM /queues/id/processing /jobs/id, del /jobs/id, update /queues/id:LAST_PROCESSED_AT
+  
+  qpid wakes up, and for each queue in /queues:
+    get /queues/id
+    check /queues/id:ALERT_ON_SIZE /queues/id/pending size to determine if we need to alert sysadmin
+    check each member of /queues/id/processing, and for each member:
+      get /jobs/id
+        if (missing || (STARTED_AT && COMPLETED_AT)) -> lrem /queues/id/processing /jobs/id (completed but not cleaned case).
+        if (STARTED_AT == null)
+          add to internal queue with current time to check again in a bit.
+        if (current_time > (STARTED_AT + ACCEPTABLE_PROC_TIME))
+          incr /jobs/id/TIMEOUTS
+          LREM /queues/id/processing /jobs/id
+          RPUSH /queues/id/pending /jobs/id
+        

@@ -1,9 +1,5 @@
 require("hiredis");
-
-var exec = require('child_process').exec,
-    client = require("redis").createClient();
-
-//var profiler = require('v8-profiler');
+var client = require("redis").createClient();
 
 function zrangeWithScoresToArrayOfTuples(ary){
   var retAry = [];
@@ -15,6 +11,18 @@ function zrangeWithScoresToArrayOfTuples(ary){
 }
 
 module.exports = function(routes, Transitive){
+  
+  function home(req, res){
+    res.writeHead(200, { 
+      'Content-Type': 'text/html'
+    });
+    
+    res.end(Transitive.Views.renderPage("landing",{},"marketing"));
+  }
+  
+  routes.get("/", home);
+  routes.get("/index.html", home);
+    
   routes.get("/sample-data-ping", function(req, res){
     //var snapshot = profiler.takeSnapshot("beforeredis")      //takes a heap snapshot
     //profiler.startProfiling("sampleDataProcessing");
@@ -27,47 +35,10 @@ module.exports = function(routes, Transitive){
     });
   });
 
-  routes.get("/", function(req, res){
-    res.writeHead(200, { 
-      'Content-Type': 'text/html'
-    });
-    
-    res.end(Transitive.Views.renderPage("landing",{},"marketing"));
-  });
-  
-  
-  routes.get("/index.html", function(req, res){
-    res.writeHead(200, { 
-      'Content-Type': 'text/html', 
-      'Cache-Control': 'no-cache, no-store'
-    });
 
-    var cpu = [];
-    cpu.id = process.pid.toString()+"%cpu";
-    
-    var mem = [];
-    mem.id = process.pid.toString()+"%mem";
 
-    Transitive.App.getStartForProcess(process.pid, blah);
-
-    var startTime;
-    function blah(error, start){
-      startTime = start;
-      Transitive.App.getUniqueServerIdentifier(withId);
-    }
-
-    function withId(error, id, stderr){
-      exec('ps -Aef | grep '+process.pid+' | grep -v grep', function (error, stdout, stderr) {
-        res.end(Transitive.Views.renderPage("home", {
-          process: {id: process.pid.toString(), stats: stdout},
-          cpu: cpu,
-          mem: mem,
-          pid: process.pid,
-          serverId: id,
-          start: startTime
-        }));
-      });
-    }
-  });
+  //ideas for plans:
+    //  $50/month includes N servers, each additional is $10/per server per month.
+    //Have more than X servers? Contact Us for volume discount.
 };
 
