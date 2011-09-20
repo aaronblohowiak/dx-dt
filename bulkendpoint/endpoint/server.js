@@ -7,13 +7,12 @@ if(! ("app" in Transitive)){
 }
 
 
-var redis = require("redis"),
-    client = redis.createClient("6868", "127.0.0.1",  {return_buffers: true});
-    client.on("error", function(err){
-      console.log("Redis error" + err);
-    });
+var resque = require('coffee-resque').connect({
+  host: "127.0.0.1",
+  port: "6868"
+});
 
-Transitive.app.bulkQueue = client;
+Transitive.app.bulkQueue = resque;
 
 //boot transitive, compiling everything and creating server 
 (function(){

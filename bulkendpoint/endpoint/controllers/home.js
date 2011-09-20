@@ -30,10 +30,7 @@ module.exports = function(routes, Transitive){
 
        var requestData = {fields: fields, files: shallowFiles, uid: id};
        
-       console.log(requestData);
-       
-       q.set("/bulkuploads/"+id, JSON.stringify(requestData));
-       q.lpush("/bulkuploads/pending", "/bulkuploads/"+id);
+       q.enqueue("bulkuploads", "ingest", [requestData]);
        
        res.writeHead(200, {'content-type': 'text/plain'});
        res.write('received upload:\n\n');

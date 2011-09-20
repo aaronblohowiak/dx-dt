@@ -42,11 +42,8 @@ Bulk Data received
 
 Work Queue
   /queues [set] - list of queue ids, for qpid to check up on
-
   /jobs/id [hsh] - job details
-
   /queues/id [hsh] - queue details (acceptable processing time, maybe some stats.)
-
   /queues/id/pending [list] list of job ids that have not been processed
   /queues/id/processing [list] list of jobs being processed
 
