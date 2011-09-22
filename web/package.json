@@ -12,6 +12,8 @@
     "markdown": "0.2.1",
     "nko": "0.1.1",
     "mime": "~1.2.2",
-    "restartr": "~0.1.10"
+    "restartr": "~0.1.10",
+    "redis": "",
+    "hiredis":""
   }
 }
