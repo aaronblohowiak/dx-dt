@@ -5,6 +5,8 @@ sys = require("sys");
 assert = require("assert");
 
 fs = require("fs");
+
+cHsh = require("crypto").createHash;
 /* To generate test_data:
  *
  * ./collect.sh test_data && mv test_data.tgz ../bulkendpoint/test/ && cd ../bulkendpoint/test/ && tar -xzf test_data.tgz && cd ../../agent
@@ -17,10 +19,17 @@ processor("test_data/", function(status){
   assert.ok(status["filesystems"]["/dev/disk0s2"].free > 30);
   assert.equal(status["filesystems"]["/dev/disk0s2"].mounted, "/");
 
+  
   function infoForProcess(status, pid){
     var processes = status.processes;
+    
+    var sha1 = cHsh('sha1');
+
+    sha1.update( status.machine.id+"-"+pid.toString()+"-"+processes.lstart[pid].toString());
+    var id = sha1.digest('base64').replace(/\//g, '-').replace(/\+/g, '_').replace(/=+$/, '');
+    
     return {
-      id: status.machineid+"-"+pid.toString()+"-"+processes.lstart[pid].getTime().toString(),
+      id: id,
       lstart: processes.lstart[pid],
       args: processes.args[pid],
       ucomm: processes.ucomm[pid],
@@ -42,6 +51,7 @@ processor("test_data/", function(status){
 
   console.log(pinfo);
   console.log(status.machine);
+  console.log(sys.inspect(status.ports));
 
   fs.writeFileSync("status-async.json", sys.inspect(status));
 });

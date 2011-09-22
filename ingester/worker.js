@@ -1,6 +1,7 @@
 msgpack = require("msgpack2");
 newId = require("uuid-pure").newId;
 
+processor = require("./process-async");
 
 var myJobs = {
   ingest: function(data, callback) {

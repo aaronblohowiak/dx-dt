@@ -12,19 +12,20 @@ function parseAll(dir, callback){
     
     var sys = new DS(function(err, sys){
       results.filesystems = sys.filesystems;
+      delete sys.filesystems;
       results.ports = sys.ports;
-      results.machine = {};
-      results.machine.hostname = sys.hostname;
-      results.machine.ifconfig = sys.ifconfig;
-      results.machine.id = sys.machineid;
+      results.machine = sys;      
       callback(results);
     });
 
     sys.add("machineid", readAnd, dir+"machineid", firstline);
     sys.add("ports", readAnd, sysDir+"lsoftcp.stdout.txt", parseLsof);
     sys.add("filesystems", readAnd, sysDir+"df.stdout.txt", parseDf);
-    sys.add("ifconfig", readAnd, sysDir+"ifconfig.stdout.txt", noop);
+    sys.add("dftime", readAnd, sysDir+"df.time.txt", parseDfTime);
+    sys.add("load", readAnd, sysDir+"uptime.stdout.txt", parseUptime);
     sys.add("hostname", readAnd, sysDir+"hostname.stdout.txt", firstline);
+    sys.add("ifconfig", readAnd, sysDir+"ifconfig.stdout.txt", noop);
+    sys.add("date", readAnd, sysDir+"date.stdout.txt", float);
   });
   
   
@@ -46,7 +47,7 @@ function parseAll(dir, callback){
 module.exports = parseAll;
 
 function date (e){
-  return (new Date(e));
+  return (new Date(e)).getTime()/1000;
 }
 
 function noop(e){
@@ -86,9 +87,18 @@ function parsePs (stdout, canonicalize) {
   return result;
 }
 
-function readAndParseHostname(filename){
-  var src = fs.readFileSync(filename, "utf-8");
-  return src.split("\n")[0];
+function parseDfTime(src){
+  var match = src.split("\n")[0].match(/(\d+\.\d+)/);
+  return parseFloat(match[1]);
+}
+
+function parseUptime(src){
+  var match = src.match(/(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)/);
+  return {
+    "1min":  parseFloat(match[1], 10),
+    "5min":  parseFloat(match[2], 10),
+    "15min": parseFloat(match[3], 10)
+  };
 }
 
 function parseDf(src){
