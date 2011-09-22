@@ -2,36 +2,45 @@ var DS = require("DeskSet");
 
 var fs = require("fs"), sys = require("sys");
 
-function parseAll(callback){
-  var set = new DS(function(err, processes){
+function parseAll(dir, callback){
+  processDir = dir + "processes/";
+  sysDir = dir + "sys/";
+  
+  var processes = new DS(function(err, processes){
     var results = {};
     results.processes = processes;
-        
-    results.filesystems = readAndParseDf("sys/df.stdout.txt");
-    results.ports = readAndParseLsof("sys/lsoftcp.stdout.txt");
+    
+    var sys = new DS(function(err, sys){
+      results.filesystems = sys.filesystems;
+      results.ports = sys.ports;
+      results.machine = {};
+      results.machine.hostname = sys.hostname;
+      results.machine.ifconfig = sys.ifconfig;
+      results.machine.id = sys.machineid;
+      callback(results);
+    });
 
-    results.machine = {
-      id: fs.readFileSync("machineid", "utf-8").split("\n")[0],
-      hostname : readAndParseHostname("sys/hostname.stdout.txt"),
-      ifconfig : fs.readFileSync("sys/ifconfig.stdout.txt", "utf-8")
-    };
-
-    callback(results);
+    sys.add("machineid", readAnd, dir+"machineid", firstline);
+    sys.add("ports", readAnd, sysDir+"lsoftcp.stdout.txt", parseLsof);
+    sys.add("filesystems", readAnd, sysDir+"df.stdout.txt", parseDf);
+    sys.add("ifconfig", readAnd, sysDir+"ifconfig.stdout.txt", noop);
+    sys.add("hostname", readAnd, sysDir+"hostname.stdout.txt", firstline);
   });
   
-  set.add("lstart", readAndParsePs, "processes/lstart.stdout.txt", date);
   
-  set.add("args", readAndParsePs, "processes/args.stdout.txt", trim);
-  set.add("ucomm", readAndParsePs, "processes/ucomm.stdout.txt", trim);
-
-  set.add("rss", readAndParsePs, "processes/rss.stdout.txt", float);
-  set.add("vsz", readAndParsePs, "processes/vsz.stdout.txt", float);
+  processes.add("lstart", readAndParsePs, processDir+"lstart.stdout.txt", date);
   
-  set.add("utime", readAndParsePs, "processes/utime.stdout.txt", noop);
-  set.add("time", readAndParsePs, "processes/time.stdout.txt", noop);
+  processes.add("args", readAndParsePs, processDir+"args.stdout.txt", trim);
+  processes.add("ucomm", readAndParsePs, processDir+"ucomm.stdout.txt", trim);
 
-  set.add("mem", readAndParsePs, "processes/mem.stdout.txt", float);
-  set.add("cpu", readAndParsePs, "processes/cpu.stdout.txt", float);
+  processes.add("rss", readAndParsePs, processDir+"rss.stdout.txt", float);
+  processes.add("vsz", readAndParsePs, processDir+"vsz.stdout.txt", float);
+  
+  processes.add("utime", readAndParsePs, processDir+"utime.stdout.txt", noop);
+  processes.add("time", readAndParsePs, processDir+"time.stdout.txt", noop);
+
+  processes.add("mem", readAndParsePs, processDir+"mem.stdout.txt", float);
+  processes.add("cpu", readAndParsePs, processDir+"cpu.stdout.txt", float);
 }
 
 module.exports = parseAll;
@@ -52,6 +61,10 @@ function trim(e){
   } else {
     return e;
   }
+}
+
+function firstline(e){
+  return e.toString().split("\n")[0];
 }
 
 function float(e){
@@ -78,12 +91,7 @@ function readAndParseHostname(filename){
   return src.split("\n")[0];
 }
 
-function readAndParseDf(filename){
-  var src;
-  try{
-    src = fs.readFileSync(filename, "utf-8");
-  }catch(e){ return; }
-
+function parseDf(src){
   var lines = src.split("\n");
   var match, name;
   var filesystems = {};
@@ -106,9 +114,9 @@ function readAndParseDf(filename){
   return filesystems;
 }
 
-function readAndParseLsof(filename){
+
+function parseLsof(src){
   var ports = {};
-  var src = fs.readFileSync(filename, "utf-8");
   var lines = src.split("\n");
   var match;
 
@@ -132,14 +140,15 @@ function readAndParseLsof(filename){
   return ports;
 }
 
-function readAndParsePs(filename, fn, cb){
+function readAnd(filename, fn, cb){
   fs.readFile(filename, "utf-8", function(err, src){
     if(err) return cb(err);
-    cb(null, parsePs(src, fn));
+    cb(null, fn(src));
   });
 }
 
-module.exports.readAndParseLsof = readAndParseLsof;
-module.exports.readAndParseDf = readAndParseDf;
-
-
+function readAndParsePs(filename, fn, cb){
+  readAnd(filename, function(src){
+    return parsePs(src, fn);
+  }, cb);
+}

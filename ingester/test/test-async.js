@@ -11,18 +11,14 @@ fs = require("fs");
  *
  */
 
-process.chdir("test_data");
-
-processor(function(status){
-  //console.log(JSON.stringify(status));
-
+processor("test_data/", function(status){
   assert.ok(status["filesystems"]["/dev/disk0s2"].free > 30);
   assert.equal(status["filesystems"]["/dev/disk0s2"].mounted, "/");
 
   function infoForProcess(status, pid){
     var processes = status.processes;
     return {
-      id: status.machineid+"-"+pid.toString()+"-"+processes.lstart[pid].getTime().toString(),
+      id: status.machine.id+"-"+pid.toString()+"-"+processes.lstart[pid].getTime().toString(),
       lstart: processes.lstart[pid],
       args: processes.args[pid],
       ucomm: processes.ucomm[pid],
