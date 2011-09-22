@@ -2,5 +2,10 @@ web/node_modules
 web/public/generated
 web/logs
 agent/stats*
-dump.rdb
+*.rdb
+*.aof
+*.DS_Store
 bulkendpoint/endpoint/node_modules
+bulkendpoint/endpoint/tmp/*
+ingester/node_modules/
+ingester/node_modules/
