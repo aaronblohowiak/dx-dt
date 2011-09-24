@@ -60,8 +60,6 @@ worker.start();
 worker = resque.worker('bulkuploads', myJobs);
 worker.start();
 
-worker = resque.worker('bulkuploads', myJobs);
-worker.start();
 
 function getFile(dir, fileinfo, cb){
   //CHANGE THIS TO GET FILE FROM MONGO OR S3 OR WHATEVER.
