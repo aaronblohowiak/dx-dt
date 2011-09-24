@@ -10,4 +10,5 @@ bulkendpoint/endpoint/tmp/*
 ingester/node_modules/
 ingester/tmp/*
 ingester/node_modules/
+ingester/test/status-async.json
 updater/node_modules/

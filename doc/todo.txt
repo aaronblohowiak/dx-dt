@@ -1,3 +1,6 @@
+All:
+  - drive configs more intelligently
+
 Bulkendpoint:
   - token authentication
 
@@ -6,15 +9,18 @@ Parser:
   - utime
   - read stderr files
   - what about parsing errors (email me?)
+  - more tests
 
 Ingester:
   - Delete directory after completion.
+  - more tests
 
 Updater:
   - *.*
 
 Web:
-  - 
-
-Accounting:
+  - make graphs populated from backend
+  - more tests
   
+Accounting:
+  - *.*
