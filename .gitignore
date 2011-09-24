@@ -8,4 +8,5 @@ agent/stats*
 bulkendpoint/endpoint/node_modules
 bulkendpoint/endpoint/tmp/*
 ingester/node_modules/
+ingester/tmp/*
 ingester/node_modules/

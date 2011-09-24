@@ -1,0 +1,24 @@
+TZADD key timestamp value
+  - adds timestamp & value to zset, removing the last value if the timestamp is greater than the last timestamp AND the last, penultimate and new values are all the same. This reduces the number of samples in our timeseries, saving us memory.
+
+Example:
+
+  Keyname: tzset1
+
+  timestamp value
+
+  1  10
+  2  0
+  6  0
+  7  1
+  10 1
+
+  TZADD tzset1 11 1
+
+  # new timestamp value
+  1  10
+  2  0
+  6  0
+  7  1
+  11 1
+

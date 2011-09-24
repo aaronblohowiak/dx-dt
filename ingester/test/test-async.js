@@ -1,5 +1,7 @@
 processor = require("../process-async.js");
 
+sha1 = require("easyhash")('sha1');
+
 sys = require("sys");
 
 assert = require("assert");
@@ -23,10 +25,7 @@ processor("test_data/", function(status){
   function infoForProcess(status, pid){
     var processes = status.processes;
     
-    var sha1 = cHsh('sha1');
-
-    sha1.update( status.machine.id+"-"+pid.toString()+"-"+processes.lstart[pid].toString());
-    var id = sha1.digest('base64').replace(/\//g, '-').replace(/\+/g, '_').replace(/=+$/, '');
+    id = sha1( status.machine.id+"-"+pid.toString()+"-"+processes.lstart[pid].toString());
     
     return {
       id: id,

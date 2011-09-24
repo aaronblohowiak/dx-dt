@@ -1,0 +1,6 @@
+blog posts:
+  lsof -i
+  ps -o pid -o args
+  pstree -aGln
+  strace ?
+

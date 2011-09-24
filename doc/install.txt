@@ -1,0 +1,15 @@
+INSTALL AGENT:
+requirements: bash curl tar gzip lsof ps df netstat
+apt-get install -y bash curl lsof tar gzip
+sudo curl -l https://ACCOUNT:TOKEN@dxdt.io/environments/dev/dxdt.sh | bash
+
+# IF I WANT TO SUPPORT PSTREE LATER: 
+#     psmisc 
+#     pstree -aGln
+
+INSTALL SERVERS:
+git clone https://github.com/antirez/redis.git
+git checkout unstable
+cd redis
+make install
+cd ..

@@ -7,15 +7,19 @@ function parseAll(dir, callback){
   sysDir = dir + "sys/";
   
   var processes = new DS(function(err, processes){
+    if(err) return console.log(err);
+
     var results = {};
     results.processes = processes;
     
     var sys = new DS(function(err, sys){
+      if(err) return console.log(err);
+
       results.filesystems = sys.filesystems;
       delete sys.filesystems;
       results.ports = sys.ports;
       results.machine = sys;      
-      callback(results);
+      callback(null, results);
     });
 
     sys.add("machineid", readAnd, dir+"machineid", firstline);
