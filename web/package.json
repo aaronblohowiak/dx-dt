@@ -1,5 +1,6 @@
 {
   "name": "project-name",
+  "private": true,
   "version": "0.0.0",
   "devDependencies": {
     "restartr": ""
@@ -10,7 +11,6 @@
     "haml": "0.4.2",
     "underscore": "1.1.6",
     "markdown": "0.2.1",
-    "nko": "0.1.1",
     "mime": "~1.2.2",
     "restartr": "~0.1.10",
     "redis": "",

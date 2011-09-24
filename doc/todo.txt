@@ -1,0 +1,20 @@
+Bulkendpoint:
+  - token authentication
+
+Parser:
+  - time
+  - utime
+  - read stderr files
+  - what about parsing errors (email me?)
+
+Ingester:
+  - Delete directory after completion.
+
+Updater:
+  - *.*
+
+Web:
+  - 
+
+Accounting:
+  
