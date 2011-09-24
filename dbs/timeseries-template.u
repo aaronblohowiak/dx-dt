@@ -1,8 +1,8 @@
-port 6868
-pidfile /var/run/timeseries.pid
+port {{port}}
+pidfile {{pidfile}}
 dir ./
-dbfilename timeseries.rdb
-appendfilename timeseries.aof
+dbfilename {{id}}.rdb
+appendfilename {{id}}.aof
 
 databases 2
 

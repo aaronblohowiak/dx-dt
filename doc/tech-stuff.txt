@@ -2,15 +2,15 @@ gem 'aws', "~> 2.3.25"
 gem 'aws-sdb'
 gem 'simple_record'
 
-web/ -> 
+web/ ->
   Manage connections
   pub/sub for web notifications
 
-agent/ -> 
+agent/ ->
   Gather system stats
   upload to bulkendpoint
 
-bulkendpoint/ -> 
+bulkendpoint/ ->
   Authorizes token
   Accepts data from Agents
   Enqueues bulk upload for processing

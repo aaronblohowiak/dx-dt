@@ -1,8 +1,12 @@
+fs = require("fs");
+path = require("path");
+exec = require("child_process").exec;
+
+rimraf = require("rimraf");
 msgpack = require("msgpack2");
 newId = require("uuid-pure").newId;
-fs = require("fs");
+
 processDump = require("./process-async");
-exec = require("child_process").exec;
 
 try{
   fs.mkdirSync("./tmp", "770");
@@ -12,12 +16,12 @@ try{
   }
 }
 
-var tmpdir = "./tmp";
+var tmpdir = path.resolve("./tmp");
 
 var myJobs = {
   ingest: function(data, callback) {
     var start = (new Date()).getTime();
-    withExpandedBulk(data.files.bulk, function(err, dirname){
+    withExpandedBulk(data.files.bulk, function(err, dirname, container){
       processDump(dirname, function(err, results){
         if(err){
           callback(new Error(err));
@@ -28,6 +32,11 @@ var myJobs = {
         data.processingTime = (new Date()).getTime() - start;
         console.log(data.processingTime/1000);
         resque.enqueue("snapshots", "update", [data]);
+        rimraf(container, {gently: tmpdir} , function(err){ 
+          console.log("deleting:", dirname);
+          console.log("in:", tmpdir);
+          console.log(err);
+        });
         callback();
       });
     });
@@ -43,7 +52,15 @@ var resque = require('coffee-resque').connect({
 });
 
 worker = resque.worker('bulkuploads', myJobs);
+worker.start();
 
+worker = resque.worker('bulkuploads', myJobs);
+worker.start();
+
+worker = resque.worker('bulkuploads', myJobs);
+worker.start();
+
+worker = resque.worker('bulkuploads', myJobs);
 worker.start();
 
 function getFile(dir, fileinfo, cb){
@@ -66,11 +83,11 @@ function untarBulk(dir, filename, cb){
 }
 
 function withExpandedBulk(fileInfo, cb){
-  var dirname = "./tmp/"+newId();
+  var dirname = tmpdir+"/"+newId();
   fs.mkdir(dirname, "770", function(err){ if(err) return cb(err);
     getFile(dirname, fileInfo, function(err, filename){ if(err) return cb(err);
       untarBulk(dirname, filename, function(err, finaldir){
-        cb(err, finaldir);
+        cb(err, finaldir, dirname);
       });
     });
   });
