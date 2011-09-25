@@ -12,7 +12,6 @@ Parser:
   - more tests
 
 Ingester:
-  - Delete directory after completion.
   - more tests
 
 Updater:
