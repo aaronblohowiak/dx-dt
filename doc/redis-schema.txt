@@ -1,0 +1,28 @@
+# Schema for a timeseries database.
+
+environments - set
+  envrionmentIds
+
+environments/[environmentId] - hash
+
+environments/[environmentId]/servers - set?
+  serverIds
+
+servers - set
+  serverIds
+
+servers/[serverId] - hash
+
+servers/[serverId]/processes - list? set? zset?
+  processIds
+
+servers/[serverId]/processes/current - set
+  processIds
+
+processes/[processId] - hash
+
+processes/[processId]/series/[seriesId] - zset
+  ts: value
+
+
+

@@ -130,4 +130,3 @@ echo "$machine_id" > $infodir/machineid;
 outputfilename="$infodir.tgz"
 tar -czf "$outputfilename" $infodir/
 rm -rf $infodir/
-

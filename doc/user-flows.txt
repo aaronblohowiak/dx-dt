@@ -1,0 +1,18 @@
+Workflows:
+
+User signs in, if they don't have any environments or machines reporting in, we give a great "to get started, add this script to cron."
+
+See currently running processes on a machine, then click on it and get its data.
+
+Would like to search for processes that have run on the machine by name, then click on it and get all of its historical data.
+  Historical data:
+    Port availability (changes?)
+    Graphed time-series
+    Time started
+    Time ended(?)
+    Args
+
+Any given time: list of current processes (upids?)
+  hgetall each upid...
+
+List of all processes that have been seen on a machine by args/ucomm (search box to find a process that may not be running any more.)

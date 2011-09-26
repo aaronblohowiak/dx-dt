@@ -15,7 +15,9 @@ Ingester:
   - more tests
 
 Updater:
-  - *.*
+  - pull from update queue
+  - create machine info (machineid, netstat, other?)
+  - update timeseries
 
 Web:
   - make graphs populated from backend

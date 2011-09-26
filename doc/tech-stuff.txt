@@ -25,18 +25,18 @@ updater/ ->
   Updates server and process stats
   
 Data stores:
+  Bulk data store:
+    store: fs (currently)
+    used by:
+      bulkendpoint
+      ingester
+    
   Work Queue:
     store: redis
     used by:
       bulkendpoint
       ingester
       updater
-
-  Bulk data store:
-    store: fs (currently)
-    used by:
-      bulkendpoint
-      ingester
 
   Account Info:
     store: something atomic.
@@ -45,3 +45,5 @@ Data stores:
       updater
       web
 
+
+  

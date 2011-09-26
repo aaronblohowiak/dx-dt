@@ -6,25 +6,6 @@ Bulk Data processed
   - Other processes missing
   - New ports open!?!?
 
-Workflows:
-
-User signs in, if they don't have any environments or machines reporting in, we give a great "to get started, add this script to cron."
-
-See currently running processes on a machine, then click on it and get its data.
-
-Would like to search for processes that have run on the machine by name, then click on it and get all of its historical data.
-  Historical data:
-    Port availability (changes?)
-    Graphed time-series
-    Time started
-    Time ended(?)
-    Args
-
-Any given time: list of current processes (upids?)
-  hgetall each upid...
-
-List of all processes that have been seen on a machine by args/ucomm (search box to find a process that may not be running any more.)
-
 Bulk Data received
   - file saved / uploaded
   - process thing placed on work queue
@@ -39,6 +20,12 @@ Bulk Data received
       - update current process list
       - emit process changes
         - machine/blah/processes : {kind:remove, data:id}
+
+
+
+
+
+
 
 Work Queue
   /queues [set] - list of queue ids, for qpid to check up on
