@@ -29,6 +29,10 @@ h3, h4,h5,h6{
   > .nav-category {
     margin-bottom: 24px;
     
+    h3.active a:link, h3.active a:hover, h3.active a:visited{
+      color: @linkColor;
+    }
+
     > h3 {
       .ico {
         width: @gridGutterWidth * 2;
@@ -68,17 +72,6 @@ h3, h4,h5,h6{
   color: @linkColor;
 }
 
-
-.sep {
-  margin-left: @gridGutterWidth/2;
-  margin-right: @gridGutterWidth/2;
-  margin-top: 10px;
-  height: 20px;
-  width:1px;
-  border-left:1px solid lighten(@grayDark, 10);
-  position:relative;
-  float:left;
-}
 
 .topbar{
   > h3{
@@ -141,7 +134,7 @@ table.tcp-ports{
   //#gradient > .vertical(#242, #252);
   background-color: @accentColor;
   height:10px;
-  margin-top:22px;
+  margin-top:40px;  
 }
 
 
@@ -175,6 +168,8 @@ html {
     .box-shadow(0 2px 20px rgba(0,0,0,0.9));
   }
 }
+
+
 
 .home{
   > .body {
@@ -226,7 +221,17 @@ html {
   }
 }
 
-.container.main{
+.container.main.workspace{
+  border-bottom:1px solid #ccc;
+  padding:2*@gridGutterWidth 0;
+  
+  pre {
+    #font > .monospace();
+    color: #EAB542;
+    background-color: black;
+    padding: @gridGutterWidth;
+    overflow: auto;
+  }
 }
 
 .grayblock {
@@ -237,3 +242,15 @@ html {
   border-bottom:1px solid #e5e5e5;
 }
 
+.vspace {
+  height: @gridGutterWidth;
+}
+
+.vspace2 {
+  height: 2 * @gridGutterWidth;
+}
+
+.server-list {
+  font-size:150%;
+  line-height:200%;
+}

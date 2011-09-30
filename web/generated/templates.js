@@ -67,13 +67,25 @@ with(locals || {}) {
   }
 }
 }
+,  "environment/environment": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="";
+this.crumbs = ["Staging"]
+; _$output = _$output  +
+"<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><div class=\"page-header\"><h1>Staging <small class=\"strong\">1 Server</small> </h1></div><div class=\"row\"><div class=\"span12\"><h3>Find Servers, Processes, Ports &amp; Notes</h3><input type=\"text\" placeholder=\"server or environment stats\" class=\"search\" /></div></div><div class=\"vspace2\"></div><div class=\"row\"><div class=\"span12\"><h2>Servers</h2><div class=\"server-list\"> <span class=\"label success\">OK</span>  <a href=\"/server/123\">Web Server 1</a> abpmba.local<br /> <span class=\"label notice\">Recovered</span>  <a href=\"/server/123\">DB Server Master</a> ec2-wjn24jn5kj3n3<br /> <span class=\"label warning\">High Load</span>  <a href=\"/server/123\">DB Server Slave</a> ec2-wjn24jn5kj3n3abpmba.local</div></div></div><div class=\"vspace\"></div><div class=\"row\"><div class=\"span12\"><h2>Events</h2><div class=\"row\"><div class=\"span4\"><h3>Wed Sep 14</h3></div><div class=\"span8\"><div class=\"alert-message\">9:22 AM UTC Began listening to port 3000</div></div></div><hr /><div class=\"row\"><div class=\"span4\"><h3>Mon Sep 12</h3></div><div class=\"span8\"><div class=\"alert-message success\">8:05 PM UTC CPU stayed below 80% for 2 Minutes</div><div class=\"alert-message error\">7:58 PM UTC CPU Exceeded 90%  for 2 Minutes</div><div class=\"alert-message\">2:22 PM UTC Process Started</div></div></div></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
 ,  "example": function anonymous(obj) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<iframe width="420" height="243" src="http://www.youtube.com/embed/ZB5-r9km_eQ?rel=0" frameborder="0" allowfullscreen></iframe>\n<p>Watch the video to see dx-dt in action.</p>');}return __p.join('');
 }
 ,  "home": function anonymous(locals) {
 with(locals || {}) {
   try {
-   var _$output="<div class=\"page-header\"> <h1> Dx-Dt.com <small> Process Monitoring </small>  </h1> </div><b>Server:" +
+   var _$output="<div class=\"page-header\"> <h1> dxdt.io <small> Process Monitoring </small>  </h1> </div><b>Server:" +
 this.escape(serverId) +
 " > PID:" +
 this.escape(pid) + 
@@ -120,7 +132,7 @@ this.escape(q) +
 this.escape(q) +
 "\"></script><!--[if lt IE 9]>" +
 '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>' +
-"<![endif]--><title></title> dX-dT.com Change over time</head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"/\" class=\"logo\"><img src=\"/logotype-small.png\" alt=\"dx-dt\" /></a></h3><ul><li><a href=\"/\">Home</a></li>" +
+"<![endif]--><title>dxdt.io Change over time</title></head><body><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"/\" class=\"logo\"><img src=\"/logotype-small.png\" width=\"52px\" height=\"22px\" /></a></h3><ul><li><a href=\"/\">Home</a></li>" +
 (function () { if (this.crumbs) { return (
 (function () { var __result__ = [], __key__, idx; for (__key__ in this.crumbs) { if (this.crumbs.hasOwnProperty(__key__)) { idx = this.crumbs[__key__]; __result__.push(
 "<li><a class=\"skinny\">></a></li><li><a href=\"#masthead\">" + 
@@ -128,9 +140,9 @@ this.escape(idx) +
 "</a></li>"
 ); } } return __result__.join(""); }).call(this)
 );} else { return ""; } }).call(this) + 
-"</ul><ul class=\"secondary-nav\"><li><form><input class=\"search\" /></form></li><li style=\"margin-left:10px\" class=\"dropdown\"><a href=\"#toggle\" class=\"dropdown-toggle\">Account</a><ul class=\"dropdown-menu\"><li><a href=\"#\">secondary-link</a></li></ul></li></ul></div></div></div><div class=\"app\"></div><div class=\"container main\">" + 
+"</ul><ul class=\"secondary-nav\"><li><form><input class=\"search\" /></form></li><li style=\"margin-left:10px\" class=\"dropdown\"><a href=\"#toggle\" class=\"dropdown-toggle\">Account</a><ul class=\"dropdown-menu\"><li><a href=\"#\">secondary-link</a></li></ul></li></ul></div></div></div><div class=\"app\"></div><div class=\"container main workspace\">" + 
 content + 
-"</div>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
+"</div><center style=\"letter-spacing:1px\"><br /><br />&copy; 2011 <b>X</b>itive, Inc<br /><br /></center><div class=\"clear\"></div>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
 etc +
 "\nTransitive.boot();\n//]]>\n</script>\n</body></html>";
  return _$output;  } catch (e) {
@@ -143,7 +155,7 @@ with(locals || {}) {
   try {
    var _$output="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
 '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">' +
-"<html><head><title>dx-dt.com Change Over Time</title><link rel=\"stylesheet\" href=\"/app.css?" +
+"<html><head><title>dxdt.io Change Over Time</title><link rel=\"stylesheet\" href=\"/app.css?" +
 this.escape(q) +
 "\" media=\"all\" /><script src=\"/transitive.js?" +
 this.escape(q) +
@@ -213,7 +225,7 @@ with(locals || {}) {
    var _$output="";
 this.crumbs = ["Staging", "Web Server 1", "Processes"]
 ; _$output = _$output  +
-"<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">node</a></h3><div class=\"listing active\"> <a href=\"/\">Statistics</a> </div><div class=\"listing\"> <a href=\"/\">Ports (4)</a> </div><div class=\"listing\"> <a href=\"/\">Alerts</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><div style=\"margin-bottom:3px;\" class=\"page-header\"><h1>node <small class=\"strong\">PID: 42141 &nbsp; Started: Mon Sep 12 7:58 PM UTC</small> </h1></div><div style=\"margin-bottom:17px\" class=\"code\"> <input style=\"width: 100%;\" value=\"node /usr/local/bin/restartr -c lessc -a public/lesscss/bootstrap.less -a public/app.css public/lesscss/bootstrap.less public/lesscss/dxdt.less public/lesscss/forms.less public/lesscss/patterns.less public/lesscss/preboot.less public/lesscss/reset.less public/lesscss/scaffolding.less public/lesscss/tables.less public/lesscss/type.less\" class=\"stealth\" /> </div><div class=\"row\"><div class=\"span12\"><div style=\"width:100%;height:300px;background-color:#666;color:white\" class=\"graph\">zoom view</div><div style=\"width:100%;height:75px;background-color:#666;margin-top:20px;color:white\" class=\"graph\">overview</div></div><div class=\"graph-options span4\"><h3>Stats</h3><ul class=\"unstyled\"><li> <input type=\"checkbox\" checked=\"checked\" /> Mem%</li><li> <input type=\"checkbox\" checked=\"checked\" /> CPU%</li><li> <input type=\"checkbox\" /> time</li><li> <input type=\"checkbox\" /> utime</li><li> <input type=\"checkbox\" /> rss</li><li> <input type=\"checkbox\" /> vsz</li></ul></div><div class=\"graph-options span4\"><h3>Annotate</h3><ul class=\"unstyled\"><li> <input type=\"checkbox\" checked=\"checked\" /> Process Notes</li><li> <input type=\"checkbox\" checked=\"checked\" /> Staging Notes</li><li> <input type=\"checkbox\" checked=\"checked\" /> Web Server 1 Notes</li></ul></div><div class=\"graph-options span4\"><h3>Additional Stats</h3><input type=\"text\" placeholder=\"server or environment stats\" class=\"search\" /></div></div><div class=\"row\"><div class=\"span12\"><h2>Events</h2><div class=\"row\"><div class=\"span4\"><h3>Wed Sep 14</h3></div><div class=\"span8\"><div class=\"alert-message\">9:22 AM UTC Began listening to port 3000</div></div></div><hr /><div class=\"row\"><div class=\"span4\"><h3>Mon Sep 12</h3></div><div class=\"span8\"><div class=\"alert-message success\">8:05 PM UTC CPU stayed below 80% for 2 Minutes</div><div class=\"alert-message error\">7:58 PM UTC CPU Exceeded 90%  for 2 Minutes</div><div class=\"alert-message\">2:22 PM UTC Process Started</div></div></div></div></div></div></div>";
+"<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♟</div><a href=\"/\">node</a></h3><div class=\"listing active\"> <a href=\"/\">metrics</a> </div><div class=\"listing\"> <a href=\"/\">Ports (4)</a> </div><div class=\"listing\"> <a href=\"/\">Alerts</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><div style=\"margin-bottom:3px;\" class=\"page-header\"><h1>node <small class=\"strong\">PID: 42141 &nbsp; Started: Mon Sep 12 7:58 PM UTC</small> </h1></div><div style=\"margin-bottom:17px\" class=\"code\"> <input style=\"width: 100%;\" value=\"node /usr/local/bin/restartr -c lessc -a public/lesscss/bootstrap.less -a public/app.css public/lesscss/bootstrap.less public/lesscss/dxdt.less public/lesscss/forms.less public/lesscss/patterns.less public/lesscss/preboot.less public/lesscss/reset.less public/lesscss/scaffolding.less public/lesscss/tables.less public/lesscss/type.less\" class=\"stealth\" /> </div><div class=\"row\"><div class=\"span12\"><div style=\"width:100%;height:300px;background-color:#666;color:white\" class=\"graph\">zoom view</div><div style=\"width:100%;height:75px;background-color:#666;margin-top:20px;color:white\" class=\"graph\">overview</div></div><div class=\"graph-options span4\"><h3>Stats</h3><ul class=\"unstyled\"><li> <input type=\"checkbox\" checked=\"checked\" /> Mem%</li><li> <input type=\"checkbox\" checked=\"checked\" /> CPU%</li><li> <input type=\"checkbox\" /> time</li><li> <input type=\"checkbox\" /> utime</li><li> <input type=\"checkbox\" /> rss</li><li> <input type=\"checkbox\" /> vsz</li></ul></div><div class=\"graph-options span4\"><h3>Annotate</h3><ul class=\"unstyled\"><li> <input type=\"checkbox\" checked=\"checked\" /> Process Notes</li><li> <input type=\"checkbox\" checked=\"checked\" /> Web Server 1 Notes</li><li> <input type=\"checkbox\" checked=\"checked\" /> Staging Notes</li></ul></div><div class=\"graph-options span4\"><h3>Additional Stats</h3><input type=\"text\" placeholder=\"server or environment stats\" class=\"search\" /></div></div><div class=\"row\"><div class=\"span12\"><h2>Events</h2><div class=\"row\"><div class=\"span4\"><h3>Wed Sep 14</h3></div><div class=\"span8\"><div class=\"alert-message\">9:22 AM UTC Began listening to port 3000</div></div></div><hr /><div class=\"row\"><div class=\"span4\"><h3>Mon Sep 12</h3></div><div class=\"span8\"><div class=\"alert-message success\">8:05 PM UTC CPU stayed below 80% for 2 Minutes</div><div class=\"alert-message error\">7:58 PM UTC CPU Exceeded 90%  for 2 Minutes</div><div class=\"alert-message\">2:22 PM UTC Process Started</div></div></div></div></div></div></div>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }
@@ -228,10 +240,59 @@ with(locals || {}) {
   }
 }
 }
-,  "server": function anonymous(locals) {
+,  "server/ips": function anonymous(locals) {
 with(locals || {}) {
   try {
-   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Comments</a> </div></div></div><div class=\"span12\"><h1>Processes</h1><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span12 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
+   var _$output="<h2>IP Addresses</h2>" +
+"";
+var ipReg = /inet (\d+\.\d+\.\d+\.\d+)/g
+var match, str;
+str = ifconfig
+do {
+  match = ipReg.exec(str);
+  if(match){
+    str = str.substr(match.index + 1);
+    ip = match[1];; _$output = _$output  +
+this.escape(ip) +
+"<br />" +
+"";}
+}while(match !== null); _$output = _$output ;
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "server/networking": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="";
+this.crumbs = ["Staging", "Web Server 1", "Networking"]
+; _$output = _$output  +
+"<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/server/123\">Web Server 1</a></h3><div class=\"listing\"> <a href=\"/process\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">metrics</a> </div><div class=\"listing active\"> <a href=\"/\">Networking</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><div class=\"page-header\"><h1>Web Server 1 - Networking <small class=\"strong\"></small> </h1></div><h2>hostname</h2>" +
+this.escape(status.machine.hostname) +
+"<div class=\"vspace\"></div><h2>Open Ports</h2>This hostname:port list shows you what ports are open and bound to a specific host.  If the host is \"*\", then that means the machine will accept connections on any host.  A host can be an ip address or localhost.<div class=\"vspace\"></div>" +
+(function () { var __result__ = [], __key__, proc; for (__key__ in Object.keys(status.ports)) { if (Object.keys(status.ports).hasOwnProperty(__key__)) { proc = Object.keys(status.ports)[__key__]; __result__.push(
+(function () { var __result__ = [], __key__, port; for (__key__ in status.ports[proc]) { if (status.ports[proc].hasOwnProperty(__key__)) { port = status.ports[proc][__key__]; __result__.push(
+"<a href=\"" + this.escape("/processes/"+status.processes.ids[proc]) + "\">" + 
+this.escape(port.host+":") +
+this.escape(port.port) + 
+"</a><br />"
+); } } return __result__.join(""); }).call(this)
+); } } return __result__.join(""); }).call(this) +
+"<div class=\"vspace\"></div>" +
+this.render("server/ips", {ifconfig: status.machine.ifconfig}) +
+"<div class=\"vspace\"></div><h2>ifconfig -a</h2><pre>" + 
+this.escape(status.machine.ifconfig) + 
+"</pre></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "server/processes": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Urls</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3><div class=\"ico\">♞</div><a href=\"/\">Web Server 1</a></h3><div class=\"listing active\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/\">CPU</a> </div><div class=\"listing\"> <a href=\"/\">Memory</a> </div><div class=\"listing\"> <a href=\"/\">Disk</a> </div><div class=\"listing\"> <a href=\"/\">Network</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><h1>Processes</h1><div class=\"row\"><div style=\"border-right:1px solid black; margin-right: -1px\" class=\"span6\"><h2>Most Memory</h2></div><div class=\"span6\"><h2>Most CPU</h2></div></div><div class=\"row\"><div class=\"span12 column\"><table class=\"zebra-striped\"><thead><tr><th>PID</th>" +
 "";columns = "lstart ucomm mem cpu rss vsz utime time".split(" "); _$output = _$output  +
 "";for(idx in columns){; _$output = _$output  +
 "<th>" + 
@@ -253,6 +314,20 @@ this.escape((status.processes[name] && status.processes[name][pid])) +
 "</tr>" +
 "";}; _$output = _$output  + 
 "</tbody></table></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "server/server": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="";
+this.crumbs = ["Staging", "Web Server 1"]
+; _$output = _$output  +
+"<div class=\"row\"><div class=\"span4 leftnav\"><div class=\"nav-category\"><h3><div class=\"ico\">♛</div><a href=\"/\">Staging</a></h3><div class=\"listing active\"> <a href=\"/\">Servers</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div><div class=\"nav-category\"><h3 class=\"active\"><div class=\"ico\">♞</div><a href=\"/server/123\">Web Server 1</a></h3><div class=\"listing\"> <a href=\"/\">Metrics</a> </div><div class=\"listing\"> <a href=\"/\">Processes</a> </div><div class=\"listing\"> <a href=\"/server/123/networking\">Networking</a> </div><div class=\"listing\"> <a href=\"/\">Notes</a> </div></div></div><div class=\"span12\"><div class=\"page-header\"><h1>Web Server 1 <small class=\"strong\">" + 
+this.escape(status.machine.hostname) + 
+"</small> </h1></div><div class=\"row\"><div class=\"span6\"><h2>Processes</h2>See your top processes<br /><a href=\"/server/123/processes\">Processes</a></div><div class=\"span6\"><h2>Metrics</h2>Load AVG, Disk Usage<br /><a href=\"/server/123/metrics\">Metrics</a></div></div><div class=\"vspace\"></div><div class=\"row\"><div class=\"span6\"><h2>Networking</h2>Open ports, IP addresses, ifconfig<br /><a href=\"/server/123/networking\">Networking</a></div><div class=\"span6\"><h2>Notes</h2>Deploys, notes, changes &amp;etc.<br /><a href=\"/server/123/comments\">Notes</a></div></div><div class=\"vspace\"></div><div class=\"row\"><div class=\"span12\"><h2>Events</h2><div class=\"row\"><div class=\"span4\"><h3>Wed Sep 14</h3></div><div class=\"span8\"><div class=\"alert-message\">9:22 AM UTC Began listening to port 3000</div></div></div><hr /><div class=\"row\"><div class=\"span4\"><h3>Mon Sep 12</h3></div><div class=\"span8\"><div class=\"alert-message success\">8:05 PM UTC CPU stayed below 80% for 2 Minutes</div><div class=\"alert-message error\">7:58 PM UTC CPU Exceeded 90%  for 2 Minutes</div><div class=\"alert-message\">2:22 PM UTC Process Started</div></div></div></div></div></div></div>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }

@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "uuid-pure": "~1.0.10",
-    "redis": "~0.6.7",
     "hiredis": "~0.1.12",
+    "redis": "~0.6.7",
     "easyhash": "0.0.0",
     "coffee-resque": "~0.1.4",
     "rimraf": "~1.0.7"

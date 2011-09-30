@@ -1,0 +1,62 @@
+-
+  this.crumbs = ["Staging"]
+
+.row
+  .span4.leftnav
+    .nav-category
+      %h3 
+        .ico ♛
+        %a(href="/") Staging
+      .listing.active
+        %a(href="/")> Servers
+      .listing
+        %a(href="/")> Notes
+  .span12
+    .page-header
+      %h1
+        Staging
+        %small.strong> 1 Server
+
+    .row
+      .span12
+        %h3 Find Servers, Processes, Ports &amp; Notes
+        %input.search(type="text" placeholder="server or environment stats")
+    .vspace2
+    .row
+      .span12
+        %h2 Servers
+        .server-list
+          %span.label.success> OK
+          %a(href="/server/123")> Web Server 1
+          abpmba.local
+          %br
+          %span.label.notice> Recovered
+          %a(href="/server/123")> DB Server Master
+          ec2-wjn24jn5kj3n3
+          %br
+          %span.label.warning> High Load
+          %a(href="/server/123")> DB Server Slave
+          ec2-wjn24jn5kj3n3
+          abpmba.local
+    .vspace
+    .row
+      .span12
+        %h2 Events
+        .row
+          .span4
+            %h3 Wed Sep 14
+          .span8
+            .alert-message
+              9:22 AM UTC Began listening to port 3000
+        %hr
+        .row
+          .span4
+            %h3 Mon Sep 12
+          .span8
+            .alert-message.success
+              8:05 PM UTC CPU stayed below 80% for 2 Minutes
+            .alert-message.error
+              7:58 PM UTC CPU Exceeded 90%  for 2 Minutes
+            .alert-message
+              2:22 PM UTC Process Started
+

@@ -13,13 +13,22 @@ servers - set
 
 servers/[serverId] - hash
 
+servers/[serverId]/events - list
+  eventIds
+
 servers/[serverId]/processes - list? set? zset?
   processIds
 
 servers/[serverId]/processes/current - set
   processIds
+  
+servers/[serverId]/ports/current - set
+  processIds
 
 processes/[processId] - hash
+
+processes/[processId]/ports - zset
+  port : host
 
 processes/[processId]/series/[seriesId] - zset
   ts: value

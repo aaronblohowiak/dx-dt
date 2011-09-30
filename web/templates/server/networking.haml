@@ -1,0 +1,50 @@
+-
+  this.crumbs = ["Staging", "Web Server 1", "Networking"]
+
+.row
+  .span4.leftnav
+    .nav-category
+      %h3 
+        .ico ♛
+        %a(href="/") Staging
+      .listing.active
+        %a(href="/")> Servers
+      .listing
+        %a(href="/")> Notes
+    .nav-category
+      %h3
+        .ico ♞
+        %a(href="/server/123") Web Server 1 
+      .listing
+        %a(href="/process")> Processes
+      .listing
+        %a(href="/")> metrics
+      .listing.active
+        %a(href="/")> Networking
+      .listing
+        %a(href="/")> Notes
+  .span12
+    .page-header
+      %h1
+        Web Server 1 - Networking
+        %small.strong>
+    
+    %h2 hostname
+    = status.machine.hostname
+    .vspace
+    %h2 Open Ports
+    This hostname:port list shows you what ports are open and bound to a specific host.  If the host is "*", then that means the machine will accept connections on any host.  A host can be an ip address or localhost.
+    .vspace
+    :each proc in Object.keys(status.ports)
+      :each port in status.ports[proc]
+        %a(href="/processes/"+status.processes.ids[proc])
+          = port.host+":"
+          = port.port
+        %br
+    .vspace
+    != this.render("server/ips", {ifconfig: status.machine.ifconfig})
+    .vspace
+    %h2 ifconfig -a
+    %pre
+      = status.machine.ifconfig
+    

@@ -2112,6 +2112,29 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 .popover .content p, .popover .content ul, .popover .content ol {
   margin-bottom: 0;
 }
+.label {
+  padding: 1px 3px 2px;
+  background-color: #bfbfbf;
+  font-size: 9.75px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.label.important {
+  background-color: #c43c35;
+}
+.label.warning {
+  background-color: #f89406;
+}
+.label.success {
+  background-color: #46a546;
+}
+.label.notice {
+  background-color: #62cffc;
+}
 body {
   font-family: "Helvetica Neue Light", "HelveticaNeue-Light", Arial, Helvetica, sans-serif;
   /* font-weight:100;*/
@@ -2140,6 +2163,9 @@ h6 {
 .leftnav > .nav-category {
   margin-bottom: 24px;
 }
+.leftnav > .nav-category h3.active a:link, .leftnav > .nav-category h3.active a:hover, .leftnav > .nav-category h3.active a:visited {
+  color: #0069d6;
+}
 .leftnav > .nav-category > h3 .ico {
   width: 40px;
   float: left;
@@ -2163,16 +2189,6 @@ h6 {
 }
 .listing > a:hover {
   color: #0069d6;
-}
-.sep {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 10px;
-  height: 20px;
-  width: 1px;
-  border-left: 1px solid #595959;
-  position: relative;
-  float: left;
 }
 .topbar > h3 {
   font-family: "Arial Black", sans-serif;
@@ -2426,7 +2442,7 @@ table.tcp-ports td.port {
   border-top: 1px solid #FFF;
   background-color: #85411e;
   height: 10px;
-  margin-top: 22px;
+  margin-top: 40px;
 }
 html {
   margin: 0;
@@ -2489,10 +2505,34 @@ html {
 .home .main h2 {
   margin-bottom: 10px;
 }
+.container.main.workspace {
+  border-bottom: 1px solid #ccc;
+  padding: 40px 0;
+}
+.container.main.workspace pre {
+  font-family: "Monaco", Courier New, monospace;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 20px;
+  color: #EAB542;
+  background-color: black;
+  padding: 20px;
+  overflow: auto;
+}
 .grayblock {
   background-color: #f0f0f0;
   width: 940px;
   padding: 20px;
   color: #404040;
   border-bottom: 1px solid #e5e5e5;
+}
+.vspace {
+  height: 20px;
+}
+.vspace2 {
+  height: 40px;
+}
+.server-list {
+  font-size: 150%;
+  line-height: 200%;
 }

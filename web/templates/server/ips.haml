@@ -1,0 +1,14 @@
+%h2 IP Addresses
+-
+  var ipReg = /inet (\d+\.\d+\.\d+\.\d+)/g
+  var match, str;
+  str = ifconfig
+  do {
+    match = ipReg.exec(str);
+    if(match){
+      str = str.substr(match.index + 1);
+      ip = match[1];
+= ip
+%br
+-   }
+  }while(match !== null)

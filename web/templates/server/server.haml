@@ -1,0 +1,75 @@
+-
+  this.crumbs = ["Staging", "Web Server 1"]
+
+.row
+  .span4.leftnav
+    .nav-category
+      %h3 
+        .ico ♛
+        %a(href="/") Staging
+      .listing.active
+        %a(href="/")> Servers
+      .listing
+        %a(href="/")> Notes
+    .nav-category
+      %h3.active
+        .ico ♞
+        %a(href="/server/123") Web Server 1
+      .listing
+        %a(href="/")> Metrics
+      .listing
+        %a(href="/")> Processes
+      .listing
+        %a(href="/server/123/networking")> Networking
+      .listing
+        %a(href="/")> Notes
+  .span12
+    .page-header
+      %h1
+        Web Server 1
+        %small.strong>
+          = status.machine.hostname
+    .row
+      .span6
+        %h2 Processes
+        See your top processes
+        %br
+        %a(href="/server/123/processes") Processes
+      .span6
+        %h2 Metrics
+        Load AVG, Disk Usage
+        %br
+        %a(href="/server/123/metrics") Metrics
+    .vspace
+    .row
+      .span6
+        %h2 Networking
+        Open ports, IP addresses, ifconfig
+        %br
+        %a(href="/server/123/networking") Networking
+      .span6
+        %h2 Notes
+        Deploys, notes, changes &amp;etc.
+        %br
+        %a(href="/server/123/comments") Notes
+    .vspace
+    .row
+      .span12
+        %h2 Events
+        .row
+          .span4
+            %h3 Wed Sep 14
+          .span8
+            .alert-message
+              9:22 AM UTC Began listening to port 3000
+        %hr
+        .row
+          .span4
+            %h3 Mon Sep 12
+          .span8
+            .alert-message.success
+              8:05 PM UTC CPU stayed below 80% for 2 Minutes
+            .alert-message.error
+              7:58 PM UTC CPU Exceeded 90%  for 2 Minutes
+            .alert-message
+              2:22 PM UTC Process Started

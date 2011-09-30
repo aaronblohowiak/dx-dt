@@ -20,14 +20,14 @@
     != "<![endif]-->"
 
     %title
-     dX-dT.com Change over time
+      dxdt.io Change over time
   %body
     %div( class="topbar")
       %div( class="fill")
         %div( class="container")
           %h3
             %a.logo(href="/")
-              %img(src="/logotype-small.png" alt="dx-dt")
+              %img(src="/logotype-small.png" width="52px" height="22px")
           %ul
             %li
               %a(href="/") Home
@@ -49,9 +49,15 @@
                   %a(href="#") secondary-link
                   
     .app
-    .container.main
+    .container.main.workspace
       != content
+    %center(style="letter-spacing:1px")
+      %br
+      %br
+      &copy; 2011 <b>X</b>itive, Inc
+      %br
+      %br
+    .clear
     :script
       !{etc}
       Transitive.boot();
-
