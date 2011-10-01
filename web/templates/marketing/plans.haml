@@ -10,58 +10,51 @@
       .row        
         .span8
           .row
-            .span8
-              %h1 Plans
+            .span8.plans
+              %h1
+                Plans
+                %small> 100% SSL. 4 Week data retention.
               .row
                 .span4
                   %h2
-                    Pico
-                    %small> $N/Month
+                    Small
+                    .price> $49
+                      .price= "/mo"
                   %p 
-                    <b>3</b> Servers
-                  %p
-                    2 weeks retention
-                  %p 100% SSL
+                    <b>4</b> Servers
                 .span4
-                  %h2 
-                    Micro
-                    %small> $X/Month
+                  %h2
+                    Medium
+                    .price> $95
+                      .price= "/mo"
                   %p
-                    <b>10</b> Servers
-                  %p
-                    4 weeks retention
-                  %p 100% SSL
-                  
+                    <b>8</b> Servers
               .vspace
               .row
                 .span4
                   %h2
-                    Macro
-                    %small> $Y/Month
+                    Large
+                    .price> $195
+                      .price= "/mo"
                   %p 
-                    <b>25</b> Servers
-                  %p
-                    4 weeks retention
-                  %p 100% SSL
+                    <b>18</b> Servers
                 .span4
                   %h2
-                    Mega
-                    %small> $Z/Month
+                    X-Large
+                    .price> $495
+                      .price= "/mo"
                   %p 
                     <b>50</b> Servers
-                  %p
-                    4 weeks retention
-                  %p 100% SSL
           .row
             .vspace2
             .span8
               %div(style="padding:0 0px")
                 %h2 Have more than 50 servers?
                 %p
-                  %a(href="mailto:aaron@dxdt.io")> Email Us
+                  %a(href="mailto:custom@dxdt.io")> Email Us
                   for volume discounts.
         .span8
-          %form
+          %form(method="POST")
             %fieldset
               %legend
                 Monitor Everything
@@ -70,18 +63,27 @@
               .clearfix
                 %label Email address
                 .input
-                  %input(name="email")#email
+                  %input#email(name="email" tabindex=1)
               .clearfix
                 %label Password
                 .input
-                  %input(type="password" name="password")
+                  %input(type="password" name="password" tabindex=2)
               .clearfix
                 %label
-                  U.S. Cell Phone
+                  Cell Phone
                   %small>
-                    %a(href="#" rel="twipsy" title='Used for SMS Alerts, Security and Account Information') (?)
+                    %a(href="#" rel="twipsy" title='Used for SMS Alerts, Security and Account Information') (why?)
                 .input
-                  %input(placeholder="(555) 555-5555" name="cell")
+                  %input(placeholder="(555) 555-5555" name="cell" tabindex=3)
+              .clearfix
+                %label Plan
+                .input
+                  %select(tabindex=4)
+                    %option Small
+                    %option(selected=true) Medium
+                    %option Large
+                    %option X-Large
+                    %option Custom
               .clearfix(style="margin-bottom:0px")
                 %label
                   Terms Of Service
@@ -89,20 +91,18 @@
                   %ul.inputs-list
                     %li.input
                       %label
-                        %input(type="checkbox")>
+                        %input(type="checkbox" tabindex=5)>
                         I have read and agree to the
                         %a(href="/terms")> Terms of Service
               .actions(style="background:none;border:none;margin-top:0px")
-                %button.btn.primary(type="submit" value="Create Account")
+                %button.btn.primary(type="submit" value="Create Account" tabindex=6)
                   %b Start FREE 30-Day Trial »                
                 %br
                 %br              
                 %p
                   %span.label(style="font-size:14px")> Next:
                   Paste one line in your terminal.
-          .vspace2
         .clear
-      .vspace
 
 :javascript
   $(function(){
