@@ -1,0 +1,110 @@
+-
+  this.crumbs = [["", "Features"], ["", "Pricing"], ["", "Contact"], ["", "Documentation"]]
+
+.app
+.home
+  .vspace
+  .body.container
+    .vspace
+    .container.main
+      .row        
+        .span8
+          .row
+            .span8
+              %h1 Plans
+              .row
+                .span4
+                  %h2
+                    Pico
+                    %small> $N/Month
+                  %p 
+                    <b>3</b> Servers
+                  %p
+                    2 weeks retention
+                  %p 100% SSL
+                .span4
+                  %h2 
+                    Micro
+                    %small> $X/Month
+                  %p
+                    <b>10</b> Servers
+                  %p
+                    4 weeks retention
+                  %p 100% SSL
+                  
+              .vspace
+              .row
+                .span4
+                  %h2
+                    Macro
+                    %small> $Y/Month
+                  %p 
+                    <b>25</b> Servers
+                  %p
+                    4 weeks retention
+                  %p 100% SSL
+                .span4
+                  %h2
+                    Mega
+                    %small> $Z/Month
+                  %p 
+                    <b>50</b> Servers
+                  %p
+                    4 weeks retention
+                  %p 100% SSL
+          .row
+            .vspace2
+            .span8
+              %div(style="padding:0 0px")
+                %h2 Have more than 50 servers?
+                %p
+                  %a(href="mailto:aaron@dxdt.io")> Email Us
+                  for volume discounts.
+        .span8
+          %form
+            %fieldset
+              %legend
+                Monitor Everything
+                %br
+                in One Minute
+              .clearfix
+                %label Email address
+                .input
+                  %input(name="email")#email
+              .clearfix
+                %label Password
+                .input
+                  %input(type="password" name="password")
+              .clearfix
+                %label
+                  U.S. Cell Phone
+                  %small>
+                    %a(href="#" rel="twipsy" title='Used for SMS Alerts, Security and Account Information') (?)
+                .input
+                  %input(placeholder="(555) 555-5555" name="cell")
+              .clearfix(style="margin-bottom:0px")
+                %label
+                  Terms Of Service
+                .inputs
+                  %ul.inputs-list
+                    %li.input
+                      %label
+                        %input(type="checkbox")>
+                        I have read and agree to the
+                        %a(href="/terms")> Terms of Service
+              .actions(style="background:none;border:none;margin-top:0px")
+                %button.btn.primary(type="submit" value="Create Account")
+                  %b Start FREE 30-Day Trial »                
+                %br
+                %br              
+                %p
+                  %span.label(style="font-size:14px")> Next:
+                  Paste one line in your terminal.
+          .vspace2
+        .clear
+      .vspace
+
+:javascript
+  $(function(){
+    $('#email').focus();
+  })

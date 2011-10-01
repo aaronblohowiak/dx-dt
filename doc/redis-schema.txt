@@ -1,4 +1,4 @@
-# Schema for a timeseries database.
+# Schema for a time series database.
 
 environments - set
   envrionmentIds
@@ -32,6 +32,37 @@ processes/[processId]/ports - zset
 
 processes/[processId]/series/[seriesId] - zset
   ts: value
+
+
+#Schema for the account db.
+
+users/email/[sha1(email.downcase.trim)] - value
+  userId
+
+users/[userId] - hash
+  companyId
+  name
+  phone number
+
+companies/set
+  companyIds
+
+companies/[companyId] - hash
+  databaseId
+  primaryUserId
+  stripe_customer_id
+
+databases/[databaseId]
+  host
+  port
+  secret
+
+tokens/[tokenId] - hash
+  companyId
+  environmentId
+  rights
+  createdBy
+  
 
 
 

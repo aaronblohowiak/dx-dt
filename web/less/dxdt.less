@@ -117,9 +117,15 @@ table.tcp-ports{
 .topbar{
   //.box-shadow(0px 3px 10px rgba(200, 200, 200, 0.5);
   form {
-    .username, input.password{
+    input.username, input.password{
       .columns(2);
       margin-left:10px;
+      padding-left:1em;
+
+      &:focus,
+      &:focused {
+        padding-left:1em; 
+      }
     }
     
     a.login{
@@ -132,7 +138,8 @@ table.tcp-ports{
 .app{
   border-top: 1px solid #FFF;
   //#gradient > .vertical(#242, #252);
-  background-color: @accentColor;
+  //#gradient > .vertical(@homeGradientStart, @homeGradientStop);
+  background-color:@homeGradientStart;
   height:10px;
   margin-top:40px;  
 }
@@ -151,8 +158,12 @@ table.tcp-ports{
 
 @copper: spin(@blue,-170);
 
-@homeGradientStart: @darkGreen;
+@homeGradientStart: @blue;
 @homeGradientStop: saturate(darken(@homeGradientStart, 30%), 30%);
+
+/*
+@homeGradientStart: @darkGreen;
+@homeGradientStop: saturate(darken(@homeGradientStart, 25%), 30%);*/
 
 html {
   margin: 0;
@@ -180,6 +191,12 @@ html {
   }
   
   p {
+   // color: @grayDark;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  
+  .call-to-action .span8 p{
     color: @grayDark;
   }
   
@@ -187,13 +204,13 @@ html {
     margin-top:22px;
     border-top:1px solid #fff;
     #gradient > .vertical(@homeGradientStart, @homeGradientStop);
-    height: 180px;
+    height: 140px;
     padding-top: 40px;
     text-align:center;
     
     h1 {
       color: white;
-      text-shadow: 0 -1px 0px rgba(0,0,0,.9);
+      text-shadow: 0 -1px 1px rgba(0,0,0,.5);
       font-weight:normal;
       letter-spacing:1px;
     }
@@ -254,3 +271,8 @@ html {
   font-size:150%;
   line-height:200%;
 }
+
+.inputs-list label:hover{
+  cursor: pointer;
+}
+

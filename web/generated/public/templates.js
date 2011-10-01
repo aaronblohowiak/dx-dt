@@ -90,42 +90,6 @@ this.crumbs = ["Staging"]
   }
 }
 }
-,  "example": function anonymous(obj) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<iframe width="420" height="243" src="http://www.youtube.com/embed/ZB5-r9km_eQ?rel=0" frameborder="0" allowfullscreen></iframe>\n<p>Watch the video to see dx-dt in action.</p>');}return __p.join('');
-}
-,  "home": function anonymous(locals) {
-with(locals || {}) {
-  try {
-   var _$output="<div class=\"page-header\"> <h1> dxdt.io <small> Process Monitoring </small>  </h1> </div><b>Server:" +
-this.escape(serverId) +
-" > PID:" +
-this.escape(pid) + 
-"</b><ul><li>Started at: " +
-this.escape(start.toString()) +
-".</li></ul><pre>" + 
-this.renderLive("replace", "pidRow", process) + 
-"</pre>" +
-this.renderLive("simpleFlot", "cpu", cpu) +
-this.renderLive("simpleFlot", "mem", mem);
- return _$output;  } catch (e) {
-    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
-  }
-}
-}
-,  "landing": function anonymous(locals) {
-with(locals || {}) {
-  try {
-   var _$output="";
-this.crumbs = [["", "Features"], ["", "Pricing"], ["", "Contact"], ["", "Documentation"]]
-; _$output = _$output  +
-"<div class=\"home\"><div class=\"span16 top\"><div class=\"container\"><div class=\"row\"><div class=\"span8\"><!--%h1.everything --><!--Monitor, Alert, Graph, Resolve:--><!--%br--><!--Every Process. &nbsp;Every Port.--><!--%br--><!--Every--><!--%span.virtual> ( Virtual )--><!--Machine.--><h1 class=\"everything\">Monitor Every Process,<br /> Port &amp; <span class=\"virtual\"></span> Machine.<br />No Configuration</h1></div><div class=\"span8\"><img src=\"/bigdxdtwhite.png\" width=\"289px\" height=\"145px\" /></div></div></div></div><div class=\"body container\"><div class=\"container\"><div style=\"margin-bottom:20px; text-align:center\" class=\"row\"><div class=\"grayblock\"><div class=\"row\"><div class=\"span12\"><h2><a href=\"/easiest-server-monitoring\">One-minute install</a>. Start collecting data <b>before</b> there's a problem.</h2></div><div style=\"text-align:center\" class=\"span3\"><a href=\"/plans\" class=\"btn primary\"><big><b>30-day free trial »</b></big></a></div></div></div></div></div><div class=\"container main\"><div class=\"row\"><div class=\"span8\"><div class=\"row\"><div style=\"border-bottom: 1px solid #f5f5f5; margin-bottom:10px;padding-bottom:10px; text-align:center\" class=\"span8\"><h2>No Configuration</h2><p>We have the  <a href=\"/easiest-server-monitoring\">easiest server monitoring</a> install process in the world.</p><p>Download & run a bash script on your server. That's it.</p><p>Your API key is included in the script so there is nothing to configure.</p></div><div class=\"clear\"></div></div><div class=\"row\"><div class=\"span4\"><h2>Every Process</h2><p>Monitor CPU, RAM and page faults per-process.</p><p> <a href=\"/process-monitoring\">Process Monitoring</a> is like graphing the ouptut of `top` from multiple machines.</p><p> <a href=\"/search-terminated-processes\">Search terminated processes</a> to figure out why monit, upstart, god  or OOM is killing your process.</p></div><div class=\"span4\"><div style=\"padding:0 0px\"><h2>Every Port</h2><p>List every open port across all of your machines at a glance.</p><p>See which process is listening on a given port.</p><p> <a href=\"/port-monitoring\">Port Monitoring</a> has the answers.</p></div></div></div><div style=\"margin-top:10px\" class=\"row\"><div class=\"span4\"><h2>Every Machine</h2><p>Monitor how the system is using RAM (processes, buffers, filesystem cache.)</p><p>Network Configuration</p><p>Load Average</p><p>Disk Usage over time</p></div><div class=\"span4\"><h2>Every Event</h2><p>We built Twitter for servers.  Search the unified event log for processes starting and stopping, memory getting gobbled up, ports opening and closing, and all the standard alerts.</p><p>Annotate any graph or machine.</p></div></div></div><div class=\"span8\"><h2>Debug Problems <small>10x faster</small> </h2>" +
-this.render("example") + 
-"</div></div></div></div></div>";
- return _$output;  } catch (e) {
-    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
-  }
-}
-}
 ,  "layout": function anonymous(locals) {
 with(locals || {}) {
   try {
@@ -161,6 +125,41 @@ etc +
   }
 }
 }
+,  "marketing/landing": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="";
+this.crumbs = [["", "Features"], ["", "Pricing"], ["", "Contact"], ["", "Documentation"]]
+; _$output = _$output  +
+"<div class=\"home\"><div class=\"span16 top\"><div class=\"container\"><div class=\"row\"><div class=\"span8\"><!--%h1.everything --><!--Monitor, Alert, Graph, Resolve:--><!--%br--><!--Every Process. &nbsp;Every Port.--><!--%br--><!--Every--><!--%span.virtual> ( Virtual )--><!--Machine.--><!--%h1.everything --><!--Monitor Every Process,--><!--%br--><!--Port &amp;--><!--%span.virtual>--><!--Machine.--><!--%br--><!--%b No Configuration--><h1 class=\"everything\"><b>Monitor Everything.</b><br />No configuration.</h1></div><div class=\"span8\"><img src=\"/bigdxdtwhite.png\" height=\"100px\" /></div></div></div></div><div class=\"body container\"><div class=\"container\"><div style=\"margin-bottom:20px; text-align:center\" class=\"row\"><div style=\"padding:20px 20px 10px 20px\" class=\"grayblock\"><div class=\"row\"><div class=\"span12\"><h2><a href=\"/easiest-server-monitoring\">One-minute install</a>. Start collecting data <b>before</b> there's a problem.</h2></div><div style=\"text-align:center\" class=\"span3\"><a href=\"/plans\" class=\"btn primary\"><big><b>30-day free trial »</b></big></a>  No Credit Card required.</div></div></div></div></div><div class=\"container main\"><div class=\"vspace\"></div><div class=\"row\"><div class=\"span16\"><div class=\"row\"><div class=\"span4\"><h2>Every Process</h2><p> <a href=\"/process-monitoring\">Process monitoring</a>  covers RAM, CPU, ports and more.</p><p> <a href=\"/process-monitoring#terminated\">Search old processes</a> for root cause analysis.</p></div><div class=\"span4\"><div style=\"padding:0 0px\"><h2>Every Port</h2><p> <a href=\"/port-monitoring\">Port Monitoring</a> tracks every hostname:port & process.</p><p>See which process is listening to a port.</p></div></div><div class=\"span4\"><h2>Every Machine</h2><p> <a href=\"/system-monitoring\">System monitoring</a> for Load Avg, Disk, RAM and more.</p><p>Every page has an easy ssh link for the current machine.</p></div><div class=\"span4\"><h2>Every Event</h2><p>The <a href=\"/event-streams\">event-streams</a> are \"Twitter for servers\".</p><p>Add your own notes to any graph or server.</p></div></div><div class=\"vspace2\"></div></div></div><div style=\"text-align:center\" class=\"row call-to-action\"><div class=\"span4\">&nbsp;</div><div class=\"span8\"><p>We have the  <a href=\"/easiest-server-monitoring\">easiest server monitoring</a> in the world.</p><p>One line in the terminal. That's it.</p><br /><a href=\"/plans\" class=\"btn error\"><big><b>Sign Up Now »</b></big></a><br />&nbsp;No Credit Card required.</div><div class=\"clear\"></div></div><div class=\"vspace2\"></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "marketing/plans": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="";
+this.crumbs = [["", "Features"], ["", "Pricing"], ["", "Contact"], ["", "Documentation"]]
+; _$output = _$output  +
+"<div class=\"app\"></div><div class=\"home\"><div class=\"vspace\"></div><div class=\"body container\"><div class=\"vspace\"></div><div class=\"container main\"><div class=\"row\"><div class=\"span8\"><div class=\"row\"><div class=\"span8\"><h1>Plans</h1><div class=\"row\"><div class=\"span4\"><h2>Pico <small>$N/Month</small> </h2><p><b>3</b> Servers</p><p>2 weeks retention</p><p>100% SSL</p></div><div class=\"span4\"><h2>Micro <small>$X/Month</small> </h2><p><b>10</b> Servers</p><p>4 weeks retention</p><p>100% SSL</p></div></div><div class=\"vspace\"></div><div class=\"row\"><div class=\"span4\"><h2>Macro <small>$Y/Month</small> </h2><p><b>25</b> Servers</p><p>4 weeks retention</p><p>100% SSL</p></div><div class=\"span4\"><h2>Mega <small>$Z/Month</small> </h2><p><b>50</b> Servers</p><p>4 weeks retention</p><p>100% SSL</p></div></div></div></div><div class=\"row\"><div class=\"vspace2\"></div><div class=\"span8\"><div style=\"padding:0 0px\"><h2>Have more than 50 servers?</h2><p> <a href=\"mailto:aaron@dxdt.io\">Email Us</a> for volume discounts.</p></div></div></div></div><div class=\"span8\"><form><fieldset><legend>Monitor Everything<br />in One Minute</legend><div class=\"clearfix\"><label>Email address</label><div class=\"input\"><input name=\"email\" /></div></div><div class=\"clearfix\"><label>Password</label><div class=\"input\"><input type=\"password\" name=\"password\" /></div></div><div class=\"clearfix\"><label>U.S. Cell Phone <small>" + 
+"<a href=\"#\" rel=\"twipsy\" title=\"" + this.escape('Used for SMS Alerts, Security and Account Information') + "\">" + 
+"(?)</a></small> </label><div class=\"input\"><input placeholder=\"(555) 555-5555\" name=\"cell\" /></div></div><div style=\"margin-bottom:0px\" class=\"clearfix\"><label>Terms Of Service</label><div class=\"inputs\"><ul class=\"inputs-list\"><li class=\"input\"><label> <input type=\"checkbox\" /> I have read and agree to the <a href=\"/terms\">Terms of Service</a> </label></li></ul></div></div><div style=\"background:none;border:none;margin-top:0px\" class=\"actions\"><button type=\"submit\" value=\"Create Account\" class=\"btn primary\"><b>Start FREE 30-Day Trial »</b></button><br /><br /><p> <span style=\"font-size:14px\" class=\"label\">Next:</span> Paste one line in your terminal.</p></div></fieldset></form><div class=\"vspace2\"></div></div><div class=\"clear\"></div></div><div class=\"vspace\"></div></div></div></div>\n<script type=\"text/javascript\">\n//<![CDATA[\n$(function(){\n  $('#email').focus();\n})\n//]]>\n</script>\n";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
+,  "marketing/terms": function anonymous(locals) {
+with(locals || {}) {
+  try {
+   var _$output="<div class=\"app\"></div><div class=\"home\"><div class=\"vspace\"></div><div class=\"body container\"><div class=\"vspace\"></div><div class=\"container main\"><div class=\"row\"><div class=\"span4\">&nbsp;</div><div class=\"span8\"><h1>Terms Of Service</h1>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div></div><div class=\"vspace\"></div></div></div></div>";
+ return _$output;  } catch (e) {
+    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
+  }
+}
+}
 ,  "marketing": function anonymous(locals) {
 with(locals || {}) {
   try {
@@ -176,13 +175,15 @@ this.escape(q) +
 this.escape(q) +
 "\"></script><script src=\"/jquery.flot.selection.js?" +
 this.escape(q) +
+"\"></script><script src=\"/twipsy.js?" +
+this.escape(q) +
 "\"></script><!--[if lt IE 9]>" +
 '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>' +
-"<![endif]--></head><body class=\"marketing\"><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"#\" style=\"letter-spacing:3px;\"><img src=\"/logotype-small.png\" width=\"52px\" height=\"22px\" /></a></h3><ul><li><a href=\"/features\">Features</a></li><li><a href=\"/plans\">Plans & Pricing</a></li><li><a href=\"/support\">Support</a></li><li><a href=\"/Documentation\">Documentation</a></li></ul><ul class=\"secondary-nav\"><li><form><input placeholder=\"Username\" class=\"username\" /><input placeholder=\"Password\" type=\"password\" class=\"password\" /><a href=\"#toggle\" class=\"login\">Log In</a></form></li><li></li></ul></div></div></div>" +
+"<![endif]--></head><body class=\"marketing\"><div class=\"topbar\"><div class=\"fill\"><div class=\"container\"><h3><a href=\"/\" style=\"letter-spacing:3px;\"><img src=\"/logotype-small.png\" width=\"52px\" height=\"22px\" /></a></h3><ul><li><a href=\"/features\">Features</a></li><li><b><a href=\"/plans\">Plans & Pricing</a></b></li><li><a href=\"/support\">Support</a></li><li><a href=\"/Documentation\">Documentation</a></li></ul><ul class=\"secondary-nav\"><li><form><input placeholder=\"Email Address\" class=\"username\" /><input placeholder=\"Password\" type=\"password\" class=\"password\" /><a href=\"#toggle\" class=\"login\">Log In</a></form></li><li></li></ul></div></div></div>" +
 content +
-"<center><br /><br />&copy; 2011 Xitive, LLC<br /><br /></center><div class=\"clear\"></div>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
+"<center><br /><br />&copy; 2011 <b>X</b>itive, Inc</center>\n<script type=\"text/javascript\">\n//<![CDATA[\n" +
 etc +
-"\nTransitive.boot();\n//]]>\n</script>\n</body></html>";
+"\nTransitive.boot();\n$(function () {\n  $(\"a[rel=twipsy]\").twipsy({\n    live: false,\n    animate: false\n  })\n})\n//]]>\n</script>\n</body></html>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }
@@ -192,17 +193,6 @@ etc +
 with(locals || {}) {
   try {
    var _$output="<h3>% Memory</h3><div style=\"width:400px;height:200px\" class=\"flotGraph\"></div><div class=\"lastupdated\"></div>";
- return _$output;  } catch (e) {
-    return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
-  }
-}
-}
-,  "onThe": function anonymous(locals) {
-with(locals || {}) {
-  try {
-   var _$output="<div class=\"on-the\">I was rendered on the " +
-this.escape(place) + 
-"</div>";
  return _$output;  } catch (e) {
     return "\n<pre class='error'>" + this.escape(e.stack) + "</pre>\n";
   }

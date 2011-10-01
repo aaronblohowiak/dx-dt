@@ -17,6 +17,7 @@
       }
     %script{src: "/jquery.flot.js?#{q}"}
     %script{src: "/jquery.flot.selection.js?#{q}"}
+    %script{src: "/twipsy.js?#{q}"}
     != "<!--[if lt IE 9]>"
     != '<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>'
     != "<![endif]-->"
@@ -27,13 +28,14 @@
       %div( class="fill")
         %div( class="container")
           %h3
-            %a(href="#" style="letter-spacing:3px;")
+            %a(href="/" style="letter-spacing:3px;")
               %img(src="/logotype-small.png" width="52px" height="22px")
           %ul
             %li
               %a(href="/features") Features
             %li
-              %a(href="/plans") Plans & Pricing
+              %b
+                %a(href="/plans") Plans & Pricing
             %li
               %a(href="/support") Support
             %li
@@ -41,7 +43,7 @@
           %ul.secondary-nav
             %li
               %form
-                %input.username(placeholder="Username")
+                %input.username(placeholder="Email Address")
                 %input.password(placeholder="Password" type="password")
                 %a.login(href="#toggle") Log In
             %li
@@ -49,11 +51,14 @@
     %center
       %br
       %br
-      &copy; 2011 Xitive, LLC
-      %br
-      %br
-    .clear
+      &copy; 2011 <b>X</b>itive, Inc
     :script
       !{etc}
       Transitive.boot();
+      $(function () {
+        $("a[rel=twipsy]").twipsy({
+          live: false,
+          animate: false
+        })
+      })
 

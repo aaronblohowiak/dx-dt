@@ -2219,9 +2219,16 @@ table.tcp-ports td.port {
   padding-left: 0;
   text-align: left;
 }
-.topbar form .username, .topbar form input.password {
+.topbar form input.username, .topbar form input.password {
   width: 100px;
   margin-left: 10px;
+  padding-left: 1em;
+}
+.topbar form input.username:focus,
+.topbar form input.password:focus,
+.topbar form input.username:focused,
+.topbar form input.password:focused {
+  padding-left: 1em;
 }
 .topbar form a.login {
   display: inline-block;
@@ -2440,10 +2447,13 @@ table.tcp-ports td.port {
 }
 .app {
   border-top: 1px solid #FFF;
-  background-color: #85411e;
+  background-color: #049cdb;
   height: 10px;
   margin-top: 40px;
 }
+/*
+@homeGradientStart: @darkGreen;
+@homeGradientStop: saturate(darken(@homeGradientStart, 25%), 30%);*/
 html {
   margin: 0;
   height: 100%;
@@ -2466,27 +2476,31 @@ html {
   overflow: hidden;
 }
 .home p {
+  font-size: 18px;
+  line-height: 24px;
+}
+.home .call-to-action .span8 p {
   color: #404040;
 }
 .home .top {
   margin-top: 22px;
   border-top: 1px solid #fff;
-  background-color: #041e04;
+  background-color: #003146;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#338833), to(#041e04));
-  background-image: -moz-linear-gradient(top, #338833, #041e04);
-  background-image: -ms-linear-gradient(top, #338833, #041e04);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #338833), color-stop(100%, #041e04));
-  background-image: -webkit-linear-gradient(top, #338833, #041e04);
-  background-image: -o-linear-gradient(top, #338833, #041e04);
-  background-image: linear-gradient(top, #338833, #041e04);
-  height: 180px;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#003146));
+  background-image: -moz-linear-gradient(top, #049cdb, #003146);
+  background-image: -ms-linear-gradient(top, #049cdb, #003146);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #003146));
+  background-image: -webkit-linear-gradient(top, #049cdb, #003146);
+  background-image: -o-linear-gradient(top, #049cdb, #003146);
+  background-image: linear-gradient(top, #049cdb, #003146);
+  height: 140px;
   padding-top: 40px;
   text-align: center;
 }
 .home .top h1 {
   color: white;
-  text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
   font-weight: normal;
   letter-spacing: 1px;
 }
@@ -2535,4 +2549,7 @@ html {
 .server-list {
   font-size: 150%;
   line-height: 200%;
+}
+.inputs-list label:hover {
+  cursor: pointer;
 }
