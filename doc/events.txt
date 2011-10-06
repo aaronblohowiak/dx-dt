@@ -1,6 +1,7 @@
 Bulk Data received
   - file saved / uploaded somewhere
   - enqueued for processing
+
 Bulk Data processed
   - New processes found
   - Other processes missing
@@ -20,9 +21,6 @@ Bulk Data received
       - update current process list
       - emit process changes
         - machine/blah/processes : {kind:remove, data:id}
-
-
-
 
 
 

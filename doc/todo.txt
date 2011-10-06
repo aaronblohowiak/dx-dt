@@ -19,9 +19,16 @@ Updater:
   - create machine info (machineid, netstat, other?)
   - update timeseries
 
-Web:
+Marketing:
+  - Make signup actually work!
+  - Screenshots, pending the pages actually exist.
+
+UI:
   - make graphs populated from backend
   - more tests
-  
-Accounting:
-  - *.*
+
+Bureaucracy:
+  - Get Xitive Inc info
+  - Open Corporate Bank account
+  - Set up Stripe
+ 

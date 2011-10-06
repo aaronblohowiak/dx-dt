@@ -23,6 +23,12 @@ ingester/ ->
 updater/ ->
   Dequeues snapshot for updating
   Updates server and process stats
+
+account/
+  User auth
+  Token auth
+  Account creation
+  Plan administration
   
 Data stores:
   Bulk data store:
@@ -39,7 +45,7 @@ Data stores:
       updater
 
   Account Info:
-    store: something atomic.
+    store: redis for now!
     used by:
       bulkendpoint
       updater

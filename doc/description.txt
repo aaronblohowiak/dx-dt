@@ -38,7 +38,7 @@ Conceptual model:
 The API:
 
   All successful creations will redirect to the display of the created item.
-  All URLs have an elided base of: https://my-account.dx-dt.com/v1
+  All URLs have an elided base of: https://my-account.dxdt.io/v1
   All requests require a specific attribute, which may be present as a cookie, query param or POST param (X-TOKEN).
   You may fake an HTTP method by setting a specific header, or post param (X-METHOD).
 
