@@ -36,26 +36,23 @@ processes/[processId]/series/[seriesId] - zset
 
 #Schema for the account db.
 
-users/email/[sha1(email.downcase.trim)] - value
+users/byemail/[sha1(email.downcase.trim)] - value
   userId
 
 users/[userId] - hash
-  companyId
+  accountId
+  email
   name
   phone number
+  password (bcrypt hash)
 
-companies/set
-  companyIds
+accounts - list
+  accountIds
 
-companies/[companyId] - hash
+accounts/[accountId] - hash
   databaseId
   primaryUserId
   stripe_customer_id
-
-databases/[databaseId]
-  host
-  port
-  secret
 
 tokens/[tokenId] - hash
   companyId
@@ -63,6 +60,19 @@ tokens/[tokenId] - hash
   rights
   createdBy
   
+
+# Schema for the provisioning database
+databases/hosts - set
+
+databases/hosts/[hostname] - hash
+  nextPort
+  port:databaseId pairs ?
+
+databases/[databaseId]
+  host
+  port
+  password
+
 
 
 

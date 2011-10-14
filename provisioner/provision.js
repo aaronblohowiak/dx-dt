@@ -1,8 +1,6 @@
 fs = require("fs");
 
-//sha1 = require("easyhash")('sha1');
-
-redis = require("redis");
+var redis = require("redis");
 spawn = require("child_process").spawn;
 
 u = require("underscore");
@@ -16,8 +14,6 @@ function createConfig(settings, cb){
   var config = template(settings);
   fs.writeFile(settings.path, config, "utf8", cb);
 }
-
-//TODO: change these paths! Something configurable like nopt?
 
 function createRedisServer(id, port, password, dataDir, confPath, cb){
   var settings = {
@@ -71,8 +67,8 @@ function startRedis(settings, cb){
             client.end();
             console.log("INFO FAIL");
           }else{
-            state = "connected";            
-            cb(null, info);
+            state = "connected";
+            cb(null, settings);
             client.end();
           }
         });
@@ -82,3 +78,4 @@ function startRedis(settings, cb){
 }
 
 module.exports = createRedisServer;
+// createRedisServer(id, port, password, dataDir, confPath, cb)

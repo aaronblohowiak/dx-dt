@@ -24,32 +24,50 @@ updater/ ->
   Dequeues snapshot for updating
   Updates server and process stats
 
-account/
+provisioner/ ->
+  provisions timeseries databases for new accounts
+  put a request for a new db into the provisioner work queue and you'll get a new redis db, ready to go!
+
+account/ (currently part of web/)
   User auth
   Token auth
   Account creation
   Plan administration
-  
-Data stores:
-  Bulk data store:
-    store: fs (currently)
-    used by:
-      bulkendpoint
-      ingester
-    
-  Work Queue:
-    store: redis
-    used by:
-      bulkendpoint
-      ingester
-      updater
 
+
+  
+Data stores:  
   Account Info:
     store: redis for now!
     used by:
       bulkendpoint
       updater
       web
+
+  Bulk data store:
+    store: fs (currently)
+    used by:
+      bulkendpoint
+      ingester
+
+  Work Queue:
+    store: redis
+    used by:
+      bulkendpoint
+      ingester
+      updater
+      provisioner
+      web
+
+  Provisioner:
+    store: redis
+    used by:
+      provisioner
+  
+  Sessions:
+    store: redis
+    used by: web
+  
 
 
   
