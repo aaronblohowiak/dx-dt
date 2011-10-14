@@ -1,0 +1,3 @@
+hset /admin/ZQfprjdZl36hGUz5g5f1hAgeK1w password $2a$10$0lIi5LABuk8g9myJLq9/KueKQeUYP7zcrDBp4nUuh1rpRZbrkDWoq
+
+// me fiddlepw

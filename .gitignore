@@ -12,3 +12,4 @@ ingester/tmp/*
 ingester/node_modules/
 ingester/test/status-async.json
 updater/node_modules/
+provisioner/node_modules/

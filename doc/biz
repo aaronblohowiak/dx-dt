@@ -21,3 +21,16 @@ Note: at this rate, it would take 20 days to generate 250 clicks (limited by bud
 
 ALTERNATE DISTRIBUTION:
   http://www.appdoubler.com/
+  
+
+
+Cost to start:
+
+  initial build-out: (stormcloud)
+
+  1 front-end web server $35/mo - 1G servers
+  1 bulkendpoint/ingester $35/mo - 1G servers
+  1 updater server $35/mo - 1G Server
+  2 db servers 2 * $50/mo - 2G Server
+  
+  (or just stick it all on one 16G machine for now :-P)

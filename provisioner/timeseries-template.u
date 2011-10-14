@@ -1,20 +1,29 @@
 port {{port}}
-pidfile {{pidfile}}
-dir ./
+
+dir {{dir}}
+
 dbfilename {{id}}.rdb
 appendfilename {{id}}.aof
 
-databases 2
+logfile {{id}}.log
+pidfile {{id}}.pid
 
-daemonize no
-timeout 300
+requirepass {{password}}
+
+databases 1
+
+timeout 60
 loglevel verbose
-logfile stdout
 
 slave-serve-stale-data yes
 
 appendonly yes
-appendfsync everysec
+
+#"trust" the OS because none of this data is critical, and slow software sucks ^.^
+appendfsync no
+
+#10ms seems reasonable to me.
+lua-time-limit 10
 
 no-appendfsync-on-rewrite yes
 
@@ -27,3 +36,5 @@ list-max-ziplist-value 64
 set-max-intset-entries 512
 
 activerehashing yes
+
+daemonize no

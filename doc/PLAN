@@ -1,0 +1,11 @@
+* provisioning
+  - create redis server from template [DONE]
+  - 
+
+* complete new account flow
+  - user enters all fields correctly [DONE]
+  - user signup auto-provisions redis instance
+  - user redirected to first-time landing page[DONE]
+
+* Authentication
+  - 
