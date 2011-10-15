@@ -34,8 +34,6 @@ account/ (currently part of web/)
   Account creation
   Plan administration
 
-
-  
 Data stores:  
   Account Info:
     store: redis for now!
@@ -43,12 +41,6 @@ Data stores:
       bulkendpoint
       updater
       web
-
-  Bulk data store:
-    store: fs (currently)
-    used by:
-      bulkendpoint
-      ingester
 
   Work Queue:
     store: redis
@@ -68,6 +60,8 @@ Data stores:
     store: redis
     used by: web
   
-
-
-  
+  Upload data store:
+    store: fs (currently)
+    used by:
+      bulkendpoint
+      ingester

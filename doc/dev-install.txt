@@ -1,0 +1,4 @@
+ln -s $DXDT_BACKEND_ROOT/dev.conf /etc/dxdt.conf
+
+# start a redis server (any branch that supports scripting, currently unstable) for *each* conf in dbs/*.conf
+

@@ -5,6 +5,9 @@ apt-get install -y bash curl lsof tar gzip
 
 sudo curl -l https://ACCOUNT:TOKEN@dxdt.io/environments/dev/dxdt.sh | bash
 
+
+
+
 # IF I WANT TO SUPPORT PSTREE LATER: 
 #     psmisc 
 #     pstree -aGln

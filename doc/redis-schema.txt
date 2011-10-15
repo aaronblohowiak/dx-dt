@@ -59,7 +59,6 @@ tokens/[tokenId] - hash
   environmentId
   rights
   createdBy
-  
 
 # Schema for the provisioning database
 databases/hosts - set
