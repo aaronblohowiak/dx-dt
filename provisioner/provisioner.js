@@ -17,8 +17,8 @@ var parsed = nopt(knownOpts, {}, process.argv, 2);
 
 //defaults
 var myhost = "apbmba.local";
-var dataDir = "/tmp/timeseries-dbs/data";
-var confPath = "/tmp/timeseries-dbs/conf";
+var dataDir = "/timeseries-dbs/data";
+var confPath = "/timeseries-dbs/conf";
 
 //overrides
 if(parsed.myhost){ myhost = parsed.myhost; }

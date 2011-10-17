@@ -1,0 +1,6 @@
+tokens
+  on: permittedEntityId
+  level: (0 || 1 || 2 || 3),
+        //revoked, read, read+write, read+write+admin
+
+  

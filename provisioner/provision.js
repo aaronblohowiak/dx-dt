@@ -12,7 +12,7 @@ template = u.template(fs.readFileSync("./timeseries-template.u", "utf8"));
 
 function createConfig(settings, cb){
   var config = template(settings);
-  fs.writeFile(settings.path, config, "utf8", cb);
+  fs.writeFile(settings.filename, config, "utf8", cb);
 }
 
 function createRedisServer(id, port, password, dataDir, confPath, cb){
@@ -21,18 +21,18 @@ function createRedisServer(id, port, password, dataDir, confPath, cb){
     port: port,
     dir: dataDir,
     path: confPath,
-    password: password
+    password: password,
+    filename: confPath+"/"+id+".conf"
   };
   
   createConfig(settings, function(err){
     if(err) return cb(err);
-    
     startRedis(settings, cb);
   });
 }
 
 function startRedis(settings, cb){
-  var server = spawn("nohup", ["redis-server", settings.path]);
+  var server = spawn("nohup", ["redis-server", settings.filename]);
   server.on("exit", function(code){
     console.log("redis exited with ", code);
     //exits 0 either way =(

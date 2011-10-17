@@ -4,7 +4,7 @@ Underlying Data model:
     Parent Entity Id
     AttributeHash {key: value, ...}
     h_m: TimeSeries
-    h_m: Epochs
+    h_m: Notes
 
   TimeSeries (graphable):
     Id
@@ -12,7 +12,7 @@ Underlying Data model:
     AttributeHash {key: value, ...}
     Data [[(int)milisecondsSinceEpoch, (double)numericValue], ...]
 
-  Epochs (very,very sparse logs):
+  Notes (very,very sparse logs):
     Id
     Parent Entity Id
     AttributeHash {key: value, ...}
@@ -25,15 +25,15 @@ Conceptual model:
 
   Environment time-series(pageviews, etc)
   Environment attributes(name)
-  Environment epochs(deploys)
+  Environment notes(deploys)
 
     Server time-series (load, mem%)
     Server attributes (ip addr, hostname)
-    Server epochs(installs, deploys)
+    Server notes(installs, deploys)
 
       Process time-series(cpu%, mem%, RSS, VIRT)
       Process Attributes(started, command, user)
-      Process epochs(time/string pairs)
+      Process notes(time/string pairs)
 
 The API:
 
