@@ -1,5 +1,5 @@
 INSTALL AGENT:
-requirements: bash curl tar gzip lsof ps df netstat
+requirements: bash curl tar gzip lsof ps df ifconfig
 
 apt-get install -y bash curl lsof tar gzip
 
