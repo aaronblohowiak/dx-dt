@@ -1,11 +1,21 @@
 * provisioning
   - create redis server from template [DONE]
-  - 
 
 * complete new account flow
   - user enters all fields correctly [DONE]
-  - user signup auto-provisions redis instance
-  - user redirected to first-time landing page[DONE]
+  - user signup auto-provisions redis instance [DONE]
+  - user redirected to first-time landing page [DONE]
 
 * Authentication
-  - 
+  - create token system [DONE]
+
+[Saturday, Oct 22]
+  * new server workflow
+    - show when script has been downloaded [DONE]
+    - show when installer fails
+    - show when first upload has happened
+
+  * bulk endpoint
+    - use tokens
+    - create jobs in the ingester work queue
+

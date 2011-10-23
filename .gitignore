@@ -5,8 +5,8 @@ agent/stats*
 *.rdb
 *.aof
 *.DS_Store
-bulkendpoint/endpoint/node_modules
-bulkendpoint/endpoint/tmp/*
+endpoint/node_modules
+endpoint/tmp/*
 ingester/node_modules/
 ingester/tmp/*
 ingester/node_modules/
