@@ -12,10 +12,10 @@
 [Saturday, Oct 22]
   * new server workflow
     - show when script has been downloaded [DONE]
-    - show when installer fails
-    - show when first upload has happened
+    - show when installer fails [ DONE ]
+    - show when first upload has happened 
 
   * bulk endpoint
     - use tokens
-    - create jobs in the ingester work queue
+    - create jobs in the ingester work queue including api key and api token
 
