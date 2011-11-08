@@ -20,36 +20,18 @@ var tmpdir = path.resolve("./tmp");
 
 var myJobs = {
   ingest: function(data, callback) {
-    var start = (new Date()).getTime();
-    withExpandedBulk(data.files.bulk, function(err, dirname, container){
-      processDump(dirname, function(err, results){
-        if(err){
-          callback(new Error(err));
-          process.exit();
-        }
-        
-        data.results = results; //BOOM!
-        data.processingTime = (new Date()).getTime() - start;
-        console.log(data.processingTime/1000);
-        resque.enqueue("snapshots", "update", [data]);
-        rimraf(container, {gently: tmpdir} , function(err){ 
-          console.log("deleting:", dirname);
-          console.log("in:", tmpdir);
-          console.log(err);
-        });
-        callback();
-      });
-    });
+    processData(data, callback);
   },
   succeed: function(arg, callback) { callback(); },
   fail: function(arg, callback) { callback(new Error('fail')); }
 };
 
+
+var dxdtConf = JSON.parse(fs.readFileSync("/etc/dxdt.conf"));
+var resqueConf = dxdtConf.dbs.workQueue;
+
 // setup a worker
-var resque = require('coffee-resque').connect({
-  host: "127.0.0.1",
-  port: "6868"
-});
+var resque = require('coffee-resque').connect(resqueConf);
 
 worker = resque.worker('bulkuploads', myJobs);
 worker.start();
@@ -60,6 +42,33 @@ worker.start();
 worker = resque.worker('bulkuploads', myJobs);
 worker.start();
 
+function processData(data, callback){
+  withExpandedBulk(data.files.bulk, function(err, dirname, container){
+    if(err){
+      console.log("err", err);
+      return callback(err);
+    }
+
+    console.log("in expanded bulk")
+    processDump(dirname, function(err, results){
+      if(err){
+        callback(new Error(err));
+        process.exit();
+      }
+      
+      data.results = results; //BOOM!
+      resque.enqueue("snapshots", "update", [data]);
+      rimraf(container, {gently: tmpdir} , function(err){ 
+        console.log("deleting:", dirname);
+        console.log("in:", tmpdir);
+        console.log(err);
+      });
+      callback();
+    });
+  });
+}
+
+//processData(JSON.parse(fs.readFileSync("example-data.json", "utf-8")), function(){});
 
 function getFile(dir, fileinfo, cb){
   //CHANGE THIS TO GET FILE FROM MONGO OR S3 OR WHATEVER.
@@ -73,9 +82,10 @@ function untarBulk(dir, filename, cb){
     fs.readdir(dir, function(err, files){ if(err) return cb(err);
       for (var i = files.length - 1; i >= 0; i--){
         if(files[i].match(/^stats_\d+$/)){
-          cb(null, dir+"/"+files[i]+"/");
+          return cb(null, dir+"/"+files[i]+"/");
         }
       }
+      return cb("no stats_ folder found v.v");
     });
   });
 }

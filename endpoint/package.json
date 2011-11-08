@@ -10,8 +10,8 @@
     "markdown": "0.2.1",
     "formidable": "1.0.3",
     "noxmox": "0.1.1",
-    "hiredis": "0.1.12",
-    "redis": "0.6.7",
+    "hiredis": "~0.1.12",
+    "redis": "~0.6.7",
     "uuid-pure": "1.0.10",
     "msgpack2": "0.1.4",
     "coffee-resque": "~0.1.4"

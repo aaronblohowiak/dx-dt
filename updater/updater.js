@@ -20,11 +20,10 @@ var myJobs = {
   fail: function(arg, callback) { callback(new Error('fail')); }
 };
 
+var dxdtConf = JSON.parse(fs.readFileSync("/etc/dxdt.conf"));
+var resqueConf = dxdtConf.dbs.workQueue;
 // setup a worker
-var resque = require('coffee-resque').connect({
-  host: "127.0.0.1",
-  port: "6868"
-});
+var resque = require('coffee-resque').connect(resqueConf);
 
 worker = resque.worker('snapshots', myJobs);
 worker.start();

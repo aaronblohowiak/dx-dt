@@ -1,18 +1,37 @@
 var Transitive = new (require("transitive"))();
 
-var options = {port:8081};
+var options = {};
 
-if(! ("app" in Transitive)){
-  Transitive.app = {};
+if(! ("App" in Transitive)){
+  Transitive.App = {};
 }
 
+var fs = require("fs");
+var redis = require("redis").createClient;
 
-var resque = require('coffee-resque').connect({
-  host: "127.0.0.1",
-  port: "6868"
+var dxdtConf = JSON.parse(fs.readFileSync("/etc/dxdt.conf"));
+
+var provConf = dxdtConf.dbs.provisioner;
+var provisions = redis(provConf.port, provConf.host);
+provisions.auth(provConf.password);
+
+
+
+var resqueConf = dxdtConf.dbs.workQueue;
+var resque = require('coffee-resque').connect(resqueConf); //ideally, this would be optional.
+
+Transitive.App.bulkQueue = resque;
+Transitive.App.provisions = provisions;
+
+options.port = 444;
+
+options.server = Transitive.connect.createServer({
+  key: fs.readFileSync('ssl/dxdt.io.key'),
+  cert: fs.readFileSync('ssl/dxdt.io.crt'),
+  ca: fs.readFileSync('ssl/gd_bundle.crt')
 });
 
-Transitive.app.bulkQueue = resque;
+
 
 //boot transitive, compiling everything and creating server 
 (function(){
