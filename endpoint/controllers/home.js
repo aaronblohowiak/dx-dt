@@ -34,6 +34,8 @@ module.exports = function(routes, Transitive){
        fields.account = account;
        fields.token = token;
 
+       //VALIDATE THE TOKEN!!!!
+
        var id = newId();
        if(err){
          res.writeHead(500, {'content-type': 'text/plain'});
@@ -53,6 +55,10 @@ module.exports = function(routes, Transitive){
        }
 
        var requestData = {fields: fields, files: shallowFiles, uid: id};
+       
+       q.redis.publish("/pushIt/accounts/"+account+"/installer", JSON.stringify({
+         type:"received"
+       }));
        
        q.enqueue("bulkuploads", "ingest", [requestData]);
        

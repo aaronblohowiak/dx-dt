@@ -36,7 +36,7 @@ var provisionerdb = redis(provConf.port, provConf.host);
 provisionerdb.auth(provConf.password);
 
 var resqueConf = conf.dbs.workQueue;
-resqueConf.timeout = 50;
+resqueConf.timeout = 250;
 
 var resque = require('coffee-resque').connect(resqueConf);
 

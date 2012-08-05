@@ -1,0 +1,40 @@
+Unified view of Performance, Utilization, Logs, Exceptions and events.
+
+Hosted or On-site (?)
+
+
+App performance:
+  https://github.com/twinturbo/harness
+
+Counts:
+  http://www.countandra.org/
+  
+Exceptions:
+  errbit / airbrake compatible
+  https://github.com/bradical/Airbrake-Notifier-for-Java
+
+Client performance:
+  http://code.google.com/p/episodes/source/browse/trunk/episodes.js
+
+Competitors:
+  http://highscalability.com/blog/2012/7/10/sponsored-post-new-relic-netdna-torbit-gigaspaces-aicache-lo.html
+  
+  
+Riak Deets:
+  http://wiki.basho.com/Secondary-Indexes.html
+
+Kafka Notes:
+
+
+General design:
+  Front-end in node
+  Messaging done over Kafka
+  File/Document storage in Riak
+  
+
+BizDev:
+  Simon Shelston
+
+Log competitors:
+  https://papertrailapp.com/systems/setup
+  http://help.papertrailapp.com/kb/configuration/encrypting-remote-syslog-with-tls-ssl#rsyslog

@@ -58,7 +58,7 @@ function processData(data, callback){
       
       data.results = results; //BOOM!
       resque.enqueue("snapshots", "update", [data]);
-      rimraf(container, {gently: tmpdir} , function(err){ 
+      rimraf(container, {gently: tmpdir} , function(err){
         console.log("deleting:", dirname);
         console.log("in:", tmpdir);
         console.log(err);

@@ -25,12 +25,13 @@ Transitive.App.provisions = provisions;
 
 options.port = 444;
 
-options.server = Transitive.connect.createServer({
-  key: fs.readFileSync('ssl/dxdt.io.key'),
-  cert: fs.readFileSync('ssl/dxdt.io.crt'),
-  ca: fs.readFileSync('ssl/gd_bundle.crt')
-});
-
+if(process.env.NODE_ENV == "production"){
+  options.server = Transitive.connect.createServer({
+    key: fs.readFileSync('ssl/dxdt.io.key'),
+    cert: fs.readFileSync('ssl/dxdt.io.crt'),
+    ca: fs.readFileSync('ssl/gd_bundle.crt')
+  });
+}
 
 
 //boot transitive, compiling everything and creating server 

@@ -6,19 +6,32 @@ sha1 = require("easyhash")('sha1');
 rimraf = require("rimraf");
 newId = require("uuid-pure").newId;
 
+var dxdtConf = JSON.parse(fs.readFileSync("/etc/dxdt.conf"));
+var msgQConf = dxdtConf.dbs.workQueue;
+
 redis = require("redis");
 
-//TODO: plug this into the provisioner
+var msgQ = redis.createClient(msgQConf.port, msgQConf.host);
+msgQ.auth(msgQConf.password);
+
+var provConf = dxdtConf.dbs.provisioner;
+var provisionDb = redis.createClient(provConf.port, provConf.host);
+provisionDb.auth(provConf.password);
+
+var timeseries = require("./timeseries-db");
+
 function getRedisClientForUpdate(data, cb){
-  cb(null, redis.createClient()); //maybe different port =)
+  provisionDb.hgetall('/databases/'+data.fields.account, function(err, dbInfo){
+    if(err) return cb(err);
+    timeseries.createClient(dbInfo, cb);
+  });
 }
 
 function updatingMachine(client, lastStatus, status){
   console.log("Updating Machine", machineid);
   console.log("lastStatus", lastStatus);
   console.log(sys.inspect(status.machine));
-  client.end();          
-  
+  client.end();
 }
 
 function newMachine(client, status){
@@ -83,6 +96,7 @@ function createIds(status){
 }
 
 function onUpdate(data, cb){
+  
   createIds(data.results);
   //get redis connection for data
   getRedisClientForUpdate(data, function(err, client){
@@ -115,7 +129,7 @@ function onUpdate(data, cb){
 
 
 function loadJson(n){
-  return JSON.parse(fs.readFileSync("json-"+n, "utf-8"));
+  return JSON.parse(fs.readFileSync("play/json-"+n, "utf-8"));
 }
 
 onUpdate(loadJson(0));
